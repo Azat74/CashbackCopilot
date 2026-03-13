@@ -1,5 +1,6 @@
 import XCTest
 
+@MainActor
 final class CashbackCopilotUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
@@ -11,4 +12,3 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(app.wait(for: .runningForeground, timeout: 5))
     }
 }
-
