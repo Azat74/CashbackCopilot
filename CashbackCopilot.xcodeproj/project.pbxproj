@@ -35,6 +35,7 @@
 		C07C207FEB59BADC098690F9 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707893AD917397BBD66B2B4B /* WalletView.swift */; };
 		C27B208701475093973A09D4 /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */; };
 		C5B4A5FBC23BF7238F381F75 /* RecommendationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */; };
+		CA43A544A2A571DC0DDDC163 /* AppModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2261FDC2063EA45925716F89 /* AppModelTests.swift */; };
 		D0E93DEABA5A0E1CF40464DE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CACC7D25FB59CD661C07B5 /* OnboardingView.swift */; };
 		D3CA443A5B0C04F184F51FD5 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9514DF5A266AA53E07827621 /* Bank.swift */; };
 		D7035E33E8D569922D66B88D /* RulesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E316D4A79AFEEBFBC7CAA50 /* RulesRepository.swift */; };
@@ -70,6 +71,7 @@
 		1AA21BA4DA7E4729C7412E66 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		1CF9491B200856DCBBA2A48A /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		1E316D4A79AFEEBFBC7CAA50 /* RulesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesRepository.swift; sourceTree = "<group>"; };
+		2261FDC2063EA45925716F89 /* AppModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelTests.swift; sourceTree = "<group>"; };
 		2584806990AFACE5808C8A3C /* RecommendationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationResult.swift; sourceTree = "<group>"; };
 		2633D128245E90BEE1D14D4D /* ConfirmPurchaseContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPurchaseContextView.swift; sourceTree = "<group>"; };
 		26CACC7D25FB59CD661C07B5 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
@@ -131,6 +133,7 @@
 		138FC1C2435538C5049D1DE7 /* CashbackCopilotTests */ = {
 			isa = PBXGroup;
 			children = (
+				2261FDC2063EA45925716F89 /* AppModelTests.swift */,
 				FDDC80C70EB6D1F1DC12F349 /* BusinessGuardrailsTests.swift */,
 				CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */,
 				BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */,
@@ -493,6 +496,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA43A544A2A571DC0DDDC163 /* AppModelTests.swift in Sources */,
 				2E77C548746097E2D7926B35 /* BusinessGuardrailsTests.swift in Sources */,
 				C5B4A5FBC23BF7238F381F75 /* RecommendationEngineTests.swift in Sources */,
 				2E847B9CC9D70C1EB9D77B81 /* RecommendationRegressionTests.swift in Sources */,
