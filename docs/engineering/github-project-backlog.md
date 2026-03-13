@@ -42,20 +42,20 @@
 - [x] separate UI smoke workflow in GitHub Actions
 - [x] ui-smoke added as required status check for `main`
 - [x] second UI smoke scenario for QR scanner shell
+- [x] confirm purchase context screen after QR flow
+- [x] scanner -> confirm -> recommendation flow
 
 ## Next Stories
 
-- [ ] manual recommendation flow polish
-- [ ] payment logging from recommendation result
-- [ ] home form validation and empty/error states
-- [ ] history details for expected vs actual cashback
-- [ ] confirm purchase context screen after QR flow
+- [ ] QR-driven payment logging from recommendation result
+- [ ] richer confirm context warnings and heuristics
 - [ ] settings cleanup and local data reset UX
 
 ## Testing and Automation
 
 - [ ] decide whether UI smoke runs on every PR or only on `main`
-- [ ] expand UI smoke beyond shell QR flow into confirmed purchase context
+- [x] expand UI smoke beyond shell QR flow into confirmed purchase context
+- [ ] add separate QR-driven smoke path through payment logging
 
 ## Later
 

@@ -9,6 +9,7 @@ struct ScannerView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var payload = UITestDefaults.isEnabled ? UITestDefaults.payload : ""
     @State private var parsed: ParsedQRPayload?
+    @State private var isConfirmPresented = false
 
     private let parser = QRParsingService()
 
@@ -42,11 +43,26 @@ struct ScannerView: View {
                         .accessibilityIdentifier("scanner.result.amount")
                     Text("Merchant: \(parsed.merchantName ?? "не найден")")
                         .accessibilityIdentifier("scanner.result.merchant")
+                    Text("Категория: \(parsed.probableCategory.displayName)")
+                        .accessibilityIdentifier("scanner.result.category")
                     Text("Confidence: \(parsed.confidence.formatted(.percent.precision(.fractionLength(0))))")
                         .accessibilityIdentifier("scanner.result.confidence")
+                }
+
+                Section("Дальше") {
+                    Button("Подтвердить контекст") {
+                        isConfirmPresented = true
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .accessibilityIdentifier("scanner.continueButton")
                 }
             }
         }
         .navigationTitle("QR Scanner")
+        .navigationDestination(isPresented: $isConfirmPresented) {
+            if let parsed {
+                ConfirmPurchaseContextView(parsedPayload: parsed, rawPayload: payload)
+            }
+        }
     }
 }

@@ -44,7 +44,7 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(loggedPaymentMessage.waitForExistence(timeout: 5))
     }
 
-    func testQrScannerParseFlow() throws {
+    func testQrScannerConfirmRecommendationFlow() throws {
         let app = XCUIApplication()
         app.launchArguments.append("UITEST_SMOKE")
         app.launch()
@@ -57,7 +57,7 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(openScannerButton.waitForExistence(timeout: 5))
         revealAndTap(openScannerButton, in: app)
 
-        let payloadField = app.textFields["scanner.payloadField"]
+        let payloadField = payloadField(in: app)
         XCTAssertTrue(payloadField.waitForExistence(timeout: 5))
         XCTAssertEqual(payloadField.value as? String, "sbp://pay?merchant=АЗС Тест&sum=1500")
 
@@ -69,6 +69,10 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(channel.waitForExistence(timeout: 5))
         XCTAssertEqual(channel.label, "Канал: СБП")
 
+        let category = app.staticTexts["scanner.result.category"]
+        XCTAssertTrue(category.exists)
+        XCTAssertEqual(category.label, "Категория: АЗС")
+
         let amount = app.staticTexts["scanner.result.amount"]
         XCTAssertTrue(amount.exists)
         XCTAssertTrue(amount.label.contains("Amount:"))
@@ -79,6 +83,28 @@ final class CashbackCopilotUITests: XCTestCase {
         let merchant = app.staticTexts["scanner.result.merchant"]
         XCTAssertTrue(merchant.exists)
         XCTAssertEqual(merchant.label, "Merchant: АЗС Тест")
+
+        let continueButton = app.buttons["scanner.continueButton"]
+        revealAndTap(continueButton, in: app)
+
+        let confirmAmountField = app.textFields["confirm.amountField"]
+        XCTAssertTrue(confirmAmountField.waitForExistence(timeout: 5))
+        XCTAssertEqual(confirmAmountField.value as? String, "1500")
+
+        let confirmMerchantField = app.textFields["confirm.merchantField"]
+        XCTAssertTrue(confirmMerchantField.exists)
+        XCTAssertEqual(confirmMerchantField.value as? String, "АЗС Тест")
+
+        let confirmButton = app.buttons["confirm.showRecommendationButton"]
+        XCTAssertTrue(confirmButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(confirmButton.isEnabled)
+        revealAndTap(confirmButton, in: app)
+
+        let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
+        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 15))
+
+        let expectedReward = app.staticTexts["recommendation.expectedReward"]
+        XCTAssertTrue(expectedReward.exists)
     }
 
     private func revealAndTap(_ element: XCUIElement, in app: XCUIApplication) {
@@ -92,9 +118,15 @@ final class CashbackCopilotUITests: XCTestCase {
             return true
         }
 
+        let scrollContainer = app.tables.firstMatch.exists
+            ? app.tables.firstMatch
+            : (app.collectionViews.firstMatch.exists
+                ? app.collectionViews.firstMatch
+                : app.scrollViews.firstMatch)
+
         for _ in 0..<5 {
-            if app.keyboards.element.exists {
-                app.swipeUp()
+            if scrollContainer.exists {
+                scrollContainer.swipeUp()
             } else {
                 app.swipeUp()
             }
@@ -105,5 +137,14 @@ final class CashbackCopilotUITests: XCTestCase {
         }
 
         return element.exists && element.isHittable
+    }
+
+    private func payloadField(in app: XCUIApplication) -> XCUIElement {
+        let textField = app.textFields["scanner.payloadField"]
+        if textField.exists {
+            return textField
+        }
+
+        return app.textViews["scanner.payloadField"]
     }
 }

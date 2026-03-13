@@ -20,7 +20,7 @@
 - UI smoke tests вынесены в отдельный workflow и запускаются отдельно от основного `ios-ci`
 - smoke сейчас проверяет два сценария:
   - onboarding -> manual recommendation -> log payment
-  - onboarding -> QR scanner shell -> payload parse
+  - onboarding -> QR scanner -> confirm context -> recommendation
 - smoke запускается как один UI suite с отключенным parallel testing, чтобы оба сценария шли в одном simulator session
 - iOS workflows больше не завязаны на конкретный предсозданный simulator на runner: destination резолвится динамически через `simctl`
 - `ui-smoke` добавлен в required status checks для `main` ruleset
