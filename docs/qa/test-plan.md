@@ -26,3 +26,11 @@
 - manual recommendation happy path
 - scanner fallback path
 
+## Текущий статус
+
+- unit tests и domain regression tests уже являются основной частью CI
+- UI smoke tests пока считаются следующим этапом стабилизации
+- перед их обязательным включением в pipeline нужно:
+  - добавить `accessibilityIdentifier` на ключевые экраны и кнопки
+  - зафиксировать один стабильный happy path
+  - вынести UI smoke в отдельный workflow

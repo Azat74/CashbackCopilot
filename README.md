@@ -38,6 +38,13 @@ sudo --preserve-env=DEVELOPER_DIR xcodebuild -license
 - `docs/` — продуктовая, архитектурная, security и QA документация
 - `.github/` — workflow’ы и шаблоны ревью
 
+## Как ведем разработку
+
+- работаем story-by-story через ветки `codex/...`
+- каждая story идет в отдельный PR
+- merge в `main` только после зеленых checks
+- актуальный backlog лежит в `docs/engineering/github-project-backlog.md`
+
 ## Принципы
 
 - рекомендация, а не гарантия начисления кешбека
@@ -45,4 +52,3 @@ sudo --preserve-env=DEVELOPER_DIR xcodebuild -license
 - неопределенность должна быть видна пользователю
 - никаких банковских логинов, паролей и токенов
 - минимум зависимостей и минимум разрешений
-
