@@ -6,6 +6,36 @@ struct ParsedQRPayload: Equatable {
     var probableCategory: CashbackCategory
     var channel: PaymentChannel
     var confidence: Double
+    var heuristics: [String]
+    var warnings: [String]
+
+    var confidenceBand: ParsedQRConfidenceBand {
+        switch confidence {
+        case 0.8...:
+            .high
+        case 0.55..<0.8:
+            .medium
+        default:
+            .low
+        }
+    }
+}
+
+enum ParsedQRConfidenceBand: String, Equatable {
+    case high
+    case medium
+    case low
+
+    var displayName: String {
+        switch self {
+        case .high:
+            "Высокая"
+        case .medium:
+            "Средняя"
+        case .low:
+            "Низкая"
+        }
+    }
 }
 
 struct QRParsingService {
@@ -13,16 +43,36 @@ struct QRParsingService {
         let lowered = payload.lowercased()
         let amount = parseAmount(from: lowered)
         let merchantName = parseMerchant(from: payload)
-        let channel: PaymentChannel = lowered.contains("sbp") ? .sbp : .qr
+        let hasSBPHint = lowered.contains("sbp")
+        let channel: PaymentChannel = hasSBPHint ? .sbp : .qr
         let probableCategory = inferCategory(from: merchantName, payload: lowered)
-        let confidence = baseConfidence(for: merchantName, probableCategory: probableCategory)
+        let heuristics = buildHeuristics(
+            hasSBPHint: hasSBPHint,
+            amount: amount,
+            merchantName: merchantName,
+            probableCategory: probableCategory
+        )
+        let warnings = buildWarnings(
+            hasSBPHint: hasSBPHint,
+            amount: amount,
+            merchantName: merchantName,
+            probableCategory: probableCategory
+        )
+        let confidence = baseConfidence(
+            hasSBPHint: hasSBPHint,
+            amount: amount,
+            merchantName: merchantName,
+            probableCategory: probableCategory
+        )
 
         return ParsedQRPayload(
             amount: amount,
             merchantName: merchantName,
             probableCategory: probableCategory,
             channel: channel,
-            confidence: confidence
+            confidence: confidence,
+            heuristics: heuristics,
+            warnings: warnings
         )
     }
 
@@ -95,13 +145,90 @@ struct QRParsingService {
         return .other
     }
 
-    private func baseConfidence(for merchantName: String?, probableCategory: CashbackCategory) -> Double {
-        var confidence = merchantName == nil ? 0.45 : 0.6
+    private func buildHeuristics(
+        hasSBPHint: Bool,
+        amount: Double?,
+        merchantName: String?,
+        probableCategory: CashbackCategory
+    ) -> [String] {
+        var heuristics: [String] = []
+
+        if hasSBPHint {
+            heuristics.append("Payload содержит явный признак СБП.")
+        }
+
+        if amount != nil {
+            heuristics.append("Сумма покупки извлечена из QR.")
+        }
+
+        if merchantName != nil {
+            heuristics.append("Название merchant извлечено из payload.")
+        }
 
         if probableCategory != .other {
+            heuristics.append("Категория предположена по merchant и тексту payload.")
+        } else {
+            heuristics.append("Надежных признаков категории в payload не найдено.")
+        }
+
+        return heuristics
+    }
+
+    private func buildWarnings(
+        hasSBPHint: Bool,
+        amount: Double?,
+        merchantName: String?,
+        probableCategory: CashbackCategory
+    ) -> [String] {
+        var warnings: [String] = []
+
+        if amount == nil {
+            warnings.append("Сумма не найдена в QR. Проверьте её вручную перед расчетом.")
+        }
+
+        if merchantName == nil {
+            warnings.append("Merchant не распознан. Банк может классифицировать покупку иначе.")
+        }
+
+        if probableCategory == .other {
+            warnings.append("Категория не распознана. Лучше выбрать её вручную.")
+        }
+
+        if !hasSBPHint {
+            warnings.append("Канал определен как обычный QR без явного признака СБП.")
+        }
+
+        return warnings
+    }
+
+    private func baseConfidence(
+        hasSBPHint: Bool,
+        amount: Double?,
+        merchantName: String?,
+        probableCategory: CashbackCategory
+    ) -> Double {
+        var confidence = 0.2
+
+        if hasSBPHint {
+            confidence += 0.2
+        }
+
+        if amount != nil {
             confidence += 0.15
         }
 
-        return min(confidence, 0.85)
+        if merchantName != nil {
+            confidence += 0.15
+        }
+
+        if probableCategory != .other {
+            confidence += 0.2
+        }
+
+        if merchantName != nil, amount != nil, probableCategory != .other {
+            confidence += 0.1
+        }
+
+        return min(confidence, 0.9)
     }
 }

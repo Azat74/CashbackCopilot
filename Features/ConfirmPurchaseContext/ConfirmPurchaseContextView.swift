@@ -28,6 +28,17 @@ struct ConfirmPurchaseContextView: View {
                     .accessibilityIdentifier("confirm.detectedCategory")
                 LabeledContent("Confidence", value: parsedPayload.confidence.formatted(.percent.precision(.fractionLength(0))))
                     .accessibilityIdentifier("confirm.detectedConfidence")
+                LabeledContent("Оценка", value: parsedPayload.confidenceBand.displayName)
+                    .accessibilityIdentifier("confirm.detectedConfidenceBand")
+            }
+
+            if !parsedPayload.heuristics.isEmpty {
+                Section("Почему так решили") {
+                    ForEach(Array(parsedPayload.heuristics.enumerated()), id: \.offset) { index, heuristic in
+                        Label(heuristic, systemImage: "sparkle.magnifyingglass")
+                            .accessibilityIdentifier("confirm.heuristic.\(index)")
+                    }
+                }
             }
 
             Section("Подтвердите перед расчетом") {
@@ -52,17 +63,24 @@ struct ConfirmPurchaseContextView: View {
                 }
                 .pickerStyle(.segmented)
                 .accessibilityIdentifier("confirm.channelPicker")
+            }
 
-                if let validationMessage {
+            if let validationMessage {
+                Section("Проверьте ввод") {
                     Text(validationMessage)
                         .font(.caption)
                         .foregroundStyle(.red)
                         .accessibilityIdentifier("confirm.validationMessage")
-                } else if parsedPayload.confidence < 0.75 {
-                    Text("Категория определена предположительно. Проверьте её перед расчетом.")
-                        .font(.caption)
-                        .foregroundStyle(.orange)
-                        .accessibilityIdentifier("confirm.warningMessage")
+                }
+            }
+
+            if !warnings.isEmpty {
+                Section("Что проверить перед оплатой") {
+                    ForEach(Array(warnings.enumerated()), id: \.offset) { index, warning in
+                        Label(warning, systemImage: "exclamationmark.triangle.fill")
+                            .foregroundStyle(.orange)
+                            .accessibilityIdentifier("confirm.warning.\(index)")
+                    }
                 }
             }
 
@@ -101,6 +119,28 @@ struct ConfirmPurchaseContextView: View {
         }
 
         return nil
+    }
+
+    private var warnings: [String] {
+        var result = parsedPayload.warnings
+
+        if parsedPayload.confidenceBand != .high {
+            result.append("Confidence ниже высокой. Лучше перепроверить категорию и канал вручную.")
+        }
+
+        if selectedCategory != parsedPayload.probableCategory {
+            result.append("Категория изменена вручную относительно распознанной версии.")
+        }
+
+        if selectedChannel != parsedPayload.channel {
+            result.append("Канал оплаты изменен вручную относительно распознанной версии.")
+        }
+
+        if merchantName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            result.append("Merchant не заполнен. История и последующая сверка будут менее точными.")
+        }
+
+        return Array(NSOrderedSet(array: result)) as? [String] ?? result
     }
 
     private func makeContext() -> PurchaseContext? {

@@ -13,7 +13,10 @@ final class QRParsingServiceTests: XCTestCase {
         XCTAssertEqual(parsed.amount, 1500)
         XCTAssertEqual(parsed.merchantName, "АЗС Тест")
         XCTAssertEqual(parsed.probableCategory, .fuel)
-        XCTAssertGreaterThan(parsed.confidence, 0.6)
+        XCTAssertEqual(parsed.confidenceBand, .high)
+        XCTAssertGreaterThanOrEqual(parsed.confidence, 0.8)
+        XCTAssertTrue(parsed.warnings.isEmpty)
+        XCTAssertTrue(parsed.heuristics.contains("Payload содержит явный признак СБП."))
     }
 
     func testFallsBackToOtherCategoryWhenNoHintsExist() {
@@ -25,6 +28,11 @@ final class QRParsingServiceTests: XCTestCase {
         XCTAssertEqual(parsed.amount, 890)
         XCTAssertNil(parsed.merchantName)
         XCTAssertEqual(parsed.probableCategory, .other)
-        XCTAssertLessThanOrEqual(parsed.confidence, 0.45)
+        XCTAssertEqual(parsed.confidenceBand, .low)
+        XCTAssertLessThanOrEqual(parsed.confidence, 0.4)
+        XCTAssertTrue(parsed.warnings.contains("Merchant не распознан. Банк может классифицировать покупку иначе."))
+        XCTAssertTrue(parsed.warnings.contains("Категория не распознана. Лучше выбрать её вручную."))
+        XCTAssertTrue(parsed.warnings.contains("Канал определен как обычный QR без явного признака СБП."))
+        XCTAssertTrue(parsed.heuristics.contains("Надежных признаков категории в payload не найдено."))
     }
 }
