@@ -143,6 +143,7 @@ final class AppModel {
             purchaseContextId: context.id,
             amount: context.amount,
             merchantName: context.merchantName,
+            source: context.source,
             category: context.category,
             channel: context.channel,
             recommendedPaymentMethodId: result.bestOption?.paymentMethodId,

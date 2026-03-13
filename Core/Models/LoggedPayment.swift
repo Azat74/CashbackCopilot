@@ -6,6 +6,7 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
 
     var amount: Double
     var merchantName: String?
+    var source: PurchaseSource
     var category: CashbackCategory
     var channel: PaymentChannel
     var recommendedPaymentMethodId: UUID?
@@ -21,6 +22,7 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
         purchaseContextId: UUID,
         amount: Double,
         merchantName: String? = nil,
+        source: PurchaseSource,
         category: CashbackCategory,
         channel: PaymentChannel,
         recommendedPaymentMethodId: UUID? = nil,
@@ -35,6 +37,7 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
         self.purchaseContextId = purchaseContextId
         self.amount = amount
         self.merchantName = merchantName
+        self.source = source
         self.category = category
         self.channel = channel
         self.recommendedPaymentMethodId = recommendedPaymentMethodId

@@ -3,6 +3,15 @@ import Foundation
 enum PurchaseSource: String, Codable, Hashable {
     case manual
     case qr
+
+    var displayName: String {
+        switch self {
+        case .manual:
+            "Ручной ввод"
+        case .qr:
+            "QR"
+        }
+    }
 }
 
 enum PaymentChannel: String, Codable, CaseIterable, Hashable {
@@ -55,4 +64,3 @@ struct PurchaseContext: Identifiable, Codable, Equatable, Hashable {
         self.createdAt = createdAt
     }
 }
-

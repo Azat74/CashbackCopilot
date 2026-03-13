@@ -49,14 +49,24 @@ final class CashbackCopilotUITests: XCTestCase {
         app.launchArguments.append("UITEST_SMOKE")
         app.launch()
 
-        let startButton = app.buttons["onboarding.startButton"]
-        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
-        startButton.tap()
+        startOnboarding(in: app)
 
         let openScannerButton = app.buttons["home.openScannerButton"]
         XCTAssertTrue(openScannerButton.waitForExistence(timeout: 5))
         revealAndTap(openScannerButton, in: app)
 
+        assertParsedQrPayload(in: app)
+        proceedThroughConfirmedQrContext(in: app)
+        assertRecommendationAndLogPayment(in: app)
+    }
+
+    private func startOnboarding(in app: XCUIApplication) {
+        let startButton = app.buttons["onboarding.startButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+    }
+
+    private func assertParsedQrPayload(in app: XCUIApplication) {
         let payloadField = payloadField(in: app)
         XCTAssertTrue(payloadField.waitForExistence(timeout: 5))
         XCTAssertEqual(payloadField.value as? String, "sbp://pay?merchant=АЗС Тест&sum=1500")
@@ -83,7 +93,9 @@ final class CashbackCopilotUITests: XCTestCase {
         let merchant = app.staticTexts["scanner.result.merchant"]
         XCTAssertTrue(merchant.exists)
         XCTAssertEqual(merchant.label, "Merchant: АЗС Тест")
+    }
 
+    private func proceedThroughConfirmedQrContext(in app: XCUIApplication) {
         let continueButton = app.buttons["scanner.continueButton"]
         revealAndTap(continueButton, in: app)
 
@@ -99,12 +111,21 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(confirmButton.waitForExistence(timeout: 5))
         XCTAssertTrue(confirmButton.isEnabled)
         revealAndTap(confirmButton, in: app)
+    }
 
+    private func assertRecommendationAndLogPayment(in app: XCUIApplication) {
         let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
         XCTAssertTrue(bestMethodName.waitForExistence(timeout: 15))
 
         let expectedReward = app.staticTexts["recommendation.expectedReward"]
         XCTAssertTrue(expectedReward.exists)
+
+        let logPaymentButton = app.buttons["recommendation.logPaymentButton"]
+        XCTAssertTrue(reveal(logPaymentButton, in: app))
+        revealAndTap(logPaymentButton, in: app)
+
+        let loggedPaymentMessage = app.staticTexts["recommendation.loggedPaymentMessage"]
+        XCTAssertTrue(loggedPaymentMessage.waitForExistence(timeout: 5))
     }
 
     private func revealAndTap(_ element: XCUIElement, in app: XCUIApplication) {
