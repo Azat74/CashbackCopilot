@@ -45,23 +45,23 @@
 - [x] confirm purchase context screen after QR flow
 - [x] scanner -> confirm -> recommendation flow
 - [x] richer confirm context warnings and heuristics
+- [x] confirm actual cashback flow
 
 ## Next Stories
 
 - [x] QR-driven payment logging from recommendation result
 - [ ] settings cleanup and local data reset UX
-- [ ] confirm actual cashback flow
+- [ ] history mismatch review and manual correction UX
 
 ## Testing and Automation
 
-- [ ] decide whether UI smoke runs on every PR or only on `main`
+- [x] decide whether UI smoke runs on every PR or only on `main`
 - [x] expand UI smoke beyond shell QR flow into confirmed purchase context
 - [x] add separate QR-driven smoke path through payment logging
 
 ## Later
 
 - [ ] QR parsing improvements
-- [ ] confirm actual cashback flow
 - [ ] bank templates/presets
 - [ ] import/export
 - [ ] app lock / privacy hardening

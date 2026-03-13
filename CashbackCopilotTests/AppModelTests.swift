@@ -213,6 +213,68 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(appModel.progress.first?.rewardAccumulated, 45)
     }
 
+    func testConfirmActualCashbackMarksPaymentAsMatched() {
+        let payment = LoggedPayment(
+            purchaseContextId: UUID(),
+            amount: 1_500,
+            merchantName: "АЗС",
+            source: .manual,
+            category: .fuel,
+            channel: .card,
+            recommendedPaymentMethodId: UUID(),
+            actualPaymentMethodId: UUID(),
+            expectedReward: 75,
+            actualReward: nil,
+            wasRecommendationUsed: true
+        )
+
+        let appModel = AppModel(
+            repository: nil,
+            banks: [],
+            paymentMethods: [],
+            rules: [],
+            progress: [],
+            loggedPayments: [payment]
+        )
+
+        appModel.confirmActualCashback(for: payment.id, amount: 75)
+
+        XCTAssertEqual(appModel.loggedPayments[0].actualReward, 75)
+        XCTAssertEqual(appModel.loggedPayments[0].cashbackMatchedExpectation, true)
+        XCTAssertEqual(appModel.loggedPayments[0].confirmationStatus, .matched)
+    }
+
+    func testConfirmActualCashbackMarksPaymentAsMismatched() {
+        let payment = LoggedPayment(
+            purchaseContextId: UUID(),
+            amount: 1_500,
+            merchantName: "АЗС",
+            source: .manual,
+            category: .fuel,
+            channel: .card,
+            recommendedPaymentMethodId: UUID(),
+            actualPaymentMethodId: UUID(),
+            expectedReward: 75,
+            actualReward: nil,
+            wasRecommendationUsed: true
+        )
+
+        let appModel = AppModel(
+            repository: nil,
+            banks: [],
+            paymentMethods: [],
+            rules: [],
+            progress: [],
+            loggedPayments: [payment]
+        )
+
+        appModel.confirmActualCashback(for: payment.id, amount: 50)
+
+        XCTAssertEqual(appModel.loggedPayments[0].actualReward, 50)
+        XCTAssertEqual(appModel.loggedPayments[0].cashbackMatchedExpectation, false)
+        XCTAssertEqual(appModel.loggedPayments[0].confirmationStatus, .mismatched)
+    }
+
     private func tryUnwrap<T>(_ value: T?) -> T {
         guard let value else {
             XCTFail("Expected value to exist")
