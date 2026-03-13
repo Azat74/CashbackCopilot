@@ -41,6 +41,7 @@
 - [x] first stable UI smoke test for manual recommendation flow
 - [x] separate UI smoke workflow in GitHub Actions
 - [x] ui-smoke added as required status check for `main`
+- [x] second UI smoke scenario for QR scanner shell
 
 ## Next Stories
 
@@ -54,7 +55,7 @@
 ## Testing and Automation
 
 - [ ] decide whether UI smoke runs on every PR or only on `main`
-- [ ] expand UI smoke beyond one happy path
+- [ ] expand UI smoke beyond shell QR flow into confirmed purchase context
 
 ## Later
 

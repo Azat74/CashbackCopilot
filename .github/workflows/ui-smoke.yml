@@ -26,11 +26,10 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
-      - name: Run manual recommendation smoke test
+      - name: Run UI smoke suite
         run: |
           xcodebuild \
             -scheme CashbackCopilotUI \
             -destination "$IOS_DESTINATION" \
-            -only-testing:CashbackCopilotUITests/CashbackCopilotUITests/testManualRecommendationHappyPath \
             test \
             CODE_SIGNING_ALLOWED=NO
