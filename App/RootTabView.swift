@@ -4,6 +4,8 @@ struct RootTabView: View {
     @Environment(AppModel.self) private var appModel
 
     var body: some View {
+        @Bindable var appModel = appModel
+
         TabView {
             NavigationStack {
                 HomeView()
@@ -33,9 +35,8 @@ struct RootTabView: View {
                 Label("Настройки", systemImage: "gearshape")
             }
         }
-        .fullScreenCover(isPresented: Bindable(appModel).isOnboardingPresented) {
+        .fullScreenCover(isPresented: $appModel.isOnboardingPresented) {
             OnboardingView()
         }
     }
 }
-

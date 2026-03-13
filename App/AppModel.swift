@@ -1,8 +1,10 @@
 import Foundation
 import Observation
 
+@MainActor
 @Observable
 final class AppModel {
+    private let repository: LocalSnapshotRepository?
     private let engine: RecommendationEngine
     private let progressService: ProgressService
 
@@ -14,22 +16,32 @@ final class AppModel {
     var isOnboardingPresented: Bool
 
     init(
+        repository: LocalSnapshotRepository? = nil,
         engine: RecommendationEngine = DefaultRecommendationEngine(),
         progressService: ProgressService = ProgressService(),
-        banks: [Bank] = [MockData.tBank, MockData.alfa],
-        paymentMethods: [PaymentMethod] = MockData.methods,
-        rules: [CashbackRule] = MockData.rules,
-        progress: [SpendProgress] = MockData.progress,
-        loggedPayments: [LoggedPayment] = []
+        banks: [Bank] = AppSnapshot.demo.banks,
+        paymentMethods: [PaymentMethod] = AppSnapshot.demo.paymentMethods,
+        rules: [CashbackRule] = AppSnapshot.demo.rules,
+        progress: [SpendProgress] = AppSnapshot.demo.progress,
+        loggedPayments: [LoggedPayment] = AppSnapshot.demo.loggedPayments
     ) {
+        self.repository = repository
         self.engine = engine
         self.progressService = progressService
-        self.banks = banks
-        self.paymentMethods = paymentMethods
-        self.rules = rules
-        self.progress = progress
-        self.loggedPayments = loggedPayments
+        let snapshot = repository?.loadSnapshot() ?? AppSnapshot(
+            banks: banks,
+            paymentMethods: paymentMethods,
+            rules: rules,
+            progress: progress,
+            loggedPayments: loggedPayments
+        )
+        self.banks = snapshot.banks
+        self.paymentMethods = snapshot.paymentMethods
+        self.rules = snapshot.rules
+        self.progress = snapshot.progress
+        self.loggedPayments = snapshot.loggedPayments
         self.isOnboardingPresented = true
+        repository?.seedIfNeeded(with: snapshot)
     }
 
     func makeRecommendation(for context: PurchaseContext) -> RecommendationResult {
@@ -58,6 +70,7 @@ final class AppModel {
         loggedPayments.insert(payment, at: 0)
 
         guard let ruleID = result.bestOption?.ruleId, usedRecommendedMethod else {
+            persistSnapshot()
             return
         }
 
@@ -68,12 +81,18 @@ final class AppModel {
             monthKey: Self.monthKey(for: Date()),
             existing: progress
         )
+        persistSnapshot()
     }
 
     func resetDemoData() {
-        progress = MockData.progress
-        loggedPayments = []
+        let demo = AppSnapshot.demo
+        banks = demo.banks
+        paymentMethods = demo.paymentMethods
+        rules = demo.rules
+        progress = demo.progress
+        loggedPayments = demo.loggedPayments
         isOnboardingPresented = true
+        persistSnapshot()
     }
 
     func paymentMethodName(for id: UUID?) -> String {
@@ -103,5 +122,16 @@ final class AppModel {
         formatter.dateFormat = "yyyy-MM"
         return formatter.string(from: date)
     }
-}
 
+    private func persistSnapshot() {
+        repository?.saveSnapshot(
+            AppSnapshot(
+                banks: banks,
+                paymentMethods: paymentMethods,
+                rules: rules,
+                progress: progress,
+                loggedPayments: loggedPayments
+            )
+        )
+    }
+}
