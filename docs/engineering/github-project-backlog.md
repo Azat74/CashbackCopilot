@@ -37,6 +37,9 @@
 - [x] rule editor
 - [x] QR scanner shell
 - [x] history shell
+- [x] accessibility identifiers to key screens
+- [x] first stable UI smoke test for manual recommendation flow
+- [x] separate UI smoke workflow in GitHub Actions
 
 ## Next Stories
 
@@ -49,10 +52,8 @@
 
 ## Testing and Automation
 
-- [ ] add accessibility identifiers to key screens
-- [ ] add first stable UI smoke test for manual recommendation flow
-- [ ] move UI smoke checks into a separate workflow
 - [ ] decide whether UI smoke runs on every PR or only on `main`
+- [ ] decide whether UI smoke becomes a required status check
 
 ## Later
 
