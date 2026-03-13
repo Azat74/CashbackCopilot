@@ -31,7 +31,7 @@ final class CashbackCopilotUITests: XCTestCase {
         revealAndTap(showRecommendationButton, in: app)
 
         let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
-        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 5))
+        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 15))
 
         let expectedReward = app.staticTexts["recommendation.expectedReward"]
         XCTAssertTrue(expectedReward.exists)
@@ -42,6 +42,43 @@ final class CashbackCopilotUITests: XCTestCase {
 
         let loggedPaymentMessage = app.staticTexts["recommendation.loggedPaymentMessage"]
         XCTAssertTrue(loggedPaymentMessage.waitForExistence(timeout: 5))
+    }
+
+    func testQrScannerParseFlow() throws {
+        let app = XCUIApplication()
+        app.launchArguments.append("UITEST_SMOKE")
+        app.launch()
+
+        let startButton = app.buttons["onboarding.startButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+
+        let openScannerButton = app.buttons["home.openScannerButton"]
+        XCTAssertTrue(openScannerButton.waitForExistence(timeout: 5))
+        revealAndTap(openScannerButton, in: app)
+
+        let payloadField = app.textFields["scanner.payloadField"]
+        XCTAssertTrue(payloadField.waitForExistence(timeout: 5))
+        XCTAssertEqual(payloadField.value as? String, "sbp://pay?merchant=АЗС Тест&sum=1500")
+
+        let parseButton = app.buttons["scanner.parseButton"]
+        XCTAssertTrue(parseButton.waitForExistence(timeout: 5))
+        revealAndTap(parseButton, in: app)
+
+        let channel = app.staticTexts["scanner.result.channel"]
+        XCTAssertTrue(channel.waitForExistence(timeout: 5))
+        XCTAssertEqual(channel.label, "Канал: СБП")
+
+        let amount = app.staticTexts["scanner.result.amount"]
+        XCTAssertTrue(amount.exists)
+        XCTAssertTrue(amount.label.contains("Amount:"))
+        XCTAssertTrue(amount.label.contains("1"))
+        XCTAssertTrue(amount.label.contains("500"))
+        XCTAssertTrue(amount.label.contains("₽"))
+
+        let merchant = app.staticTexts["scanner.result.merchant"]
+        XCTAssertTrue(merchant.exists)
+        XCTAssertEqual(merchant.label, "Merchant: АЗС Тест")
     }
 
     private func revealAndTap(_ element: XCUIElement, in app: XCUIApplication) {

@@ -18,7 +18,11 @@
 
 - на каждый PR обязательно проходят build, unit tests, business guardrails и regression checks
 - UI smoke tests вынесены в отдельный workflow и запускаются отдельно от основного `ios-ci`
-- smoke сейчас проверяет один сценарий: onboarding -> manual recommendation -> log payment
+- smoke сейчас проверяет два сценария:
+  - onboarding -> manual recommendation -> log payment
+  - onboarding -> QR scanner shell -> payload parse
+- smoke запускается как один UI suite с отключенным parallel testing, чтобы оба сценария шли в одном simulator session
+- iOS workflows больше не завязаны на конкретный предсозданный simulator на runner: destination резолвится динамически через `simctl`
 - `ui-smoke` добавлен в required status checks для `main` ruleset
 - это значит, что merge в `main` теперь блокируется, если smoke scenario не прошел на PR
 - workflow по-прежнему не заменяет основной unit/build CI, а дополняет его отдельной UI-проверкой
