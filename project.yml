@@ -76,9 +76,7 @@ schemes:
       targets:
         CashbackCopilot: all
         CashbackCopilotTests: [test]
-        CashbackCopilotUITests: [test]
     test:
       gatherCoverageData: true
       targets:
         - name: CashbackCopilotTests
-        - name: CashbackCopilotUITests

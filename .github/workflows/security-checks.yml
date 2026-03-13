@@ -6,12 +6,18 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   gitleaks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Run Gitleaks
         uses: gitleaks/gitleaks-action@v2

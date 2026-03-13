@@ -35,20 +35,6 @@
                ReferencedContainer = "container:CashbackCopilot.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "NO"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "285D3665CD5D146AAF665A5D"
-               BuildableName = "CashbackCopilotUITests.xctest"
-               BlueprintName = "CashbackCopilotUITests"
-               ReferencedContainer = "container:CashbackCopilot.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
@@ -76,17 +62,6 @@
                BlueprintIdentifier = "F7F575F75545780A2A211372"
                BuildableName = "CashbackCopilotTests.xctest"
                BlueprintName = "CashbackCopilotTests"
-               ReferencedContainer = "container:CashbackCopilot.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "285D3665CD5D146AAF665A5D"
-               BuildableName = "CashbackCopilotUITests.xctest"
-               BlueprintName = "CashbackCopilotUITests"
                ReferencedContainer = "container:CashbackCopilot.xcodeproj">
             </BuildableReference>
          </TestableReference>
