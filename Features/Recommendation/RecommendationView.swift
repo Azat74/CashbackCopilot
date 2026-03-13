@@ -8,9 +8,20 @@ struct RecommendationView: View {
 
     @State private var result: RecommendationResult?
     @State private var didLogPayment = false
+    @State private var selectedPaymentMethodID: UUID?
 
     var body: some View {
         List {
+            Section("Контекст покупки") {
+                LabeledContent("Сумма", value: CurrencyFormatter.rubles(context.amount))
+                LabeledContent("Категория", value: context.category.displayName)
+                LabeledContent("Канал", value: context.channel.displayName)
+
+                if let merchantName = context.merchantName {
+                    LabeledContent("Merchant", value: merchantName)
+                }
+            }
+
             if let result {
                 if let best = result.bestOption {
                     Section("Лучший вариант") {
@@ -54,12 +65,22 @@ struct RecommendationView: View {
                         }
                     }
 
+                    Section("Фактически оплачено") {
+                        Picker("Способ оплаты", selection: paymentMethodSelection) {
+                            ForEach(appModel.recommendationPaymentMethodIDs(for: result), id: \.self) { paymentMethodID in
+                                Text(appModel.paymentMethodName(for: paymentMethodID))
+                                    .tag(Optional(paymentMethodID))
+                            }
+                        }
+                    }
+
                     Section {
-                        Button("Отметить как оплачено") {
-                            appModel.recordPayment(for: context, result: result)
+                        Button(logPaymentButtonTitle(for: result)) {
+                            appModel.recordPayment(for: context, result: result, actualPaymentMethodID: selectedPaymentMethodID)
                             didLogPayment = true
                         }
                         .buttonStyle(.borderedProminent)
+                        .disabled(didLogPayment)
 
                         if didLogPayment {
                             Text("Оплата зафиксирована локально, лимиты обновлены.")
@@ -91,8 +112,24 @@ struct RecommendationView: View {
         }
         .task {
             guard result == nil else { return }
-            result = appModel.makeRecommendation(for: context)
+            let computedResult = appModel.makeRecommendation(for: context)
+            result = computedResult
+            selectedPaymentMethodID = computedResult.bestOption?.paymentMethodId
         }
     }
-}
 
+    private var paymentMethodSelection: Binding<UUID?> {
+        Binding(
+            get: { selectedPaymentMethodID },
+            set: { selectedPaymentMethodID = $0 }
+        )
+    }
+
+    private func logPaymentButtonTitle(for result: RecommendationResult) -> String {
+        if selectedPaymentMethodID == result.bestOption?.paymentMethodId {
+            return "Отметить как оплачено"
+        }
+
+        return "Отметить оплату другим способом"
+    }
+}

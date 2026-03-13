@@ -4,6 +4,10 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
     let id: UUID
     let purchaseContextId: UUID
 
+    var amount: Double
+    var merchantName: String?
+    var category: CashbackCategory
+    var channel: PaymentChannel
     var recommendedPaymentMethodId: UUID?
     var actualPaymentMethodId: UUID?
     var expectedReward: Double?
@@ -15,6 +19,10 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
     init(
         id: UUID = UUID(),
         purchaseContextId: UUID,
+        amount: Double,
+        merchantName: String? = nil,
+        category: CashbackCategory,
+        channel: PaymentChannel,
         recommendedPaymentMethodId: UUID? = nil,
         actualPaymentMethodId: UUID? = nil,
         expectedReward: Double? = nil,
@@ -25,6 +33,10 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
     ) {
         self.id = id
         self.purchaseContextId = purchaseContextId
+        self.amount = amount
+        self.merchantName = merchantName
+        self.category = category
+        self.channel = channel
         self.recommendedPaymentMethodId = recommendedPaymentMethodId
         self.actualPaymentMethodId = actualPaymentMethodId
         self.expectedReward = expectedReward
@@ -34,4 +46,3 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
         self.createdAt = createdAt
     }
 }
-

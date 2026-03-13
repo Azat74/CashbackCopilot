@@ -1,7 +1,9 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var amountText = "1500"
+    @Environment(AppModel.self) private var appModel
+
+    @State private var amountText = ""
     @State private var merchantName = ""
     @State private var selectedCategory: CashbackCategory = .fuel
     @State private var selectedChannel: PaymentChannel = .card
@@ -28,13 +30,22 @@ struct HomeView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+
+                if let validationMessage {
+                    Text(validationMessage)
+                        .font(.caption)
+                        .foregroundStyle(.red)
+                }
             }
 
             Section("Быстрые действия") {
                 Button("Показать лучшую оплату") {
-                    recommendationContext = makeManualContext()
+                    if let context = makeManualContext() {
+                        recommendationContext = context
+                    }
                 }
                 .buttonStyle(.borderedProminent)
+                .disabled(!canRequestRecommendation)
 
                 Button("Открыть сканер QR") {
                     isScannerPresented = true
@@ -53,10 +64,24 @@ struct HomeView: View {
                     }
                 }
             }
+
+            if appModel.rules.isEmpty || appModel.paymentMethods.isEmpty {
+                Section("Что нужно заполнить") {
+                    if appModel.paymentMethods.isEmpty {
+                        Text("Добавьте хотя бы один способ оплаты в кошелек.")
+                    }
+
+                    if appModel.rules.isEmpty {
+                        Text("Добавьте хотя бы одно правило кешбека, иначе рекомендация будет пустой.")
+                    }
+                }
+            }
         }
         .navigationTitle("Главная")
         .sheet(item: $recommendationContext) { context in
-            RecommendationView(context: context)
+            NavigationStack {
+                RecommendationView(context: context)
+            }
         }
         .sheet(isPresented: $isScannerPresented) {
             NavigationStack {
@@ -65,15 +90,52 @@ struct HomeView: View {
         }
     }
 
-    private func makeManualContext() -> PurchaseContext {
-        PurchaseContext(
+    private var normalizedAmount: Double? {
+        Double(amountText.replacingOccurrences(of: ",", with: "."))
+    }
+
+    private var validationMessage: String? {
+        guard !amountText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            return "Введите сумму покупки."
+        }
+
+        guard let normalizedAmount else {
+            return "Сумма должна быть числом."
+        }
+
+        guard normalizedAmount > 0 else {
+            return "Сумма должна быть больше нуля."
+        }
+
+        if appModel.paymentMethods.isEmpty {
+            return "Сначала добавьте способ оплаты в кошелек."
+        }
+
+        if appModel.rules.isEmpty {
+            return "Сначала добавьте правило кешбека."
+        }
+
+        return nil
+    }
+
+    private var canRequestRecommendation: Bool {
+        validationMessage == nil
+    }
+
+    private func makeManualContext() -> PurchaseContext? {
+        guard let normalizedAmount, normalizedAmount > 0 else {
+            return nil
+        }
+
+        let trimmedMerchantName = merchantName.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        return PurchaseContext(
             source: .manual,
-            amount: Double(amountText.replacingOccurrences(of: ",", with: ".")) ?? 0,
-            merchantName: merchantName.isEmpty ? nil : merchantName,
+            amount: normalizedAmount,
+            merchantName: trimmedMerchantName.isEmpty ? nil : trimmedMerchantName,
             category: selectedCategory,
             channel: selectedChannel,
             confidence: 1.0
         )
     }
 }
-

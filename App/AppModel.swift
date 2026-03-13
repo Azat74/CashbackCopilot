@@ -141,6 +141,10 @@ final class AppModel {
 
         let payment = LoggedPayment(
             purchaseContextId: context.id,
+            amount: context.amount,
+            merchantName: context.merchantName,
+            category: context.category,
+            channel: context.channel,
             recommendedPaymentMethodId: result.bestOption?.paymentMethodId,
             actualPaymentMethodId: chosenMethodID,
             expectedReward: result.bestOption?.expectedReward,
@@ -164,6 +168,19 @@ final class AppModel {
             existing: progress
         )
         persistSnapshot()
+    }
+
+    func recommendationPaymentMethodIDs(for result: RecommendationResult) -> [UUID] {
+        var seen: Set<UUID> = []
+        let orderedOptions = [result.bestOption].compactMap { $0 } + result.alternatives
+
+        return orderedOptions.compactMap { option in
+            guard seen.insert(option.paymentMethodId).inserted else {
+                return nil
+            }
+
+            return option.paymentMethodId
+        }
     }
 
     func resetDemoData() {
