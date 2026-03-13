@@ -2,6 +2,7 @@ import SwiftUI
 
 struct HistoryView: View {
     @Environment(AppModel.self) private var appModel
+    @State private var editingPayment: LoggedPayment?
 
     var body: some View {
         List {
@@ -26,6 +27,15 @@ struct HistoryView: View {
                         Text("Оплачено: \(appModel.paymentMethodName(for: payment.actualPaymentMethodId))")
                         Text("Ожидание: \(CurrencyFormatter.rubles(payment.expectedReward ?? 0))")
                             .foregroundStyle(.secondary)
+                        Text("Статус кешбэка: \(payment.confirmationStatus.displayName)")
+                            .font(.caption)
+                            .foregroundStyle(statusColor(for: payment.confirmationStatus))
+                            .accessibilityIdentifier("history.cashbackStatus")
+                        if let actualReward = payment.actualReward {
+                            Text("Факт: \(CurrencyFormatter.rubles(actualReward))")
+                                .foregroundStyle(.secondary)
+                                .accessibilityIdentifier("history.actualReward")
+                        }
                         if let recommendedPaymentMethodId = payment.recommendedPaymentMethodId {
                             Text("Рекомендовано: \(appModel.paymentMethodName(for: recommendedPaymentMethodId))")
                                 .font(.caption)
@@ -34,12 +44,30 @@ struct HistoryView: View {
                         Text(payment.wasRecommendationUsed ? "Рекомендация была использована" : "Оплачено другим способом")
                             .font(.caption)
                             .foregroundStyle(.secondary)
+                        Button(payment.actualReward == nil ? "Подтвердить фактический кешбэк" : "Изменить фактический кешбэк") {
+                            editingPayment = payment
+                        }
+                        .buttonStyle(.bordered)
+                        .accessibilityIdentifier("history.confirmCashbackButton")
                     }
                     .padding(.vertical, 4)
-                    .accessibilityIdentifier("history.paymentRow.\(payment.id.uuidString)")
                 }
             }
         }
         .navigationTitle("История")
+        .sheet(item: $editingPayment) { payment in
+            ConfirmActualCashbackSheet(payment: payment)
+        }
+    }
+
+    private func statusColor(for status: CashbackConfirmationStatus) -> Color {
+        switch status {
+        case .pending:
+            .orange
+        case .matched:
+            .green
+        case .mismatched:
+            .red
+        }
     }
 }

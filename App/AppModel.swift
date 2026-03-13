@@ -184,6 +184,25 @@ final class AppModel {
         }
     }
 
+    func confirmActualCashback(for paymentID: UUID, amount: Double) {
+        guard amount >= 0,
+              let index = loggedPayments.firstIndex(where: { $0.id == paymentID }) else {
+            return
+        }
+
+        var updatedPayment = loggedPayments[index]
+        let expected = updatedPayment.expectedReward
+        let matchedExpectation = expected.map { abs($0 - amount) < 0.01 }
+
+        updatedPayment.actualReward = amount
+        updatedPayment.cashbackMatchedExpectation = matchedExpectation
+
+        var updatedPayments = loggedPayments
+        updatedPayments[index] = updatedPayment
+        loggedPayments = updatedPayments
+        persistSnapshot()
+    }
+
     func resetDemoData() {
         let demo = AppSnapshot.demo
         banks = demo.banks

@@ -17,6 +17,7 @@
 		3A0581B48A09914029DDBB50 /* ProgressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619124DA2F0725D39C910B81 /* ProgressService.swift */; };
 		4C916D005A1CBB0876F87CAC /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF9491B200856DCBBA2A48A /* RootTabView.swift */; };
 		4E13C5822DB6839D1B9B40AA /* RecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB21D02BE79C55947C8E337 /* RecommendationView.swift */; };
+		55E34FFC8C6E6D91FF9390EE /* ConfirmActualCashbackSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBD91979DC7AD4523F1AA1E /* ConfirmActualCashbackSheet.swift */; };
 		565A49459B2236E52F3ACDFF /* RecommendationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEED2306687DBE4DF97FEB00 /* RecommendationOption.swift */; };
 		57921D22C3C0775D1A4897D6 /* RuleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */; };
 		581716B8727394694C061F31 /* PurchaseContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */; };
@@ -36,6 +37,7 @@
 		C27B208701475093973A09D4 /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */; };
 		C5B4A5FBC23BF7238F381F75 /* RecommendationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */; };
 		CA43A544A2A571DC0DDDC163 /* AppModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2261FDC2063EA45925716F89 /* AppModelTests.swift */; };
+		D081BCCA747FBC99ACA99EB6 /* QRParsingServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5870990B36AF70C02F5BE74A /* QRParsingServiceTests.swift */; };
 		D0E93DEABA5A0E1CF40464DE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CACC7D25FB59CD661C07B5 /* OnboardingView.swift */; };
 		D3CA443A5B0C04F184F51FD5 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9514DF5A266AA53E07827621 /* Bank.swift */; };
 		D7035E33E8D569922D66B88D /* RulesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E316D4A79AFEEBFBC7CAA50 /* RulesRepository.swift */; };
@@ -81,6 +83,7 @@
 		4C0D5E14B859CE5B1BED5EB5 /* HistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepository.swift; sourceTree = "<group>"; };
 		4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEditorView.swift; sourceTree = "<group>"; };
 		546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotUITests.swift; sourceTree = "<group>"; };
+		5870990B36AF70C02F5BE74A /* QRParsingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRParsingServiceTests.swift; sourceTree = "<group>"; };
 		5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseContext.swift; sourceTree = "<group>"; };
 		619124DA2F0725D39C910B81 /* ProgressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressService.swift; sourceTree = "<group>"; };
 		6B3D491D41965546DA783E3E /* ProgressRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRepository.swift; sourceTree = "<group>"; };
@@ -103,6 +106,7 @@
 		CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 		CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngineTests.swift; sourceTree = "<group>"; };
 		D42610CB1CC2A6EE4435B6EE /* CashbackCopilotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotApp.swift; sourceTree = "<group>"; };
+		DFBD91979DC7AD4523F1AA1E /* ConfirmActualCashbackSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmActualCashbackSheet.swift; sourceTree = "<group>"; };
 		E4B91EB8E56127690ECEE1A9 /* LoggedPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedPayment.swift; sourceTree = "<group>"; };
 		F64F327E7C93E159FB126613 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
 		FA47D795B5C8216301CD5179 /* LocalSnapshotRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSnapshotRepository.swift; sourceTree = "<group>"; };
@@ -135,6 +139,7 @@
 			children = (
 				2261FDC2063EA45925716F89 /* AppModelTests.swift */,
 				FDDC80C70EB6D1F1DC12F349 /* BusinessGuardrailsTests.swift */,
+				5870990B36AF70C02F5BE74A /* QRParsingServiceTests.swift */,
 				CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */,
 				BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */,
 			);
@@ -290,6 +295,7 @@
 		A38345B64E4B5A734FC92E3C /* History */ = {
 			isa = PBXGroup;
 			children = (
+				DFBD91979DC7AD4523F1AA1E /* ConfirmActualCashbackSheet.swift */,
 				F64F327E7C93E159FB126613 /* HistoryView.swift */,
 			);
 			path = History;
@@ -460,6 +466,7 @@
 				D3CA443A5B0C04F184F51FD5 /* Bank.swift in Sources */,
 				A6606F57B7BC5EF4CA5A1FC8 /* CashbackCopilotApp.swift in Sources */,
 				E9E4C08FC6FE5B5DDB168807 /* CashbackRule.swift in Sources */,
+				55E34FFC8C6E6D91FF9390EE /* ConfirmActualCashbackSheet.swift in Sources */,
 				106F7F6B5B6232E3B4B2DFB9 /* ConfirmPurchaseContextView.swift in Sources */,
 				7C493AFA85ACCCBECDEF9C28 /* CurrencyFormatter.swift in Sources */,
 				F2144119286A4984B29AE9CC /* DefaultRecommendationEngine.swift in Sources */,
@@ -498,6 +505,7 @@
 			files = (
 				CA43A544A2A571DC0DDDC163 /* AppModelTests.swift in Sources */,
 				2E77C548746097E2D7926B35 /* BusinessGuardrailsTests.swift in Sources */,
+				D081BCCA747FBC99ACA99EB6 /* QRParsingServiceTests.swift in Sources */,
 				C5B4A5FBC23BF7238F381F75 /* RecommendationEngineTests.swift in Sources */,
 				2E847B9CC9D70C1EB9D77B81 /* RecommendationRegressionTests.swift in Sources */,
 			);

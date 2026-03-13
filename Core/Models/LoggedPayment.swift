@@ -1,5 +1,22 @@
 import Foundation
 
+enum CashbackConfirmationStatus: Equatable {
+    case pending
+    case matched
+    case mismatched
+
+    var displayName: String {
+        switch self {
+        case .pending:
+            "Ожидает подтверждения"
+        case .matched:
+            "Совпало"
+        case .mismatched:
+            "Не совпало"
+        }
+    }
+}
+
 struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
     let id: UUID
     let purchaseContextId: UUID
@@ -47,5 +64,17 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
         self.wasRecommendationUsed = wasRecommendationUsed
         self.cashbackMatchedExpectation = cashbackMatchedExpectation
         self.createdAt = createdAt
+    }
+
+    var confirmationStatus: CashbackConfirmationStatus {
+        guard actualReward != nil else {
+            return .pending
+        }
+
+        if cashbackMatchedExpectation == true {
+            return .matched
+        }
+
+        return .mismatched
     }
 }

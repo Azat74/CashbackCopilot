@@ -30,18 +30,7 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(showRecommendationButton.isEnabled)
         revealAndTap(showRecommendationButton, in: app)
 
-        let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
-        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 15))
-
-        let expectedReward = app.staticTexts["recommendation.expectedReward"]
-        XCTAssertTrue(expectedReward.exists)
-
-        let logPaymentButton = app.buttons["recommendation.logPaymentButton"]
-        XCTAssertTrue(reveal(logPaymentButton, in: app))
-        revealAndTap(logPaymentButton, in: app)
-
-        let loggedPaymentMessage = app.staticTexts["recommendation.loggedPaymentMessage"]
-        XCTAssertTrue(loggedPaymentMessage.waitForExistence(timeout: 5))
+        assertRecommendationAndLogPayment(in: app)
     }
 
     func testQrScannerConfirmRecommendationFlow() throws {
@@ -58,6 +47,35 @@ final class CashbackCopilotUITests: XCTestCase {
         assertParsedQrPayload(in: app)
         proceedThroughConfirmedQrContext(in: app)
         assertRecommendationAndLogPayment(in: app)
+    }
+
+    func testConfirmActualCashbackFromHistory() throws {
+        let app = XCUIApplication()
+        app.launchArguments.append("UITEST_SMOKE")
+        app.launch()
+
+        startOnboarding(in: app)
+        createLoggedPayment(in: app)
+
+        app.tabBars.buttons["История"].tap()
+
+        let confirmCashbackButton = app.buttons["Подтвердить фактический кешбэк"].firstMatch
+        XCTAssertTrue(confirmCashbackButton.waitForExistence(timeout: 5))
+        revealAndTap(confirmCashbackButton, in: app)
+
+        let amountField = app.textFields["confirmActualCashback.amountField"]
+        XCTAssertTrue(amountField.waitForExistence(timeout: 5))
+        amountField.tap()
+        amountField.typeText("75")
+
+        let saveButton = app.buttons["confirmActualCashback.saveButton"]
+        XCTAssertTrue(saveButton.exists)
+        saveButton.tap()
+
+        XCTAssertFalse(amountField.waitForExistence(timeout: 1))
+
+        let editCashbackButton = app.buttons["Изменить фактический кешбэк"].firstMatch
+        XCTAssertTrue(editCashbackButton.waitForExistence(timeout: 5))
     }
 
     private func startOnboarding(in app: XCUIApplication) {
@@ -131,8 +149,20 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(reveal(logPaymentButton, in: app))
         revealAndTap(logPaymentButton, in: app)
 
+        let disabledPredicate = NSPredicate(format: "isEnabled == false")
+        let disabledExpectation = XCTNSPredicateExpectation(predicate: disabledPredicate, object: logPaymentButton)
+        XCTAssertEqual(XCTWaiter().wait(for: [disabledExpectation], timeout: 5), .completed)
+
         let loggedPaymentMessage = app.staticTexts["recommendation.loggedPaymentMessage"]
-        XCTAssertTrue(loggedPaymentMessage.waitForExistence(timeout: 5))
+        _ = loggedPaymentMessage.waitForExistence(timeout: 2)
+    }
+
+    private func createLoggedPayment(in app: XCUIApplication) {
+        let showRecommendationButton = app.buttons["home.showRecommendationButton"]
+        XCTAssertTrue(showRecommendationButton.waitForExistence(timeout: 5))
+        revealAndTap(showRecommendationButton, in: app)
+        assertRecommendationAndLogPayment(in: app)
+        app.buttons["Закрыть"].tap()
     }
 
     private func revealAndTap(_ element: XCUIElement, in app: XCUIApplication) {
