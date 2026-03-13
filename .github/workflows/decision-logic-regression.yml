@@ -11,7 +11,6 @@ jobs:
     runs-on: macos-latest
     env:
       DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
-      IOS_DESTINATION: platform=iOS Simulator,OS=latest,name=iPhone 16 Pro
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +20,55 @@ jobs:
 
       - name: Generate project
         run: xcodegen generate
+
+      - name: Resolve simulator destination
+        run: |
+          set -euo pipefail
+
+          IOS_DESTINATION="$(xcrun simctl list -j devices available | jq -r '
+            .devices | to_entries[]
+            | select(.key | startswith("com.apple.CoreSimulator.SimRuntime.iOS-"))
+            | .value[]
+            | select(.isAvailable == true)
+            | select(
+                .name == "iPhone 16 Pro" or
+                .name == "iPhone 17 Pro" or
+                .name == "iPhone 17" or
+                .name == "iPhone 16"
+              )
+            | "id=\(.udid)"' | head -n1)"
+
+          if [ -z "$IOS_DESTINATION" ]; then
+            runtime_id="$(xcrun simctl list -j runtimes | jq -r '
+              .runtimes[]
+              | select(.isAvailable == true)
+              | select(.identifier | startswith("com.apple.CoreSimulator.SimRuntime.iOS-"))
+              | .identifier' | tail -n1)"
+            device_type_id="$(xcrun simctl list -j devicetypes | jq -r '
+              .devicetypes[]
+              | select(
+                  .name == "iPhone 16 Pro" or
+                  .name == "iPhone 17 Pro" or
+                  .name == "iPhone 17" or
+                  .name == "iPhone 16"
+                )
+              | .identifier' | head -n1)"
+
+            if [ -z "$runtime_id" ] || [ -z "$device_type_id" ]; then
+              xcrun simctl list
+              exit 1
+            fi
+
+            simulator_udid="$(xcrun simctl create 'CashbackCopilot-CI' "$device_type_id" "$runtime_id")"
+            IOS_DESTINATION="id=$simulator_udid"
+          fi
+
+          simulator_udid="${IOS_DESTINATION#id=}"
+          xcrun simctl boot "$simulator_udid" || true
+          xcrun simctl bootstatus "$simulator_udid" -b
+
+          echo "IOS_DESTINATION=$IOS_DESTINATION" >> "$GITHUB_ENV"
+          echo "Using simulator destination: $IOS_DESTINATION"
 
       - name: Run recommendation regression tests
         run: |
