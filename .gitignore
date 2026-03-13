@@ -7,5 +7,5 @@ build/
 *.xcuserstate
 .DS_Store
 **/xcuserdata/
+.codex/
 *.log
-
