@@ -40,6 +40,7 @@
 - [x] accessibility identifiers to key screens
 - [x] first stable UI smoke test for manual recommendation flow
 - [x] separate UI smoke workflow in GitHub Actions
+- [x] ui-smoke added as required status check for `main`
 
 ## Next Stories
 
@@ -53,7 +54,7 @@
 ## Testing and Automation
 
 - [ ] decide whether UI smoke runs on every PR or only on `main`
-- [ ] decide whether UI smoke becomes a required status check
+- [ ] expand UI smoke beyond one happy path
 
 ## Later
 
