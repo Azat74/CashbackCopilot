@@ -19,8 +19,9 @@
 - на каждый PR обязательно проходят build, unit tests, business guardrails и regression checks
 - UI smoke tests вынесены в отдельный workflow и запускаются отдельно от основного `ios-ci`
 - smoke сейчас проверяет один сценарий: onboarding -> manual recommendation -> log payment
-- workflow нужен для раннего detection UI regressions, но пока не считается обязательной заменой основного unit/build CI
-- если симуляторный прогон останется стабильным, позже можно решить, делать ли его required status check
+- `ui-smoke` добавлен в required status checks для `main` ruleset
+- это значит, что merge в `main` теперь блокируется, если smoke scenario не прошел на PR
+- workflow по-прежнему не заменяет основной unit/build CI, а дополняет его отдельной UI-проверкой
 
 ## Out of scope
 
