@@ -1,0 +1,78 @@
+name: CashbackCopilot
+options:
+  minimumXcodeGenVersion: 2.45.3
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+  groupSortPosition: top
+settings:
+  base:
+    PRODUCT_BUNDLE_IDENTIFIER: com.azat.cashbackcopilot
+    PRODUCT_NAME: CashbackCopilot
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 1
+    SWIFT_VERSION: 6.0
+    DEVELOPMENT_TEAM: ""
+    TARGETED_DEVICE_FAMILY: "1"
+attributes:
+  ORGANIZATIONNAME: Azat
+targets:
+  CashbackCopilot:
+    type: application
+    platform: iOS
+    sources:
+      - App
+      - Core
+      - Features
+      - Shared
+    resources:
+      - Resources
+    info:
+      path: Info.plist
+      properties:
+        CFBundleDisplayName: Cashback Copilot
+        UILaunchScreen:
+          UIColorName: ""
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        NSCameraUsageDescription: Нужен доступ к камере, чтобы сканировать QR-код оплаты.
+    settings:
+      base:
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
+        INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone:
+          - UIInterfaceOrientationPortrait
+        GENERATE_INFOPLIST_FILE: NO
+        SWIFT_EMIT_LOC_STRINGS: YES
+  CashbackCopilotTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - CashbackCopilotTests
+    dependencies:
+      - target: CashbackCopilot
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+  CashbackCopilotUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - CashbackCopilotUITests
+    dependencies:
+      - target: CashbackCopilot
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+schemes:
+  CashbackCopilot:
+    build:
+      targets:
+        CashbackCopilot: all
+        CashbackCopilotTests: [test]
+        CashbackCopilotUITests: [test]
+    test:
+      gatherCoverageData: true
+      targets:
+        - name: CashbackCopilotTests
+        - name: CashbackCopilotUITests
+
