@@ -53,6 +53,88 @@ final class AppModel {
         )
     }
 
+    func paymentMethods(for bankID: UUID) -> [PaymentMethod] {
+        paymentMethods
+            .filter { $0.bankId == bankID }
+            .sorted { $0.displayName.localizedCaseInsensitiveCompare($1.displayName) == .orderedAscending }
+    }
+
+    func rules(for paymentMethodID: UUID) -> [CashbackRule] {
+        rules
+            .filter { $0.paymentMethodId == paymentMethodID }
+            .sorted { $0.title.localizedCaseInsensitiveCompare($1.title) == .orderedAscending }
+    }
+
+    func addBank(name: String, iconName: String? = nil) {
+        let trimmedName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmedName.isEmpty else {
+            return
+        }
+
+        banks.append(Bank(name: trimmedName, iconName: iconName))
+        banks.sort { $0.name.localizedCaseInsensitiveCompare($1.name) == .orderedAscending }
+        persistSnapshot()
+    }
+
+    func deleteBank(id: UUID) {
+        let removedMethodIDs = Set(paymentMethods(for: id).map(\.id))
+        let removedRuleIDs = Set(rules.filter { removedMethodIDs.contains($0.paymentMethodId) }.map(\.id))
+
+        banks.removeAll { $0.id == id }
+        paymentMethods.removeAll { $0.bankId == id }
+        rules.removeAll { removedMethodIDs.contains($0.paymentMethodId) }
+        progress.removeAll { removedRuleIDs.contains($0.ruleId) }
+        persistSnapshot()
+    }
+
+    func addPaymentMethod(
+        bankID: UUID,
+        displayName: String,
+        type: PaymentMethodType,
+        last4: String? = nil
+    ) {
+        let trimmedName = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        let trimmedLast4 = last4?.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmedName.isEmpty, banks.contains(where: { $0.id == bankID }) else {
+            return
+        }
+
+        paymentMethods.append(
+            PaymentMethod(
+                bankId: bankID,
+                displayName: trimmedName,
+                type: type,
+                last4: trimmedLast4?.isEmpty == true ? nil : trimmedLast4
+            )
+        )
+        persistSnapshot()
+    }
+
+    func deletePaymentMethod(id: UUID) {
+        let removedRuleIDs = Set(rules.filter { $0.paymentMethodId == id }.map(\.id))
+
+        paymentMethods.removeAll { $0.id == id }
+        rules.removeAll { $0.paymentMethodId == id }
+        progress.removeAll { removedRuleIDs.contains($0.ruleId) }
+        persistSnapshot()
+    }
+
+    func addRule(_ rule: CashbackRule) {
+        guard paymentMethods.contains(where: { $0.id == rule.paymentMethodId }) else {
+            return
+        }
+
+        rules.append(rule)
+        persistSnapshot()
+    }
+
+    func deleteRule(id: UUID) {
+        rules.removeAll { $0.id == id }
+        progress.removeAll { $0.ruleId == id }
+        persistSnapshot()
+    }
+
     func recordPayment(for context: PurchaseContext, result: RecommendationResult, actualPaymentMethodID: UUID? = nil) {
         let usedRecommendedMethod = actualPaymentMethodID == nil || actualPaymentMethodID == result.bestOption?.paymentMethodId
         let chosenMethodID = actualPaymentMethodID ?? result.bestOption?.paymentMethodId
@@ -114,6 +196,14 @@ final class AppModel {
         }
 
         return bank.name
+    }
+
+    func bank(for paymentMethodID: UUID) -> Bank? {
+        guard let method = paymentMethods.first(where: { $0.id == paymentMethodID }) else {
+            return nil
+        }
+
+        return banks.first { $0.id == method.bankId }
     }
 
     private static func monthKey(for date: Date) -> String {

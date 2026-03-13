@@ -5,6 +5,19 @@ enum PaymentMethodType: String, Codable, CaseIterable, Hashable {
     case creditCard
     case sbp
     case qrOnly
+
+    var displayName: String {
+        switch self {
+        case .debitCard:
+            "Дебетовая карта"
+        case .creditCard:
+            "Кредитная карта"
+        case .sbp:
+            "СБП"
+        case .qrOnly:
+            "Только QR"
+        }
+    }
 }
 
 struct PaymentMethod: Identifiable, Codable, Equatable, Hashable {
@@ -31,4 +44,3 @@ struct PaymentMethod: Identifiable, Codable, Equatable, Hashable {
         self.isActive = isActive
     }
 }
-
