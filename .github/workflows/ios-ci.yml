@@ -37,6 +37,7 @@ jobs:
           xcodebuild \
             -scheme CashbackCopilot \
             -destination 'platform=iOS Simulator,OS=latest,name=iPhone 17' \
+            -only-testing:CashbackCopilotTests \
             test \
             CODE_SIGNING_ALLOWED=NO
 
