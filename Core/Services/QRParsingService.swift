@@ -3,6 +3,7 @@ import Foundation
 struct ParsedQRPayload: Equatable {
     var amount: Double?
     var merchantName: String?
+    var probableCategory: CashbackCategory
     var channel: PaymentChannel
     var confidence: Double
 }
@@ -13,11 +14,13 @@ struct QRParsingService {
         let amount = parseAmount(from: lowered)
         let merchantName = parseMerchant(from: payload)
         let channel: PaymentChannel = lowered.contains("sbp") ? .sbp : .qr
-        let confidence = merchantName == nil ? 0.45 : 0.6
+        let probableCategory = inferCategory(from: merchantName, payload: lowered)
+        let confidence = baseConfidence(for: merchantName, probableCategory: probableCategory)
 
         return ParsedQRPayload(
             amount: amount,
             merchantName: merchantName,
+            probableCategory: probableCategory,
             channel: channel,
             confidence: confidence
         )
@@ -61,5 +64,44 @@ struct QRParsingService {
 
         return nil
     }
-}
 
+    private func inferCategory(from merchantName: String?, payload: String) -> CashbackCategory {
+        let haystack = "\(merchantName?.lowercased() ?? "") \(payload)"
+
+        if haystack.contains("азс") || haystack.contains("fuel") || haystack.contains("gas") {
+            return .fuel
+        }
+
+        if haystack.contains("апт") || haystack.contains("pharm") {
+            return .pharmacy
+        }
+
+        if haystack.contains("taxi") || haystack.contains("такси") {
+            return .taxi
+        }
+
+        if haystack.contains("каф") || haystack.contains("coffee") {
+            return .cafes
+        }
+
+        if haystack.contains("рест") || haystack.contains("restaurant") {
+            return .restaurants
+        }
+
+        if haystack.contains("market") || haystack.contains("суперм") || haystack.contains("продукт") {
+            return .groceries
+        }
+
+        return .other
+    }
+
+    private func baseConfidence(for merchantName: String?, probableCategory: CashbackCategory) -> Double {
+        var confidence = merchantName == nil ? 0.45 : 0.6
+
+        if probableCategory != .other {
+            confidence += 0.15
+        }
+
+        return min(confidence, 0.85)
+    }
+}
