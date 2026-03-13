@@ -107,8 +107,15 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(confirmMerchantField.exists)
         XCTAssertEqual(confirmMerchantField.value as? String, "АЗС Тест")
 
+        let confidenceBand = app.staticTexts["confirm.detectedConfidenceBand"]
+        XCTAssertTrue(confidenceBand.exists)
+        XCTAssertTrue(confidenceBand.label.contains("Высокая"))
+
+        let firstHeuristic = app.staticTexts["confirm.heuristic.0"]
+        XCTAssertTrue(firstHeuristic.exists)
+
         let confirmButton = app.buttons["confirm.showRecommendationButton"]
-        XCTAssertTrue(confirmButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(reveal(confirmButton, in: app))
         XCTAssertTrue(confirmButton.isEnabled)
         revealAndTap(confirmButton, in: app)
     }

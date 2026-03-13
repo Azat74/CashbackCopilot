@@ -44,12 +44,13 @@
 - [x] second UI smoke scenario for QR scanner shell
 - [x] confirm purchase context screen after QR flow
 - [x] scanner -> confirm -> recommendation flow
+- [x] richer confirm context warnings and heuristics
 
 ## Next Stories
 
 - [x] QR-driven payment logging from recommendation result
-- [ ] richer confirm context warnings and heuristics
 - [ ] settings cleanup and local data reset UX
+- [ ] confirm actual cashback flow
 
 ## Testing and Automation
 
