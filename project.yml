@@ -80,3 +80,12 @@ schemes:
       gatherCoverageData: true
       targets:
         - name: CashbackCopilotTests
+  CashbackCopilotUI:
+    build:
+      targets:
+        CashbackCopilot: all
+        CashbackCopilotUITests: [test]
+    test:
+      gatherCoverageData: false
+      targets:
+        - name: CashbackCopilotUITests

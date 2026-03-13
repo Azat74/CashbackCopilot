@@ -28,9 +28,9 @@ struct OnboardingView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .frame(maxWidth: .infinity, alignment: .center)
+                .accessibilityIdentifier("onboarding.startButton")
             }
             .padding(24)
         }
     }
 }
-

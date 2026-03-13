@@ -28,8 +28,10 @@ struct RecommendationView: View {
                         VStack(alignment: .leading, spacing: 8) {
                             Text(appModel.paymentMethodName(for: best.paymentMethodId))
                                 .font(.headline)
+                                .accessibilityIdentifier("recommendation.bestMethodName")
                             Text("Ожидаемый кешбек: \(CurrencyFormatter.rubles(best.expectedReward))")
                                 .font(.title3.bold())
+                                .accessibilityIdentifier("recommendation.expectedReward")
                             Text("Эффективная ставка: \(best.expectedPercent.formatted(.number.precision(.fractionLength(0...2))))%")
                             Text("Confidence: \(best.confidence.formatted(.percent.precision(.fractionLength(0))))")
                                 .foregroundStyle(.secondary)
@@ -72,6 +74,7 @@ struct RecommendationView: View {
                                     .tag(Optional(paymentMethodID))
                             }
                         }
+                        .accessibilityIdentifier("recommendation.actualPaymentMethodPicker")
                     }
 
                     Section {
@@ -81,10 +84,12 @@ struct RecommendationView: View {
                         }
                         .buttonStyle(.borderedProminent)
                         .disabled(didLogPayment)
+                        .accessibilityIdentifier("recommendation.logPaymentButton")
 
                         if didLogPayment {
                             Text("Оплата зафиксирована локально, лимиты обновлены.")
                                 .foregroundStyle(.secondary)
+                                .accessibilityIdentifier("recommendation.loggedPaymentMessage")
                         }
                     }
                 } else {
@@ -99,6 +104,7 @@ struct RecommendationView: View {
             } else {
                 Section {
                     ProgressView("Считаем рекомендацию…")
+                        .accessibilityIdentifier("recommendation.loadingIndicator")
                 }
             }
         }

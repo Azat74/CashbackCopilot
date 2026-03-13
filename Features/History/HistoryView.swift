@@ -11,6 +11,7 @@ struct HistoryView: View {
                     message: "После первой подтвержденной оплаты здесь появятся записи.",
                     systemImage: "clock.badge.questionmark"
                 )
+                .accessibilityIdentifier("history.emptyState")
             } else {
                 ForEach(appModel.loggedPayments) { payment in
                     VStack(alignment: .leading, spacing: 6) {
@@ -31,6 +32,7 @@ struct HistoryView: View {
                             .foregroundStyle(.secondary)
                     }
                     .padding(.vertical, 4)
+                    .accessibilityIdentifier("history.paymentRow.\(payment.id.uuidString)")
                 }
             }
         }

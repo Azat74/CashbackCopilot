@@ -1,10 +1,16 @@
 import SwiftUI
 
 struct HomeView: View {
+    private enum UITestDefaults {
+        static let isEnabled = ProcessInfo.processInfo.arguments.contains("UITEST_SMOKE")
+        static let amount = "1500"
+        static let merchant = "АЗС"
+    }
+
     @Environment(AppModel.self) private var appModel
 
-    @State private var amountText = ""
-    @State private var merchantName = ""
+    @State private var amountText = UITestDefaults.isEnabled ? UITestDefaults.amount : ""
+    @State private var merchantName = UITestDefaults.isEnabled ? UITestDefaults.merchant : ""
     @State private var selectedCategory: CashbackCategory = .fuel
     @State private var selectedChannel: PaymentChannel = .card
     @State private var recommendationContext: PurchaseContext?
@@ -15,14 +21,17 @@ struct HomeView: View {
             Section("Перед оплатой") {
                 TextField("Сумма", text: $amountText)
                     .keyboardType(.decimalPad)
+                    .accessibilityIdentifier("home.amountField")
 
                 TextField("Merchant / подсказка", text: $merchantName)
+                    .accessibilityIdentifier("home.merchantField")
 
                 Picker("Категория", selection: $selectedCategory) {
                     ForEach(CashbackCategory.allCases, id: \.self) { category in
                         Text(category.displayName).tag(category)
                     }
                 }
+                .accessibilityIdentifier("home.categoryPicker")
 
                 Picker("Канал оплаты", selection: $selectedChannel) {
                     ForEach(PaymentChannel.allCases, id: \.self) { channel in
@@ -30,11 +39,13 @@ struct HomeView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .accessibilityIdentifier("home.channelPicker")
 
                 if let validationMessage {
                     Text(validationMessage)
                         .font(.caption)
                         .foregroundStyle(.red)
+                        .accessibilityIdentifier("home.validationMessage")
                 }
             }
 
@@ -46,10 +57,12 @@ struct HomeView: View {
                 }
                 .buttonStyle(.borderedProminent)
                 .disabled(!canRequestRecommendation)
+                .accessibilityIdentifier("home.showRecommendationButton")
 
                 Button("Открыть сканер QR") {
                     isScannerPresented = true
                 }
+                .accessibilityIdentifier("home.openScannerButton")
             }
 
             Section("Быстрые категории") {
@@ -69,10 +82,12 @@ struct HomeView: View {
                 Section("Что нужно заполнить") {
                     if appModel.paymentMethods.isEmpty {
                         Text("Добавьте хотя бы один способ оплаты в кошелек.")
+                            .accessibilityIdentifier("home.missingPaymentMethodsMessage")
                     }
 
                     if appModel.rules.isEmpty {
                         Text("Добавьте хотя бы одно правило кешбека, иначе рекомендация будет пустой.")
+                            .accessibilityIdentifier("home.missingRulesMessage")
                     }
                 }
             }
