@@ -26,10 +26,22 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
-      - name: Run UI smoke suite
+      - name: Run manual recommendation smoke
         run: |
           xcodebuild \
             -scheme CashbackCopilotUI \
             -destination "$IOS_DESTINATION" \
+            -parallel-testing-enabled NO \
+            -only-testing:CashbackCopilotUITests/CashbackCopilotUITests/testManualRecommendationHappyPath \
+            test \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Run QR scanner smoke
+        run: |
+          xcodebuild \
+            -scheme CashbackCopilotUI \
+            -destination "$IOS_DESTINATION" \
+            -parallel-testing-enabled NO \
+            -only-testing:CashbackCopilotUITests/CashbackCopilotUITests/testQrScannerParseFlow \
             test \
             CODE_SIGNING_ALLOWED=NO

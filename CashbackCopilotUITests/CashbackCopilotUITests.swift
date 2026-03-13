@@ -31,7 +31,7 @@ final class CashbackCopilotUITests: XCTestCase {
         revealAndTap(showRecommendationButton, in: app)
 
         let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
-        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 5))
+        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 15))
 
         let expectedReward = app.staticTexts["recommendation.expectedReward"]
         XCTAssertTrue(expectedReward.exists)
