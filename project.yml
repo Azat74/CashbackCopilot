@@ -8,7 +8,6 @@ options:
 settings:
   base:
     PRODUCT_BUNDLE_IDENTIFIER: com.azat.cashbackcopilot
-    PRODUCT_NAME: CashbackCopilot
     MARKETING_VERSION: 0.1.0
     CURRENT_PROJECT_VERSION: 1
     SWIFT_VERSION: 6.0
@@ -38,6 +37,8 @@ targets:
         NSCameraUsageDescription: Нужен доступ к камере, чтобы сканировать QR-код оплаты.
     settings:
       base:
+        PRODUCT_NAME: CashbackCopilot
+        PRODUCT_MODULE_NAME: CashbackCopilot
         INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone:
           - UIInterfaceOrientationPortrait
@@ -52,6 +53,9 @@ targets:
       - target: CashbackCopilot
     settings:
       base:
+        PRODUCT_NAME: CashbackCopilotTests
+        PRODUCT_MODULE_NAME: CashbackCopilotTests
+        PRODUCT_BUNDLE_IDENTIFIER: com.azat.cashbackcopilot.tests
         GENERATE_INFOPLIST_FILE: YES
   CashbackCopilotUITests:
     type: bundle.ui-testing
@@ -62,6 +66,9 @@ targets:
       - target: CashbackCopilot
     settings:
       base:
+        PRODUCT_NAME: CashbackCopilotUITests
+        PRODUCT_MODULE_NAME: CashbackCopilotUITests
+        PRODUCT_BUNDLE_IDENTIFIER: com.azat.cashbackcopilot.uitests
         GENERATE_INFOPLIST_FILE: YES
 schemes:
   CashbackCopilot:
@@ -75,4 +82,3 @@ schemes:
       targets:
         - name: CashbackCopilotTests
         - name: CashbackCopilotUITests
-

@@ -1,6 +1,6 @@
 DEVELOPER_DIR ?= /Applications/Xcode.app/Contents/Developer
 SCHEME ?= CashbackCopilot
-DESTINATION ?= platform=iOS Simulator,name=iPhone 16
+DESTINATION ?= platform=iOS Simulator,OS=latest,name=iPhone 17
 
 .PHONY: generate build test lint
 
@@ -22,5 +22,4 @@ test:
 		CODE_SIGNING_ALLOWED=NO
 
 lint:
-	swiftlint
-
+	DEVELOPER_DIR=$(DEVELOPER_DIR) swiftlint

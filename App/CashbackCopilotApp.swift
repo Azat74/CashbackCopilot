@@ -9,7 +9,14 @@ struct CashbackCopilotApp: App {
     init() {
         let schema = Schema([AppSnapshotRecord.self])
         let configuration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-        let container = try! ModelContainer(for: schema, configurations: [configuration])
+        let container: ModelContainer
+
+        do {
+            container = try ModelContainer(for: schema, configurations: [configuration])
+        } catch {
+            fatalError("Failed to initialize ModelContainer: \(error)")
+        }
+
         let repository = LocalSnapshotRepository(context: container.mainContext)
         repository.seedIfNeeded(with: .demo)
         self.sharedModelContainer = container

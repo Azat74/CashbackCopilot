@@ -1,0 +1,819 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0039522E684A8C540337BDD6 /* LocalSnapshotRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA47D795B5C8216301CD5179 /* LocalSnapshotRepository.swift */; };
+		106F7F6B5B6232E3B4B2DFB9 /* ConfirmPurchaseContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2633D128245E90BEE1D14D4D /* ConfirmPurchaseContextView.swift */; };
+		23A5D2BC58756E36149C3C21 /* AppModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1219C453568CE618C0EAE03B /* AppModel.swift */; };
+		26B9DE57F4BE5992DC366A53 /* WalletRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 474CF42CCBF7EF6B3C851814 /* WalletRepository.swift */; };
+		2E77C548746097E2D7926B35 /* BusinessGuardrailsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDDC80C70EB6D1F1DC12F349 /* BusinessGuardrailsTests.swift */; };
+		2E847B9CC9D70C1EB9D77B81 /* RecommendationRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */; };
+		2F339ABCDA6B35649CA030DA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F21B495DB4837A2F39470 /* SettingsView.swift */; };
+		3A0581B48A09914029DDBB50 /* ProgressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619124DA2F0725D39C910B81 /* ProgressService.swift */; };
+		4C916D005A1CBB0876F87CAC /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF9491B200856DCBBA2A48A /* RootTabView.swift */; };
+		4E13C5822DB6839D1B9B40AA /* RecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB21D02BE79C55947C8E337 /* RecommendationView.swift */; };
+		565A49459B2236E52F3ACDFF /* RecommendationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEED2306687DBE4DF97FEB00 /* RecommendationOption.swift */; };
+		57921D22C3C0775D1A4897D6 /* RuleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */; };
+		581716B8727394694C061F31 /* PurchaseContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */; };
+		585185CCA54DABC27CAF34C4 /* CashbackCopilotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */; };
+		58A56C4A3DB2FECC152D659D /* ProgressRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3D491D41965546DA783E3E /* ProgressRepository.swift */; };
+		5DF98F2BA3242A3548F23390 /* SpendProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844A63C3ACD853BEB1A6A016 /* SpendProgress.swift */; };
+		6ECDAE8E5FBD20024B24E66D /* RecommendationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2584806990AFACE5808C8A3C /* RecommendationResult.swift */; };
+		7BE079BA7BF36743C28F7B09 /* QRParsingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E981466FDF9DF765369835 /* QRParsingService.swift */; };
+		7C493AFA85ACCCBECDEF9C28 /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD12F0D3D789A6C52C19B644 /* CurrencyFormatter.swift */; };
+		801A576E5ADE6D2034E7B8D3 /* PreviewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B95850B2BA8BBE2A3D7608 /* PreviewContainer.swift */; };
+		808A07CE5B8916410B95FFC9 /* HistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0D5E14B859CE5B1BED5EB5 /* HistoryRepository.swift */; };
+		83CC7F9F50DE44B30E79A8E5 /* LoggedPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B91EB8E56127690ECEE1A9 /* LoggedPayment.swift */; };
+		9DCB06692A5C31EAC52CB79B /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64F327E7C93E159FB126613 /* HistoryView.swift */; };
+		A199996D6C8ABC8DE94BABA3 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8CF1020AD9FE6B09FE59F /* MockData.swift */; };
+		A6606F57B7BC5EF4CA5A1FC8 /* CashbackCopilotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42610CB1CC2A6EE4435B6EE /* CashbackCopilotApp.swift */; };
+		C07C207FEB59BADC098690F9 /* WalletView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 707893AD917397BBD66B2B4B /* WalletView.swift */; };
+		C27B208701475093973A09D4 /* PaymentMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */; };
+		C5B4A5FBC23BF7238F381F75 /* RecommendationEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */; };
+		D0E93DEABA5A0E1CF40464DE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 26CACC7D25FB59CD661C07B5 /* OnboardingView.swift */; };
+		D3CA443A5B0C04F184F51FD5 /* Bank.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9514DF5A266AA53E07827621 /* Bank.swift */; };
+		D7035E33E8D569922D66B88D /* RulesRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E316D4A79AFEEBFBC7CAA50 /* RulesRepository.swift */; };
+		D713B5236C392A044060CF8A /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AA21BA4DA7E4729C7412E66 /* EmptyStateView.swift */; };
+		DD39436BD4F0A949B1E0A540 /* AppSnapshotRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED78A2879701D47DE556182 /* AppSnapshotRecord.swift */; };
+		DE8B75A45527EF997BAF4B26 /* RecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ED3A7B93D8E3C33CFB3C13 /* RecommendationEngine.swift */; };
+		E0557EC5D841515E639AABA6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A281F86C0A65081544D097B1 /* HomeView.swift */; };
+		E9E4C08FC6FE5B5DDB168807 /* CashbackRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9563F1696C7656AC16BA456 /* CashbackRule.swift */; };
+		F2144119286A4984B29AE9CC /* DefaultRecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ADD1E172C54159D4506D1E /* DefaultRecommendationEngine.swift */; };
+		F38FEA894A571B80E2148500 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E676550568E4FDBDFA4BB5C /* ScannerView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		449BFA37094E41B695DCC1C1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A4606B06BFBFEE033B12881 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06228F81A7217E07FE6E4633;
+			remoteInfo = CashbackCopilot;
+		};
+		E7AA119AC2E8248B18B8C6FB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A4606B06BFBFEE033B12881 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 06228F81A7217E07FE6E4633;
+			remoteInfo = CashbackCopilot;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02E981466FDF9DF765369835 /* QRParsingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRParsingService.swift; sourceTree = "<group>"; };
+		1219C453568CE618C0EAE03B /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		1AA21BA4DA7E4729C7412E66 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		1CF9491B200856DCBBA2A48A /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
+		1E316D4A79AFEEBFBC7CAA50 /* RulesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesRepository.swift; sourceTree = "<group>"; };
+		2584806990AFACE5808C8A3C /* RecommendationResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationResult.swift; sourceTree = "<group>"; };
+		2633D128245E90BEE1D14D4D /* ConfirmPurchaseContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmPurchaseContextView.swift; sourceTree = "<group>"; };
+		26CACC7D25FB59CD661C07B5 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		3A3855C2D2CD5E3DD15F3280 /* CashbackCopilotTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CashbackCopilotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		45ADD1E172C54159D4506D1E /* DefaultRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRecommendationEngine.swift; sourceTree = "<group>"; };
+		474CF42CCBF7EF6B3C851814 /* WalletRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRepository.swift; sourceTree = "<group>"; };
+		4C0D5E14B859CE5B1BED5EB5 /* HistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepository.swift; sourceTree = "<group>"; };
+		4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEditorView.swift; sourceTree = "<group>"; };
+		546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotUITests.swift; sourceTree = "<group>"; };
+		5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseContext.swift; sourceTree = "<group>"; };
+		619124DA2F0725D39C910B81 /* ProgressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressService.swift; sourceTree = "<group>"; };
+		6B3D491D41965546DA783E3E /* ProgressRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRepository.swift; sourceTree = "<group>"; };
+		6E676550568E4FDBDFA4BB5C /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		707893AD917397BBD66B2B4B /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
+		7ED78A2879701D47DE556182 /* AppSnapshotRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSnapshotRecord.swift; sourceTree = "<group>"; };
+		844A63C3ACD853BEB1A6A016 /* SpendProgress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpendProgress.swift; sourceTree = "<group>"; };
+		8CB9E528544C06DE528AA8EE /* CashbackCopilotUITests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CashbackCopilotUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9514DF5A266AA53E07827621 /* Bank.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bank.swift; sourceTree = "<group>"; };
+		9CB8CF1020AD9FE6B09FE59F /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
+		A281F86C0A65081544D097B1 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		A33F21B495DB4837A2F39470 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		ABB21D02BE79C55947C8E337 /* RecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationView.swift; sourceTree = "<group>"; };
+		AEED2306687DBE4DF97FEB00 /* RecommendationOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationOption.swift; sourceTree = "<group>"; };
+		B402767113D49676E44FFC2E /* CashbackCopilot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CashbackCopilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B9563F1696C7656AC16BA456 /* CashbackRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackRule.swift; sourceTree = "<group>"; };
+		BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationRegressionTests.swift; sourceTree = "<group>"; };
+		C5B95850B2BA8BBE2A3D7608 /* PreviewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewContainer.swift; sourceTree = "<group>"; };
+		C8ED3A7B93D8E3C33CFB3C13 /* RecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngine.swift; sourceTree = "<group>"; };
+		CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
+		CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngineTests.swift; sourceTree = "<group>"; };
+		D42610CB1CC2A6EE4435B6EE /* CashbackCopilotApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotApp.swift; sourceTree = "<group>"; };
+		E4B91EB8E56127690ECEE1A9 /* LoggedPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedPayment.swift; sourceTree = "<group>"; };
+		F64F327E7C93E159FB126613 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		FA47D795B5C8216301CD5179 /* LocalSnapshotRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSnapshotRepository.swift; sourceTree = "<group>"; };
+		FD12F0D3D789A6C52C19B644 /* CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormatter.swift; sourceTree = "<group>"; };
+		FDDC80C70EB6D1F1DC12F349 /* BusinessGuardrailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessGuardrailsTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		032F8DF1726AD9193C921D6B /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				1AA21BA4DA7E4729C7412E66 /* EmptyStateView.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		0DD9C16E28A099EE7E74268C /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				3E00D87AEE6C6D8316DB0BBA /* Models */,
+				EC9CE0B45CE41E700A9B0F2F /* Repositories */,
+				6A06E6549DF73820F97077BE /* Services */,
+				2AD2CEF97E1A1D79336458A0 /* Utils */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		138FC1C2435538C5049D1DE7 /* CashbackCopilotTests */ = {
+			isa = PBXGroup;
+			children = (
+				FDDC80C70EB6D1F1DC12F349 /* BusinessGuardrailsTests.swift */,
+				CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */,
+				BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */,
+			);
+			path = CashbackCopilotTests;
+			sourceTree = "<group>";
+		};
+		252289D09274D136C4509956 = {
+			isa = PBXGroup;
+			children = (
+				5C3C86ABFC72881A93976189 /* App */,
+				138FC1C2435538C5049D1DE7 /* CashbackCopilotTests */,
+				93B9768D3FEB82DDA8DD843E /* CashbackCopilotUITests */,
+				0DD9C16E28A099EE7E74268C /* Core */,
+				2ADD13BA5C27492A315C7D9F /* Features */,
+				C3C35AD79D89DE1DB9C544AC /* Shared */,
+				CC159D33B4EA0A93FEC5DD86 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		29DC4CB164EC07A72685760B /* Wallet */ = {
+			isa = PBXGroup;
+			children = (
+				707893AD917397BBD66B2B4B /* WalletView.swift */,
+			);
+			path = Wallet;
+			sourceTree = "<group>";
+		};
+		2AD2CEF97E1A1D79336458A0 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				FD12F0D3D789A6C52C19B644 /* CurrencyFormatter.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		2ADD13BA5C27492A315C7D9F /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				F65C067069CF745F1772AFEA /* ConfirmPurchaseContext */,
+				A38345B64E4B5A734FC92E3C /* History */,
+				8F00A3F845A6BD42D00EEAFA /* Home */,
+				3655C403BBB03D3466ECC492 /* Onboarding */,
+				98D5581A93A7B26CFA3B5993 /* Recommendation */,
+				537A5A3CDD2CEE3B69E26C04 /* RuleEditor */,
+				49A6FD681A504CD4C6139B8A /* Scanner */,
+				F8EE1CCB1E2FE0595BFB9D49 /* Settings */,
+				29DC4CB164EC07A72685760B /* Wallet */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		3655C403BBB03D3466ECC492 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				26CACC7D25FB59CD661C07B5 /* OnboardingView.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		3E00D87AEE6C6D8316DB0BBA /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9514DF5A266AA53E07827621 /* Bank.swift */,
+				B9563F1696C7656AC16BA456 /* CashbackRule.swift */,
+				E4B91EB8E56127690ECEE1A9 /* LoggedPayment.swift */,
+				CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */,
+				5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */,
+				AEED2306687DBE4DF97FEB00 /* RecommendationOption.swift */,
+				2584806990AFACE5808C8A3C /* RecommendationResult.swift */,
+				844A63C3ACD853BEB1A6A016 /* SpendProgress.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		3F0566D72E1B8923B41A8ABF /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				9CB8CF1020AD9FE6B09FE59F /* MockData.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		49A6FD681A504CD4C6139B8A /* Scanner */ = {
+			isa = PBXGroup;
+			children = (
+				6E676550568E4FDBDFA4BB5C /* ScannerView.swift */,
+			);
+			path = Scanner;
+			sourceTree = "<group>";
+		};
+		537A5A3CDD2CEE3B69E26C04 /* RuleEditor */ = {
+			isa = PBXGroup;
+			children = (
+				4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */,
+			);
+			path = RuleEditor;
+			sourceTree = "<group>";
+		};
+		5C3C86ABFC72881A93976189 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1219C453568CE618C0EAE03B /* AppModel.swift */,
+				D42610CB1CC2A6EE4435B6EE /* CashbackCopilotApp.swift */,
+				1CF9491B200856DCBBA2A48A /* RootTabView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		6A06E6549DF73820F97077BE /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				45ADD1E172C54159D4506D1E /* DefaultRecommendationEngine.swift */,
+				619124DA2F0725D39C910B81 /* ProgressService.swift */,
+				02E981466FDF9DF765369835 /* QRParsingService.swift */,
+				C8ED3A7B93D8E3C33CFB3C13 /* RecommendationEngine.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		6E79EDC2F05EC0177A8FB1F5 /* SwiftData */ = {
+			isa = PBXGroup;
+			children = (
+				7ED78A2879701D47DE556182 /* AppSnapshotRecord.swift */,
+				FA47D795B5C8216301CD5179 /* LocalSnapshotRepository.swift */,
+			);
+			path = SwiftData;
+			sourceTree = "<group>";
+		};
+		8F00A3F845A6BD42D00EEAFA /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				A281F86C0A65081544D097B1 /* HomeView.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		93B9768D3FEB82DDA8DD843E /* CashbackCopilotUITests */ = {
+			isa = PBXGroup;
+			children = (
+				546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */,
+			);
+			path = CashbackCopilotUITests;
+			sourceTree = "<group>";
+		};
+		98D5581A93A7B26CFA3B5993 /* Recommendation */ = {
+			isa = PBXGroup;
+			children = (
+				ABB21D02BE79C55947C8E337 /* RecommendationView.swift */,
+			);
+			path = Recommendation;
+			sourceTree = "<group>";
+		};
+		A38345B64E4B5A734FC92E3C /* History */ = {
+			isa = PBXGroup;
+			children = (
+				F64F327E7C93E159FB126613 /* HistoryView.swift */,
+			);
+			path = History;
+			sourceTree = "<group>";
+		};
+		C268A3F3FF9F4ECED38CFE62 /* Preview */ = {
+			isa = PBXGroup;
+			children = (
+				C5B95850B2BA8BBE2A3D7608 /* PreviewContainer.swift */,
+			);
+			path = Preview;
+			sourceTree = "<group>";
+		};
+		C3C35AD79D89DE1DB9C544AC /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				032F8DF1726AD9193C921D6B /* Components */,
+				3F0566D72E1B8923B41A8ABF /* Mock */,
+				C268A3F3FF9F4ECED38CFE62 /* Preview */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		CC159D33B4EA0A93FEC5DD86 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B402767113D49676E44FFC2E /* CashbackCopilot.app */,
+				3A3855C2D2CD5E3DD15F3280 /* CashbackCopilotTests.xctest */,
+				8CB9E528544C06DE528AA8EE /* CashbackCopilotUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EC9CE0B45CE41E700A9B0F2F /* Repositories */ = {
+			isa = PBXGroup;
+			children = (
+				6E79EDC2F05EC0177A8FB1F5 /* SwiftData */,
+				4C0D5E14B859CE5B1BED5EB5 /* HistoryRepository.swift */,
+				6B3D491D41965546DA783E3E /* ProgressRepository.swift */,
+				1E316D4A79AFEEBFBC7CAA50 /* RulesRepository.swift */,
+				474CF42CCBF7EF6B3C851814 /* WalletRepository.swift */,
+			);
+			path = Repositories;
+			sourceTree = "<group>";
+		};
+		F65C067069CF745F1772AFEA /* ConfirmPurchaseContext */ = {
+			isa = PBXGroup;
+			children = (
+				2633D128245E90BEE1D14D4D /* ConfirmPurchaseContextView.swift */,
+			);
+			path = ConfirmPurchaseContext;
+			sourceTree = "<group>";
+		};
+		F8EE1CCB1E2FE0595BFB9D49 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				A33F21B495DB4837A2F39470 /* SettingsView.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		06228F81A7217E07FE6E4633 /* CashbackCopilot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4CF5DB2886AF542C55A13F51 /* Build configuration list for PBXNativeTarget "CashbackCopilot" */;
+			buildPhases = (
+				0EFCAE641EC18EBC2DF060FE /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CashbackCopilot;
+			packageProductDependencies = (
+			);
+			productName = CashbackCopilot;
+			productReference = B402767113D49676E44FFC2E /* CashbackCopilot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		285D3665CD5D146AAF665A5D /* CashbackCopilotUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 148B3FFE021A548EF110ECFD /* Build configuration list for PBXNativeTarget "CashbackCopilotUITests" */;
+			buildPhases = (
+				75DF0E0F68AFDD3CFA0290D1 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E3F031AECB14AB3B8869C8D0 /* PBXTargetDependency */,
+			);
+			name = CashbackCopilotUITests;
+			packageProductDependencies = (
+			);
+			productName = CashbackCopilotUITests;
+			productReference = 8CB9E528544C06DE528AA8EE /* CashbackCopilotUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		F7F575F75545780A2A211372 /* CashbackCopilotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 985381C7164980E01882EC8D /* Build configuration list for PBXNativeTarget "CashbackCopilotTests" */;
+			buildPhases = (
+				1AF8413F3E1697C74210BD7D /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				20DE7BBA34B505D5EB503950 /* PBXTargetDependency */,
+			);
+			name = CashbackCopilotTests;
+			packageProductDependencies = (
+			);
+			productName = CashbackCopilotTests;
+			productReference = 3A3855C2D2CD5E3DD15F3280 /* CashbackCopilotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4A4606B06BFBFEE033B12881 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				ORGANIZATIONNAME = Azat;
+				TargetAttributes = {
+					06228F81A7217E07FE6E4633 = {
+						DevelopmentTeam = "";
+					};
+					285D3665CD5D146AAF665A5D = {
+						DevelopmentTeam = "";
+						TestTargetID = 06228F81A7217E07FE6E4633;
+					};
+					F7F575F75545780A2A211372 = {
+						DevelopmentTeam = "";
+					};
+				};
+			};
+			buildConfigurationList = 0711A6B438D601924892FE9E /* Build configuration list for PBXProject "CashbackCopilot" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 252289D09274D136C4509956;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = CC159D33B4EA0A93FEC5DD86 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				06228F81A7217E07FE6E4633 /* CashbackCopilot */,
+				F7F575F75545780A2A211372 /* CashbackCopilotTests */,
+				285D3665CD5D146AAF665A5D /* CashbackCopilotUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0EFCAE641EC18EBC2DF060FE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				23A5D2BC58756E36149C3C21 /* AppModel.swift in Sources */,
+				DD39436BD4F0A949B1E0A540 /* AppSnapshotRecord.swift in Sources */,
+				D3CA443A5B0C04F184F51FD5 /* Bank.swift in Sources */,
+				A6606F57B7BC5EF4CA5A1FC8 /* CashbackCopilotApp.swift in Sources */,
+				E9E4C08FC6FE5B5DDB168807 /* CashbackRule.swift in Sources */,
+				106F7F6B5B6232E3B4B2DFB9 /* ConfirmPurchaseContextView.swift in Sources */,
+				7C493AFA85ACCCBECDEF9C28 /* CurrencyFormatter.swift in Sources */,
+				F2144119286A4984B29AE9CC /* DefaultRecommendationEngine.swift in Sources */,
+				D713B5236C392A044060CF8A /* EmptyStateView.swift in Sources */,
+				808A07CE5B8916410B95FFC9 /* HistoryRepository.swift in Sources */,
+				9DCB06692A5C31EAC52CB79B /* HistoryView.swift in Sources */,
+				E0557EC5D841515E639AABA6 /* HomeView.swift in Sources */,
+				0039522E684A8C540337BDD6 /* LocalSnapshotRepository.swift in Sources */,
+				83CC7F9F50DE44B30E79A8E5 /* LoggedPayment.swift in Sources */,
+				A199996D6C8ABC8DE94BABA3 /* MockData.swift in Sources */,
+				D0E93DEABA5A0E1CF40464DE /* OnboardingView.swift in Sources */,
+				C27B208701475093973A09D4 /* PaymentMethod.swift in Sources */,
+				801A576E5ADE6D2034E7B8D3 /* PreviewContainer.swift in Sources */,
+				58A56C4A3DB2FECC152D659D /* ProgressRepository.swift in Sources */,
+				3A0581B48A09914029DDBB50 /* ProgressService.swift in Sources */,
+				581716B8727394694C061F31 /* PurchaseContext.swift in Sources */,
+				7BE079BA7BF36743C28F7B09 /* QRParsingService.swift in Sources */,
+				DE8B75A45527EF997BAF4B26 /* RecommendationEngine.swift in Sources */,
+				565A49459B2236E52F3ACDFF /* RecommendationOption.swift in Sources */,
+				6ECDAE8E5FBD20024B24E66D /* RecommendationResult.swift in Sources */,
+				4E13C5822DB6839D1B9B40AA /* RecommendationView.swift in Sources */,
+				4C916D005A1CBB0876F87CAC /* RootTabView.swift in Sources */,
+				57921D22C3C0775D1A4897D6 /* RuleEditorView.swift in Sources */,
+				D7035E33E8D569922D66B88D /* RulesRepository.swift in Sources */,
+				F38FEA894A571B80E2148500 /* ScannerView.swift in Sources */,
+				2F339ABCDA6B35649CA030DA /* SettingsView.swift in Sources */,
+				5DF98F2BA3242A3548F23390 /* SpendProgress.swift in Sources */,
+				26B9DE57F4BE5992DC366A53 /* WalletRepository.swift in Sources */,
+				C07C207FEB59BADC098690F9 /* WalletView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1AF8413F3E1697C74210BD7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2E77C548746097E2D7926B35 /* BusinessGuardrailsTests.swift in Sources */,
+				C5B4A5FBC23BF7238F381F75 /* RecommendationEngineTests.swift in Sources */,
+				2E847B9CC9D70C1EB9D77B81 /* RecommendationRegressionTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		75DF0E0F68AFDD3CFA0290D1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				585185CCA54DABC27CAF34C4 /* CashbackCopilotUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		20DE7BBA34B505D5EB503950 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06228F81A7217E07FE6E4633 /* CashbackCopilot */;
+			targetProxy = E7AA119AC2E8248B18B8C6FB /* PBXContainerItemProxy */;
+		};
+		E3F031AECB14AB3B8869C8D0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 06228F81A7217E07FE6E4633 /* CashbackCopilot */;
+			targetProxy = 449BFA37094E41B695DCC1C1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		117CBE00F83966E414123705 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = (
+					UIInterfaceOrientationPortrait,
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_MODULE_NAME = CashbackCopilot;
+				PRODUCT_NAME = CashbackCopilot;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1C85652E66BC4DA563CC786E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = (
+					UIInterfaceOrientationPortrait,
+				);
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_MODULE_NAME = CashbackCopilot;
+				PRODUCT_NAME = CashbackCopilot;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		1CCB554D4A3688C6689CF75D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		40B6C8F9EEBC717CCD22E079 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot.uitests;
+				PRODUCT_MODULE_NAME = CashbackCopilotUITests;
+				PRODUCT_NAME = CashbackCopilotUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CashbackCopilot;
+			};
+			name = Debug;
+		};
+		4FE1433EB31DE7EFE649875C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
+				MARKETING_VERSION = 0.1.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		9659AB762EE56AD8C4F9E5FE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot.uitests;
+				PRODUCT_MODULE_NAME = CashbackCopilotUITests;
+				PRODUCT_NAME = CashbackCopilotUITests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = CashbackCopilot;
+			};
+			name = Release;
+		};
+		BC04F7C63AC2AAF946D34621 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot.tests;
+				PRODUCT_MODULE_NAME = CashbackCopilotTests;
+				PRODUCT_NAME = CashbackCopilotTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CashbackCopilot.app/CashbackCopilot";
+			};
+			name = Release;
+		};
+		FF41FAC16C345CDE8B583D12 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot.tests;
+				PRODUCT_MODULE_NAME = CashbackCopilotTests;
+				PRODUCT_NAME = CashbackCopilotTests;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CashbackCopilot.app/CashbackCopilot";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0711A6B438D601924892FE9E /* Build configuration list for PBXProject "CashbackCopilot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4FE1433EB31DE7EFE649875C /* Debug */,
+				1CCB554D4A3688C6689CF75D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		148B3FFE021A548EF110ECFD /* Build configuration list for PBXNativeTarget "CashbackCopilotUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				40B6C8F9EEBC717CCD22E079 /* Debug */,
+				9659AB762EE56AD8C4F9E5FE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		4CF5DB2886AF542C55A13F51 /* Build configuration list for PBXNativeTarget "CashbackCopilot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				117CBE00F83966E414123705 /* Debug */,
+				1C85652E66BC4DA563CC786E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		985381C7164980E01882EC8D /* Build configuration list for PBXNativeTarget "CashbackCopilotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FF41FAC16C345CDE8B583D12 /* Debug */,
+				BC04F7C63AC2AAF946D34621 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4A4606B06BFBFEE033B12881 /* Project object */;
+}

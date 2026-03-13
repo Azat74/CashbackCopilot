@@ -28,7 +28,7 @@ jobs:
         run: |
           xcodebuild \
             -scheme CashbackCopilot \
-            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 17' \
             build \
             CODE_SIGNING_ALLOWED=NO
 
@@ -36,10 +36,9 @@ jobs:
         run: |
           xcodebuild \
             -scheme CashbackCopilot \
-            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -destination 'platform=iOS Simulator,OS=latest,name=iPhone 17' \
             test \
             CODE_SIGNING_ALLOWED=NO
 
       - name: SwiftLint
         run: swiftlint
-
