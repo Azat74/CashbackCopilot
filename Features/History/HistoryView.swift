@@ -14,18 +14,26 @@ struct HistoryView: View {
             } else {
                 ForEach(appModel.loggedPayments) { payment in
                     VStack(alignment: .leading, spacing: 6) {
-                        Text(appModel.paymentMethodName(for: payment.actualPaymentMethodId))
+                        Text(payment.merchantName ?? payment.category.displayName)
                             .font(.headline)
+                        Text("\(CurrencyFormatter.rubles(payment.amount)) · \(payment.channel.displayName)")
+                            .foregroundStyle(.secondary)
+                        Text("Оплачено: \(appModel.paymentMethodName(for: payment.actualPaymentMethodId))")
                         Text("Ожидание: \(CurrencyFormatter.rubles(payment.expectedReward ?? 0))")
                             .foregroundStyle(.secondary)
+                        if let recommendedPaymentMethodId = payment.recommendedPaymentMethodId {
+                            Text("Рекомендовано: \(appModel.paymentMethodName(for: recommendedPaymentMethodId))")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
                         Text(payment.wasRecommendationUsed ? "Рекомендация была использована" : "Оплачено другим способом")
                             .font(.caption)
                             .foregroundStyle(.secondary)
                     }
+                    .padding(.vertical, 4)
                 }
             }
         }
         .navigationTitle("История")
     }
 }
-
