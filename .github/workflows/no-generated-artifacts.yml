@@ -1,0 +1,26 @@
+name: No Generated Artifacts
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate-clean-tree:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Fail on generated artifacts
+        run: |
+          set -e
+          forbidden_paths='(^|/)\.DS_Store$|(^|/)DerivedData(/|$)|(^|/)build(/|$)|\.xcarchive$|\.ipa$|\.dSYM$|(^|/)xcuserdata(/|$)'
+          files="$(git ls-files)"
+          if echo "$files" | grep -E "$forbidden_paths" > /dev/null; then
+            echo "Generated artifacts or local junk detected:"
+            echo "$files" | grep -E "$forbidden_paths"
+            exit 1
+          fi
+

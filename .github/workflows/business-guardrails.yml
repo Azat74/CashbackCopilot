@@ -1,0 +1,32 @@
+name: Business Guardrails
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  guardrails:
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: brew install xcodegen
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Run business guardrail tests
+        run: |
+          xcodebuild \
+            -scheme CashbackCopilot \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            -only-testing:CashbackCopilotTests/BusinessGuardrailsTests \
+            test \
+            CODE_SIGNING_ALLOWED=NO
+

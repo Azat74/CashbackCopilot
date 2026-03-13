@@ -1,0 +1,37 @@
+name: Release Build
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  archive:
+    runs-on: macos-latest
+    env:
+      DEVELOPER_DIR: /Applications/Xcode.app/Contents/Developer
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install tools
+        run: brew install xcodegen
+
+      - name: Generate project
+        run: xcodegen generate
+
+      - name: Archive
+        run: |
+          xcodebuild \
+            -scheme CashbackCopilot \
+            -destination generic/platform=iOS \
+            -archivePath build/CashbackCopilot.xcarchive \
+            archive
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: CashbackCopilot-xcarchive
+          path: build/CashbackCopilot.xcarchive
+
