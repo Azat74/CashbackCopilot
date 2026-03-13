@@ -1,6 +1,6 @@
 name: CashbackCopilot
 options:
-  minimumXcodeGenVersion: 2.45.3
+  minimumXcodeGenVersion: 2.44.1
   deploymentTarget:
     iOS: "18.0"
   createIntermediateGroups: true
