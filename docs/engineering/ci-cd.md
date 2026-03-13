@@ -21,7 +21,7 @@
 - smoke сейчас проверяет два сценария:
   - onboarding -> manual recommendation -> log payment
   - onboarding -> QR scanner shell -> payload parse
-- каждый smoke scenario запускается отдельным `xcodebuild`, чтобы снизить flake rate на GitHub-hosted macOS runners
+- smoke запускается как один UI suite с отключенным parallel testing, чтобы оба сценария шли в одном simulator session
 - `ui-smoke` добавлен в required status checks для `main` ruleset
 - это значит, что merge в `main` теперь блокируется, если smoke scenario не прошел на PR
 - workflow по-прежнему не заменяет основной unit/build CI, а дополняет его отдельной UI-проверкой
