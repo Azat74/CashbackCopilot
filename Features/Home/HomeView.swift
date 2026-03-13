@@ -49,22 +49,6 @@ struct HomeView: View {
                 }
             }
 
-            Section("Быстрые действия") {
-                Button("Показать лучшую оплату") {
-                    if let context = makeManualContext() {
-                        recommendationContext = context
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-                .disabled(!canRequestRecommendation)
-                .accessibilityIdentifier("home.showRecommendationButton")
-
-                Button("Открыть сканер QR") {
-                    isScannerPresented = true
-                }
-                .accessibilityIdentifier("home.openScannerButton")
-            }
-
             Section("Быстрые категории") {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
@@ -102,6 +86,28 @@ struct HomeView: View {
             NavigationStack {
                 ScannerView()
             }
+        }
+        .safeAreaInset(edge: .bottom) {
+            VStack(spacing: 12) {
+                Button("Показать лучшую оплату") {
+                    if let context = makeManualContext() {
+                        recommendationContext = context
+                    }
+                }
+                .buttonStyle(.borderedProminent)
+                .disabled(!canRequestRecommendation)
+                .accessibilityIdentifier("home.showRecommendationButton")
+
+                Button("Открыть сканер QR") {
+                    isScannerPresented = true
+                }
+                .buttonStyle(.bordered)
+                .accessibilityIdentifier("home.openScannerButton")
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 12)
+            .padding(.bottom, 8)
+            .background(.ultraThinMaterial)
         }
     }
 

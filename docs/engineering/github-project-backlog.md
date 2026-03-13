@@ -47,7 +47,7 @@
 
 ## Next Stories
 
-- [ ] QR-driven payment logging from recommendation result
+- [x] QR-driven payment logging from recommendation result
 - [ ] richer confirm context warnings and heuristics
 - [ ] settings cleanup and local data reset UX
 
@@ -55,7 +55,7 @@
 
 - [ ] decide whether UI smoke runs on every PR or only on `main`
 - [x] expand UI smoke beyond shell QR flow into confirmed purchase context
-- [ ] add separate QR-driven smoke path through payment logging
+- [x] add separate QR-driven smoke path through payment logging
 
 ## Later
 

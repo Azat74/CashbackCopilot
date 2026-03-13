@@ -97,6 +97,7 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(appModel.loggedPayments.count, 1)
         XCTAssertEqual(appModel.loggedPayments[0].amount, 2_000)
         XCTAssertEqual(appModel.loggedPayments[0].merchantName, "АЗС №1")
+        XCTAssertEqual(appModel.loggedPayments[0].source, .manual)
         XCTAssertEqual(appModel.loggedPayments[0].category, .fuel)
         XCTAssertEqual(appModel.loggedPayments[0].channel, .card)
         XCTAssertTrue(appModel.loggedPayments[0].wasRecommendationUsed)
@@ -157,6 +158,59 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(appModel.loggedPayments[0].actualPaymentMethodId, alternativeMethod.id)
         XCTAssertFalse(appModel.loggedPayments[0].wasRecommendationUsed)
         XCTAssertTrue(appModel.progress.isEmpty)
+    }
+
+    func testRecordQrPaymentStoresQrSource() {
+        let bank = Bank(name: "Тест Банк")
+        let method = PaymentMethod(bankId: bank.id, displayName: "СБП", type: .sbp)
+        let rule = CashbackRule(
+            paymentMethodId: method.id,
+            title: "QR АЗС 3%",
+            category: .fuel,
+            percent: 3,
+            qrAllowed: true,
+            sbpAllowed: true
+        )
+
+        let appModel = AppModel(
+            repository: nil,
+            banks: [bank],
+            paymentMethods: [method],
+            rules: [rule],
+            progress: [],
+            loggedPayments: []
+        )
+
+        let context = PurchaseContext(
+            source: .qr,
+            amount: 1_500,
+            merchantName: "АЗС Тест",
+            category: .fuel,
+            channel: .sbp,
+            qrPayload: "sbp://pay?merchant=АЗС Тест&sum=1500",
+            confidence: 0.75
+        )
+
+        let result = RecommendationResult(
+            purchaseContextId: context.id,
+            bestOption: RecommendationOption(
+                paymentMethodId: method.id,
+                ruleId: rule.id,
+                expectedReward: 45,
+                expectedPercent: 3,
+                confidence: 0.75,
+                reasons: ["QR поддерживается"],
+                risks: ["Категория определена предположительно"]
+            )
+        )
+
+        appModel.recordPayment(for: context, result: result)
+
+        XCTAssertEqual(appModel.loggedPayments.count, 1)
+        XCTAssertEqual(appModel.loggedPayments[0].source, .qr)
+        XCTAssertEqual(appModel.loggedPayments[0].channel, .sbp)
+        XCTAssertEqual(appModel.loggedPayments[0].merchantName, "АЗС Тест")
+        XCTAssertEqual(appModel.progress.first?.rewardAccumulated, 45)
     }
 
     private func tryUnwrap<T>(_ value: T?) -> T {
