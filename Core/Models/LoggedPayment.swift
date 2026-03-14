@@ -32,6 +32,7 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
     var actualReward: Double?
     var wasRecommendationUsed: Bool
     var cashbackMatchedExpectation: Bool?
+    var appliedRuleId: UUID?
     var createdAt: Date
 
     init(
@@ -48,6 +49,7 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
         actualReward: Double? = nil,
         wasRecommendationUsed: Bool,
         cashbackMatchedExpectation: Bool? = nil,
+        appliedRuleId: UUID? = nil,
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -63,6 +65,7 @@ struct LoggedPayment: Identifiable, Codable, Equatable, Hashable {
         self.actualReward = actualReward
         self.wasRecommendationUsed = wasRecommendationUsed
         self.cashbackMatchedExpectation = cashbackMatchedExpectation
+        self.appliedRuleId = appliedRuleId
         self.createdAt = createdAt
     }
 

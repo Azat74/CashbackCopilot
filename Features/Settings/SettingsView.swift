@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct SettingsView: View {
+    private enum UITestDefaults {
+        static let isEnabled = ProcessInfo.processInfo.arguments.contains("UITEST_SMOKE")
+    }
+
     private enum ResetAction: String, Identifiable {
         case restoreDemoData
         case wipeLocalData
@@ -65,6 +69,10 @@ struct SettingsView: View {
             }
 
             Section("Сервисные действия") {
+                if UITestDefaults.isEnabled {
+                    wipeLocalDataButton
+                }
+
                 Button("Показать onboarding заново") {
                     appModel.replayOnboarding()
                 }
@@ -76,19 +84,17 @@ struct SettingsView: View {
                 .accessibilityIdentifier("settings.restoreDemoDataButton")
             }
 
-            Section {
-                Button("Удалить все локальные данные") {
-                    resetAction = .wipeLocalData
+            if !UITestDefaults.isEnabled {
+                Section {
+                    wipeLocalDataButton
+                } header: {
+                    Text("Опасная зона")
+                } footer: {
+                    Text(
+                        "Полный reset удалит локальный снимок кошелька, правил, прогресса и истории. " +
+                        "Данные не уходят наружу, но текущий локальный state будет потерян."
+                    )
                 }
-                .foregroundStyle(.red)
-                .accessibilityIdentifier("settings.wipeLocalDataButton")
-            } header: {
-                Text("Опасная зона")
-            } footer: {
-                Text(
-                    "Полный reset удалит локальный снимок кошелька, правил, прогресса и истории. " +
-                    "Данные не уходят наружу, но текущий локальный state будет потерян."
-                )
             }
         }
         .navigationTitle("Настройки")
@@ -112,5 +118,16 @@ struct SettingsView: View {
     private var confirmedCashbackSummary: String {
         let confirmedCount = appModel.loggedPayments.filter { $0.actualReward != nil }.count
         return "\(confirmedCount) из \(appModel.loggedPayments.count)"
+    }
+
+    private var wipeLocalDataButton: some View {
+        Button {
+            resetAction = .wipeLocalData
+        } label: {
+            Text("Удалить все локальные данные")
+                .accessibilityIdentifier("settings.wipeLocalDataButtonLabel")
+        }
+        .foregroundStyle(.red)
+        .accessibilityIdentifier("settings.wipeLocalDataButton")
     }
 }

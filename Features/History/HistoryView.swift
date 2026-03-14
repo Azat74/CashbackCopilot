@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HistoryView: View {
     @Environment(AppModel.self) private var appModel
-    @State private var editingPayment: LoggedPayment?
+    @State private var reviewingPayment: LoggedPayment?
 
     var body: some View {
         List {
@@ -20,6 +20,10 @@ struct HistoryView: View {
                             .font(.headline)
                         Text("\(CurrencyFormatter.rubles(payment.amount)) · \(payment.channel.displayName)")
                             .foregroundStyle(.secondary)
+                        Text("Категория: \(payment.category.displayName)")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .accessibilityIdentifier("history.paymentCategory")
                         Text("Источник: \(payment.source.displayName)")
                             .font(.caption)
                             .foregroundStyle(.secondary)
@@ -31,6 +35,12 @@ struct HistoryView: View {
                             .font(.caption)
                             .foregroundStyle(statusColor(for: payment.confirmationStatus))
                             .accessibilityIdentifier("history.cashbackStatus")
+                        if payment.confirmationStatus == .mismatched {
+                            Text("Проверьте категорию, способ оплаты или фактический кешбэк.")
+                                .font(.caption)
+                                .foregroundStyle(.red)
+                                .accessibilityIdentifier("history.mismatchHint")
+                        }
                         if let actualReward = payment.actualReward {
                             Text("Факт: \(CurrencyFormatter.rubles(actualReward))")
                                 .foregroundStyle(.secondary)
@@ -44,19 +54,30 @@ struct HistoryView: View {
                         Text(payment.wasRecommendationUsed ? "Рекомендация была использована" : "Оплачено другим способом")
                             .font(.caption)
                             .foregroundStyle(.secondary)
-                        Button(payment.actualReward == nil ? "Подтвердить фактический кешбэк" : "Изменить фактический кешбэк") {
-                            editingPayment = payment
+                        Button(reviewButtonTitle(for: payment)) {
+                            reviewingPayment = payment
                         }
                         .buttonStyle(.bordered)
-                        .accessibilityIdentifier("history.confirmCashbackButton")
+                        .accessibilityIdentifier("history.reviewPaymentButton")
                     }
                     .padding(.vertical, 4)
                 }
             }
         }
         .navigationTitle("История")
-        .sheet(item: $editingPayment) { payment in
+        .sheet(item: $reviewingPayment) { payment in
             ConfirmActualCashbackSheet(payment: payment)
+        }
+    }
+
+    private func reviewButtonTitle(for payment: LoggedPayment) -> String {
+        switch payment.confirmationStatus {
+        case .pending:
+            return "Подтвердить фактический кешбэк"
+        case .matched:
+            return "Проверить запись"
+        case .mismatched:
+            return "Исправить несоответствие"
         }
     }
 
