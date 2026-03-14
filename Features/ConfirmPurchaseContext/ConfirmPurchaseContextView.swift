@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct ConfirmPurchaseContextView: View {
+    private enum Field: Hashable {
+        case amount
+        case merchant
+    }
+
     let parsedPayload: ParsedQRPayload
     let rawPayload: String
 
@@ -9,6 +14,7 @@ struct ConfirmPurchaseContextView: View {
     @State private var selectedCategory: CashbackCategory
     @State private var selectedChannel: PaymentChannel
     @State private var recommendationContext: PurchaseContext?
+    @FocusState private var focusedField: Field?
 
     init(parsedPayload: ParsedQRPayload, rawPayload: String) {
         self.parsedPayload = parsedPayload
@@ -44,9 +50,11 @@ struct ConfirmPurchaseContextView: View {
             Section("Подтвердите перед расчетом") {
                 TextField("Сумма", text: $amountText)
                     .keyboardType(.decimalPad)
+                    .focused($focusedField, equals: .amount)
                     .accessibilityIdentifier("confirm.amountField")
 
                 TextField("Merchant", text: $merchantName)
+                    .focused($focusedField, equals: .merchant)
                     .accessibilityIdentifier("confirm.merchantField")
 
                 Picker("Категория", selection: $selectedCategory) {
@@ -87,7 +95,10 @@ struct ConfirmPurchaseContextView: View {
             Section {
                 Button("Показать рекомендацию") {
                     if let context = makeContext() {
-                        recommendationContext = context
+                        focusedField = nil
+                        DispatchQueue.main.async {
+                            recommendationContext = context
+                        }
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -96,6 +107,7 @@ struct ConfirmPurchaseContextView: View {
             }
         }
         .navigationTitle("Подтвердить контекст")
+        .scrollDismissesKeyboard(.interactively)
         .navigationDestination(item: $recommendationContext) { context in
             RecommendationView(context: context)
         }

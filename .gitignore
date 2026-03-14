@@ -7,5 +7,6 @@ build/
 *.xcuserstate
 .DS_Store
 **/xcuserdata/
+Config/Signing.local.xcconfig
 .codex/
 *.log

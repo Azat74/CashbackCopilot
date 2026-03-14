@@ -70,6 +70,7 @@
 /* Begin PBXFileReference section */
 		02E981466FDF9DF765369835 /* QRParsingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRParsingService.swift; sourceTree = "<group>"; };
 		1219C453568CE618C0EAE03B /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
+		1323AFDE89C6DF6F5CEEB2A5 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
 		1AA21BA4DA7E4729C7412E66 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		1CF9491B200856DCBBA2A48A /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
 		1E316D4A79AFEEBFBC7CAA50 /* RulesRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesRepository.swift; sourceTree = "<group>"; };
@@ -152,6 +153,7 @@
 				5C3C86ABFC72881A93976189 /* App */,
 				138FC1C2435538C5049D1DE7 /* CashbackCopilotTests */,
 				93B9768D3FEB82DDA8DD843E /* CashbackCopilotUITests */,
+				A28BB5C230F082CC9C5A752F /* Config */,
 				0DD9C16E28A099EE7E74268C /* Core */,
 				2ADD13BA5C27492A315C7D9F /* Features */,
 				C3C35AD79D89DE1DB9C544AC /* Shared */,
@@ -292,6 +294,14 @@
 			path = Recommendation;
 			sourceTree = "<group>";
 		};
+		A28BB5C230F082CC9C5A752F /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				1323AFDE89C6DF6F5CEEB2A5 /* Base.xcconfig */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
 		A38345B64E4B5A734FC92E3C /* History */ = {
 			isa = PBXGroup;
 			children = (
@@ -423,15 +433,8 @@
 				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = Azat;
 				TargetAttributes = {
-					06228F81A7217E07FE6E4633 = {
-						DevelopmentTeam = "";
-					};
 					285D3665CD5D146AAF665A5D = {
-						DevelopmentTeam = "";
 						TestTargetID = 06228F81A7217E07FE6E4633;
-					};
-					F7F575F75545780A2A211372 = {
-						DevelopmentTeam = "";
 					};
 				};
 			};
@@ -554,7 +557,6 @@
 				PRODUCT_NAME = CashbackCopilot;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -577,12 +579,12 @@
 				PRODUCT_NAME = CashbackCopilot;
 				SDKROOT = iphoneos;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
 		1CCB554D4A3688C6689CF75D /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1323AFDE89C6DF6F5CEEB2A5 /* Base.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -615,9 +617,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -629,7 +629,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot;
@@ -637,8 +636,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -656,13 +653,13 @@
 				PRODUCT_MODULE_NAME = CashbackCopilotUITests;
 				PRODUCT_NAME = CashbackCopilotUITests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = CashbackCopilot;
 			};
 			name = Debug;
 		};
 		4FE1433EB31DE7EFE649875C /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1323AFDE89C6DF6F5CEEB2A5 /* Base.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -695,9 +692,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -715,7 +710,6 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
-				MARKETING_VERSION = 0.1.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -724,8 +718,6 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -743,7 +735,6 @@
 				PRODUCT_MODULE_NAME = CashbackCopilotUITests;
 				PRODUCT_NAME = CashbackCopilotUITests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = CashbackCopilot;
 			};
 			name = Release;
@@ -762,7 +753,6 @@
 				PRODUCT_MODULE_NAME = CashbackCopilotTests;
 				PRODUCT_NAME = CashbackCopilotTests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CashbackCopilot.app/CashbackCopilot";
 			};
 			name = Release;
@@ -781,7 +771,6 @@
 				PRODUCT_MODULE_NAME = CashbackCopilotTests;
 				PRODUCT_NAME = CashbackCopilotTests;
 				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/CashbackCopilot.app/CashbackCopilot";
 			};
 			name = Debug;

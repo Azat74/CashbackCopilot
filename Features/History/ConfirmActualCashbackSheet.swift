@@ -1,6 +1,10 @@
 import SwiftUI
 
 struct ConfirmActualCashbackSheet: View {
+    private enum Field: Hashable {
+        case actualReward
+    }
+
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
 
@@ -9,6 +13,7 @@ struct ConfirmActualCashbackSheet: View {
     @State private var selectedCategory: CashbackCategory
     @State private var selectedPaymentMethodID: UUID?
     @State private var actualRewardText: String
+    @FocusState private var focusedField: Field?
 
     init(payment: LoggedPayment) {
         self.payment = payment
@@ -23,6 +28,7 @@ struct ConfirmActualCashbackSheet: View {
                 Section("Фактический кешбэк") {
                     TextField("Сколько реально начислили", text: $actualRewardText)
                         .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .actualReward)
                         .accessibilityIdentifier("confirmActualCashback.amountField")
 
                     if let validationMessage {
@@ -77,9 +83,11 @@ struct ConfirmActualCashbackSheet: View {
                 }
             }
             .navigationTitle(payment.actualReward == nil ? "Подтвердить кешбэк" : "Проверить запись")
+            .scrollDismissesKeyboard(.interactively)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Отмена") {
+                        focusedField = nil
                         dismiss()
                     }
                 }
@@ -90,6 +98,7 @@ struct ConfirmActualCashbackSheet: View {
                             return
                         }
 
+                        focusedField = nil
                         appModel.reviewLoggedPayment(
                             for: payment.id,
                             category: selectedCategory,

@@ -1,0 +1,7 @@
+CURRENT_PROJECT_VERSION = 1
+MARKETING_VERSION = 0.1.0
+SWIFT_VERSION = 6.0
+TARGETED_DEVICE_FAMILY = 1
+
+// Local signing overrides for physical-device builds.
+#include? "Signing.local.xcconfig"
