@@ -17,6 +17,14 @@
 - recommendation result
 - local logging and history
 
+## Phase 1.5. Faster monthly setup
+
+- monthly cashback snapshot model
+- screenshot import entry point
+- local OCR / text extraction from screenshots
+- draft review before save
+- save imported categories into current month
+
 ## Phase 2. QR-assisted flow
 
 - QR scanner
@@ -30,6 +38,7 @@
 - export/import
 - better empty states
 - app lock considerations
+- quick launch surfaces like widget / shortcuts
 
 ## Позже, но не сейчас
 
@@ -38,4 +47,4 @@
 - bank integrations
 - community rules
 - analytics pipeline
-
+- richer bank-specific import heuristics

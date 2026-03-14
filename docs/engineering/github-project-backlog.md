@@ -49,9 +49,11 @@
 
 ## Next Stories
 
-- [x] QR-driven payment logging from recommendation result
-- [x] settings cleanup and local data reset UX
-- [x] history mismatch review and manual correction UX
+- [ ] monthly cashback snapshot model
+- [ ] screenshot import shell and photo picker
+- [ ] local screenshot OCR pipeline
+- [ ] parsed cashback draft review and save flow
+- [ ] raw special conditions and confidence markers in import draft
 
 ## Testing and Automation
 
@@ -65,3 +67,6 @@
 - [ ] bank templates/presets
 - [ ] import/export
 - [ ] app lock / privacy hardening
+- [ ] bank-specific screenshot import heuristics
+- [ ] widget / shortcut quick launch for recommendation
+- [ ] privacy-safe collective cashback knowledge
