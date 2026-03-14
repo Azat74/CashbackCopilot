@@ -127,17 +127,16 @@ final class CashbackCopilotUITests: XCTestCase {
     }
 
     func testSettingsCanWipeLocalData() throws {
-        throw XCTSkip("Temporarily skipped due to flaky Settings form accessibility on the current simulator runtime.")
-
         let app = XCUIApplication()
         app.launchArguments.append("UITEST_SMOKE")
         app.launch()
 
         startOnboarding(in: app)
 
-        app.tabBars.buttons["Настройки"].tap()
+        openSettingsTab(in: app)
 
-        let wipeButton = settingsWipeLocalDataButton(in: app)
+        let wipeButton = revealSettingsWipeLocalDataButton(in: app)
+        XCTAssertTrue(reveal(wipeButton, in: app))
         revealAndTap(wipeButton, in: app)
 
         let confirmButton = app.alerts.buttons["Удалить"]
@@ -161,7 +160,9 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertFalse(showRecommendationButton.isEnabled)
 
         app.tabBars.buttons["История"].tap()
-        XCTAssertTrue(app.otherElements["history.emptyState"].waitForExistence(timeout: 5))
+
+        let historyEmptyState = historyEmptyStateElement(in: app)
+        XCTAssertTrue(historyEmptyState.waitForExistence(timeout: 5))
     }
 
     private func startOnboarding(in app: XCUIApplication) {
@@ -250,6 +251,21 @@ final class CashbackCopilotUITests: XCTestCase {
         revealAndTap(showRecommendationButton, in: app)
         assertRecommendationAndLogPayment(in: app)
         app.buttons["Закрыть"].tap()
+    }
+
+    private func openSettingsTab(in app: XCUIApplication) {
+        let settingsTab = app.tabBars.buttons["Настройки"]
+        XCTAssertTrue(settingsTab.waitForExistence(timeout: 5))
+
+        let settingsMarker = app.staticTexts["О продукте"]
+        for _ in 0..<3 {
+            settingsTab.tap()
+            if settingsMarker.waitForExistence(timeout: 2) {
+                return
+            }
+        }
+
+        XCTFail("Failed to open Settings tab")
     }
 
     private func revealAndTap(_ element: XCUIElement, in app: XCUIApplication) {
@@ -389,5 +405,35 @@ final class CashbackCopilotUITests: XCTestCase {
         }
 
         return identifiedLabel
+    }
+
+    private func revealSettingsWipeLocalDataButton(in app: XCUIApplication) -> XCUIElement {
+        let candidates = [
+            app.staticTexts["settings.wipeLocalDataButtonLabel"],
+            app.staticTexts["Удалить все локальные данные"],
+            app.buttons["settings.wipeLocalDataButton"],
+            app.buttons["Удалить все локальные данные"],
+            app.cells.containing(.staticText, identifier: "Удалить все локальные данные").firstMatch
+        ]
+
+        for candidate in candidates where reveal(candidate, in: app) {
+            return candidate
+        }
+
+        return candidates[0]
+    }
+
+    private func historyEmptyStateElement(in app: XCUIApplication) -> XCUIElement {
+        let identifiedContainer = app.otherElements["history.emptyState"]
+        if identifiedContainer.exists {
+            return identifiedContainer
+        }
+
+        let identifiedStaticText = app.staticTexts["history.emptyState"]
+        if identifiedStaticText.exists {
+            return identifiedStaticText
+        }
+
+        return app.staticTexts["История пока пуста"]
     }
 }
