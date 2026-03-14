@@ -203,14 +203,28 @@ final class AppModel {
         persistSnapshot()
     }
 
-    func resetDemoData() {
+    func replayOnboarding() {
+        isOnboardingPresented = true
+    }
+
+    func restoreDemoData() {
         let demo = AppSnapshot.demo
         banks = demo.banks
         paymentMethods = demo.paymentMethods
         rules = demo.rules
         progress = demo.progress
         loggedPayments = demo.loggedPayments
-        isOnboardingPresented = true
+        replayOnboarding()
+        persistSnapshot()
+    }
+
+    func resetLocalData() {
+        banks = []
+        paymentMethods = []
+        rules = []
+        progress = []
+        loggedPayments = []
+        replayOnboarding()
         persistSnapshot()
     }
 

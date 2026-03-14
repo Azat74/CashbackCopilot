@@ -78,6 +78,42 @@ final class CashbackCopilotUITests: XCTestCase {
         XCTAssertTrue(editCashbackButton.waitForExistence(timeout: 5))
     }
 
+    func testSettingsCanWipeLocalData() throws {
+        let app = XCUIApplication()
+        app.launchArguments.append("UITEST_SMOKE")
+        app.launch()
+
+        startOnboarding(in: app)
+
+        app.tabBars.buttons["Настройки"].tap()
+
+        let wipeButton = app.buttons["settings.wipeLocalDataButton"]
+        revealAndTap(wipeButton, in: app)
+
+        let confirmButton = app.alerts.buttons["Удалить"]
+        XCTAssertTrue(confirmButton.waitForExistence(timeout: 5))
+        confirmButton.tap()
+
+        let startButton = app.buttons["onboarding.startButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+
+        app.tabBars.buttons["Главная"].tap()
+
+        let missingMethodsMessage = app.staticTexts["home.missingPaymentMethodsMessage"]
+        XCTAssertTrue(missingMethodsMessage.waitForExistence(timeout: 5))
+
+        let missingRulesMessage = app.staticTexts["home.missingRulesMessage"]
+        XCTAssertTrue(missingRulesMessage.exists)
+
+        let showRecommendationButton = app.buttons["home.showRecommendationButton"]
+        XCTAssertTrue(showRecommendationButton.exists)
+        XCTAssertFalse(showRecommendationButton.isEnabled)
+
+        app.tabBars.buttons["История"].tap()
+        XCTAssertTrue(app.staticTexts["История пока пуста"].waitForExistence(timeout: 5))
+    }
+
     private func startOnboarding(in app: XCUIApplication) {
         let startButton = app.buttons["onboarding.startButton"]
         XCTAssertTrue(startButton.waitForExistence(timeout: 5))

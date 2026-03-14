@@ -275,6 +275,55 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(appModel.loggedPayments[0].confirmationStatus, .mismatched)
     }
 
+    func testRestoreDemoDataReplacesSnapshotAndShowsOnboarding() {
+        let appModel = AppModel(repository: nil, banks: [], paymentMethods: [], rules: [], progress: [], loggedPayments: [])
+        appModel.isOnboardingPresented = false
+
+        appModel.restoreDemoData()
+
+        XCTAssertEqual(appModel.banks.count, AppSnapshot.demo.banks.count)
+        XCTAssertEqual(appModel.paymentMethods.count, AppSnapshot.demo.paymentMethods.count)
+        XCTAssertEqual(appModel.rules.count, AppSnapshot.demo.rules.count)
+        XCTAssertEqual(appModel.progress.count, AppSnapshot.demo.progress.count)
+        XCTAssertEqual(appModel.loggedPayments.count, AppSnapshot.demo.loggedPayments.count)
+        XCTAssertTrue(appModel.isOnboardingPresented)
+    }
+
+    func testResetLocalDataClearsSnapshotAndShowsOnboarding() {
+        let payment = LoggedPayment(
+            purchaseContextId: UUID(),
+            amount: 999,
+            merchantName: "Тест",
+            source: .manual,
+            category: .other,
+            channel: .card,
+            recommendedPaymentMethodId: UUID(),
+            actualPaymentMethodId: UUID(),
+            expectedReward: 12,
+            actualReward: 10,
+            wasRecommendationUsed: true
+        )
+
+        let appModel = AppModel(
+            repository: nil,
+            banks: AppSnapshot.demo.banks,
+            paymentMethods: AppSnapshot.demo.paymentMethods,
+            rules: AppSnapshot.demo.rules,
+            progress: AppSnapshot.demo.progress,
+            loggedPayments: [payment]
+        )
+        appModel.isOnboardingPresented = false
+
+        appModel.resetLocalData()
+
+        XCTAssertTrue(appModel.banks.isEmpty)
+        XCTAssertTrue(appModel.paymentMethods.isEmpty)
+        XCTAssertTrue(appModel.rules.isEmpty)
+        XCTAssertTrue(appModel.progress.isEmpty)
+        XCTAssertTrue(appModel.loggedPayments.isEmpty)
+        XCTAssertTrue(appModel.isOnboardingPresented)
+    }
+
     private func tryUnwrap<T>(_ value: T?) -> T {
         guard let value else {
             XCTFail("Expected value to exist")
