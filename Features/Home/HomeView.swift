@@ -7,6 +7,11 @@ struct HomeView: View {
         static let merchant = "АЗС"
     }
 
+    private enum Field: Hashable {
+        case amount
+        case merchant
+    }
+
     @Environment(AppModel.self) private var appModel
 
     @State private var amountText = UITestDefaults.isEnabled ? UITestDefaults.amount : ""
@@ -15,15 +20,18 @@ struct HomeView: View {
     @State private var selectedChannel: PaymentChannel = .card
     @State private var recommendationContext: PurchaseContext?
     @State private var isScannerPresented = false
+    @FocusState private var focusedField: Field?
 
     var body: some View {
         Form {
             Section("Перед оплатой") {
                 TextField("Сумма", text: $amountText)
                     .keyboardType(.decimalPad)
+                    .focused($focusedField, equals: .amount)
                     .accessibilityIdentifier("home.amountField")
 
                 TextField("Merchant / подсказка", text: $merchantName)
+                    .focused($focusedField, equals: .merchant)
                     .accessibilityIdentifier("home.merchantField")
 
                 Picker("Категория", selection: $selectedCategory) {
@@ -77,6 +85,7 @@ struct HomeView: View {
             }
         }
         .navigationTitle("Главная")
+        .scrollDismissesKeyboard(.interactively)
         .sheet(item: $recommendationContext) { context in
             NavigationStack {
                 RecommendationView(context: context)
@@ -91,7 +100,10 @@ struct HomeView: View {
             VStack(spacing: 12) {
                 Button("Показать лучшую оплату") {
                     if let context = makeManualContext() {
-                        recommendationContext = context
+                        focusedField = nil
+                        DispatchQueue.main.async {
+                            recommendationContext = context
+                        }
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -99,7 +111,10 @@ struct HomeView: View {
                 .accessibilityIdentifier("home.showRecommendationButton")
 
                 Button("Открыть сканер QR") {
-                    isScannerPresented = true
+                    focusedField = nil
+                    DispatchQueue.main.async {
+                        isScannerPresented = true
+                    }
                 }
                 .buttonStyle(.bordered)
                 .accessibilityIdentifier("home.openScannerButton")

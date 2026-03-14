@@ -79,7 +79,9 @@ final class CashbackCopilotUITests: XCTestCase {
 
         let statusLabel = app.staticTexts["history.cashbackStatus"].firstMatch
         XCTAssertTrue(statusLabel.waitForExistence(timeout: 5))
-        XCTAssertTrue(statusLabel.label.contains("Совпало"))
+        let matchedPredicate = NSPredicate(format: "label CONTAINS %@", "Совпало")
+        let matchedExpectation = XCTNSPredicateExpectation(predicate: matchedPredicate, object: statusLabel)
+        XCTAssertEqual(XCTWaiter().wait(for: [matchedExpectation], timeout: 5), .completed)
     }
 
     func testHistoryMismatchCanBeReviewedAndCorrected() throws {
@@ -123,7 +125,9 @@ final class CashbackCopilotUITests: XCTestCase {
 
         let statusLabel = app.staticTexts["history.cashbackStatus"].firstMatch
         XCTAssertTrue(statusLabel.waitForExistence(timeout: 5))
-        XCTAssertTrue(statusLabel.label.contains("Совпало"))
+        let matchedPredicate = NSPredicate(format: "label CONTAINS %@", "Совпало")
+        let matchedExpectation = XCTNSPredicateExpectation(predicate: matchedPredicate, object: statusLabel)
+        XCTAssertEqual(XCTWaiter().wait(for: [matchedExpectation], timeout: 5), .completed)
     }
 
     func testSettingsCanWipeLocalData() throws {

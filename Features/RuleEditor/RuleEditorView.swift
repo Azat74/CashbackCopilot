@@ -1,6 +1,14 @@
 import SwiftUI
 
 struct RuleEditorView: View {
+    private enum Field: Hashable {
+        case title
+        case rewardValue
+        case minAmount
+        case monthlyRewardCap
+        case monthlySpendCap
+    }
+
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
 
@@ -16,6 +24,7 @@ struct RuleEditorView: View {
     @State private var monthlySpendCap = ""
     @State private var qrAllowed = false
     @State private var sbpAllowed = false
+    @FocusState private var focusedField: Field?
 
     init(preselectedPaymentMethodID: UUID? = nil) {
         self.preselectedPaymentMethodID = preselectedPaymentMethodID
@@ -44,6 +53,7 @@ struct RuleEditorView: View {
 
                 Section("Основные условия") {
                     TextField("Название правила", text: $title)
+                        .focused($focusedField, equals: .title)
 
                     Picker("Категория", selection: $category) {
                         ForEach(CashbackCategory.allCases, id: \.self) { item in
@@ -60,17 +70,21 @@ struct RuleEditorView: View {
 
                     TextField(rewardMode.placeholder, text: $rewardValue)
                         .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .rewardValue)
                 }
 
                 Section("Лимиты") {
                     TextField("Минимальная сумма", text: $minAmount)
                         .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .minAmount)
 
                     TextField("Лимит по кешбеку в месяц", text: $monthlyRewardCap)
                         .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .monthlyRewardCap)
 
                     TextField("Лимит по тратам в месяц", text: $monthlySpendCap)
                         .keyboardType(.decimalPad)
+                        .focused($focusedField, equals: .monthlySpendCap)
                 }
 
                 Section("Каналы оплаты") {
@@ -87,15 +101,18 @@ struct RuleEditorView: View {
             }
         }
         .navigationTitle("Правила")
+        .scrollDismissesKeyboard(.interactively)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Отмена") {
+                    focusedField = nil
                     dismiss()
                 }
             }
 
             ToolbarItem(placement: .confirmationAction) {
                 Button("Сохранить") {
+                    focusedField = nil
                     saveRule()
                 }
                 .disabled(!canSave)

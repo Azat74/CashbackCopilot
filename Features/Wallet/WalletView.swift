@@ -175,28 +175,39 @@ private struct WalletMethodCard: View {
 }
 
 private struct AddBankView: View {
+    private enum Field: Hashable {
+        case name
+        case iconName
+    }
+
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
     @State private var name = ""
     @State private var iconName = "building.columns"
+    @FocusState private var focusedField: Field?
 
     var body: some View {
         Form {
             Section("Новый банк") {
                 TextField("Название банка", text: $name)
+                    .focused($focusedField, equals: .name)
                 TextField("SF Symbol иконки", text: $iconName)
+                    .focused($focusedField, equals: .iconName)
             }
         }
         .navigationTitle("Добавить банк")
+        .scrollDismissesKeyboard(.interactively)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Отмена") {
+                    focusedField = nil
                     dismiss()
                 }
             }
 
             ToolbarItem(placement: .confirmationAction) {
                 Button("Сохранить") {
+                    focusedField = nil
                     appModel.addBank(name: name, iconName: iconName.isEmpty ? nil : iconName)
                     dismiss()
                 }
@@ -207,6 +218,11 @@ private struct AddBankView: View {
 }
 
 private struct AddPaymentMethodView: View {
+    private enum Field: Hashable {
+        case displayName
+        case last4
+    }
+
     @Environment(AppModel.self) private var appModel
     @Environment(\.dismiss) private var dismiss
 
@@ -215,6 +231,7 @@ private struct AddPaymentMethodView: View {
     @State private var displayName = ""
     @State private var type: PaymentMethodType = .debitCard
     @State private var last4 = ""
+    @FocusState private var focusedField: Field?
 
     var body: some View {
         Form {
@@ -224,6 +241,7 @@ private struct AddPaymentMethodView: View {
 
             Section("Способ оплаты") {
                 TextField("Название", text: $displayName)
+                    .focused($focusedField, equals: .displayName)
 
                 Picker("Тип", selection: $type) {
                     ForEach(PaymentMethodType.allCases, id: \.self) { item in
@@ -233,18 +251,22 @@ private struct AddPaymentMethodView: View {
 
                 TextField("Последние 4 цифры", text: $last4)
                     .keyboardType(.numberPad)
+                    .focused($focusedField, equals: .last4)
             }
         }
         .navigationTitle("Новый способ оплаты")
+        .scrollDismissesKeyboard(.interactively)
         .toolbar {
             ToolbarItem(placement: .cancellationAction) {
                 Button("Отмена") {
+                    focusedField = nil
                     dismiss()
                 }
             }
 
             ToolbarItem(placement: .confirmationAction) {
                 Button("Сохранить") {
+                    focusedField = nil
                     appModel.addPaymentMethod(
                         bankID: bank.id,
                         displayName: displayName,

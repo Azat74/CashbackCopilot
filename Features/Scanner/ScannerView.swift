@@ -10,6 +10,7 @@ struct ScannerView: View {
     @State private var payload = UITestDefaults.isEnabled ? UITestDefaults.payload : ""
     @State private var parsed: ParsedQRPayload?
     @State private var isConfirmPresented = false
+    @FocusState private var isPayloadFocused: Bool
 
     private let parser = QRParsingService()
 
@@ -20,16 +21,19 @@ struct ScannerView: View {
                     .foregroundStyle(.secondary)
 
                 TextField("Вставить raw QR payload", text: $payload, axis: .vertical)
+                    .focused($isPayloadFocused)
                     .accessibilityIdentifier("scanner.payloadField")
             }
 
             Section {
                 Button("Разобрать payload") {
+                    isPayloadFocused = false
                     parsed = parser.parse(payload)
                 }
                 .accessibilityIdentifier("scanner.parseButton")
 
                 Button("Закрыть") {
+                    isPayloadFocused = false
                     dismiss()
                 }
                 .accessibilityIdentifier("scanner.closeButton")
@@ -51,7 +55,10 @@ struct ScannerView: View {
 
                 Section("Дальше") {
                     Button("Подтвердить контекст") {
-                        isConfirmPresented = true
+                        isPayloadFocused = false
+                        DispatchQueue.main.async {
+                            isConfirmPresented = true
+                        }
                     }
                     .buttonStyle(.borderedProminent)
                     .accessibilityIdentifier("scanner.continueButton")
@@ -59,6 +66,7 @@ struct ScannerView: View {
             }
         }
         .navigationTitle("QR Scanner")
+        .scrollDismissesKeyboard(.interactively)
         .navigationDestination(isPresented: $isConfirmPresented) {
             if let parsed {
                 ConfirmPurchaseContextView(parsedPayload: parsed, rawPayload: payload)
