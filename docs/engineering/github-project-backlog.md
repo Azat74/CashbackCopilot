@@ -51,7 +51,7 @@
 
 - [x] QR-driven payment logging from recommendation result
 - [x] settings cleanup and local data reset UX
-- [ ] history mismatch review and manual correction UX
+- [x] history mismatch review and manual correction UX
 
 ## Testing and Automation
 

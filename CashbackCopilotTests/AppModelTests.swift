@@ -156,6 +156,7 @@ final class AppModelTests: XCTestCase {
 
         XCTAssertEqual(appModel.loggedPayments.count, 1)
         XCTAssertEqual(appModel.loggedPayments[0].actualPaymentMethodId, alternativeMethod.id)
+        XCTAssertEqual(appModel.loggedPayments[0].expectedReward, 0)
         XCTAssertFalse(appModel.loggedPayments[0].wasRecommendationUsed)
         XCTAssertTrue(appModel.progress.isEmpty)
     }
@@ -273,6 +274,69 @@ final class AppModelTests: XCTestCase {
         XCTAssertEqual(appModel.loggedPayments[0].actualReward, 50)
         XCTAssertEqual(appModel.loggedPayments[0].cashbackMatchedExpectation, false)
         XCTAssertEqual(appModel.loggedPayments[0].confirmationStatus, .mismatched)
+    }
+
+    func testReviewLoggedPaymentRecomputesExpectationForCorrectedMethod() {
+        let bank = Bank(name: "Тест Банк")
+        let recommendedMethod = PaymentMethod(bankId: bank.id, displayName: "Black", type: .debitCard)
+        let alternativeMethod = PaymentMethod(bankId: bank.id, displayName: "СБП", type: .sbp)
+        let recommendedRule = CashbackRule(paymentMethodId: recommendedMethod.id, title: "АЗС 5%", category: .fuel, percent: 5)
+        let alternativeRule = CashbackRule(
+            paymentMethodId: alternativeMethod.id,
+            title: "АЗС 3%",
+            category: .fuel,
+            percent: 3,
+            sbpAllowed: true
+        )
+
+        let payment = LoggedPayment(
+            purchaseContextId: UUID(),
+            amount: 1_500,
+            merchantName: "АЗС",
+            source: .manual,
+            category: .fuel,
+            channel: .card,
+            recommendedPaymentMethodId: recommendedMethod.id,
+            actualPaymentMethodId: recommendedMethod.id,
+            expectedReward: 75,
+            actualReward: 45,
+            wasRecommendationUsed: true,
+            cashbackMatchedExpectation: false,
+            appliedRuleId: recommendedRule.id
+        )
+
+        let appModel = AppModel(
+            repository: nil,
+            banks: [bank],
+            paymentMethods: [recommendedMethod, alternativeMethod],
+            rules: [recommendedRule, alternativeRule],
+            progress: [
+                SpendProgress(
+                    ruleId: recommendedRule.id,
+                    monthKey: "2026-03",
+                    spentAmount: 1_500,
+                    rewardAccumulated: 75
+                )
+            ],
+            loggedPayments: [payment]
+        )
+
+        appModel.reviewLoggedPayment(
+            for: payment.id,
+            category: .fuel,
+            actualPaymentMethodID: alternativeMethod.id,
+            actualReward: 45
+        )
+
+        XCTAssertEqual(appModel.loggedPayments[0].actualPaymentMethodId, alternativeMethod.id)
+        XCTAssertEqual(appModel.loggedPayments[0].expectedReward, 45)
+        XCTAssertEqual(appModel.loggedPayments[0].actualReward, 45)
+        XCTAssertEqual(appModel.loggedPayments[0].appliedRuleId, alternativeRule.id)
+        XCTAssertFalse(appModel.loggedPayments[0].wasRecommendationUsed)
+        XCTAssertEqual(appModel.loggedPayments[0].confirmationStatus, .matched)
+        XCTAssertEqual(appModel.progress.count, 1)
+        XCTAssertEqual(appModel.progress[0].ruleId, alternativeRule.id)
+        XCTAssertEqual(appModel.progress[0].rewardAccumulated, 45)
     }
 
     func testRestoreDemoDataReplacesSnapshotAndShowsOnboarding() {

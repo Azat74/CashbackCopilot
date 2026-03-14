@@ -138,6 +138,7 @@ final class AppModel {
     func recordPayment(for context: PurchaseContext, result: RecommendationResult, actualPaymentMethodID: UUID? = nil) {
         let usedRecommendedMethod = actualPaymentMethodID == nil || actualPaymentMethodID == result.bestOption?.paymentMethodId
         let chosenMethodID = actualPaymentMethodID ?? result.bestOption?.paymentMethodId
+        let chosenOption = recommendationOption(in: result, paymentMethodID: chosenMethodID)
 
         let payment = LoggedPayment(
             purchaseContextId: context.id,
@@ -148,22 +149,23 @@ final class AppModel {
             channel: context.channel,
             recommendedPaymentMethodId: result.bestOption?.paymentMethodId,
             actualPaymentMethodId: chosenMethodID,
-            expectedReward: result.bestOption?.expectedReward,
+            expectedReward: chosenOption?.expectedReward ?? fallbackExpectedReward(for: chosenMethodID),
             actualReward: nil,
             wasRecommendationUsed: usedRecommendedMethod,
-            cashbackMatchedExpectation: nil
+            cashbackMatchedExpectation: nil,
+            appliedRuleId: chosenOption?.ruleId
         )
 
         loggedPayments.insert(payment, at: 0)
 
-        guard let ruleID = result.bestOption?.ruleId, usedRecommendedMethod else {
+        guard let chosenOption, let ruleID = chosenOption.ruleId else {
             persistSnapshot()
             return
         }
 
         progress = progressService.updatedProgress(
             after: context.amount,
-            expectedReward: result.bestOption?.expectedReward ?? 0,
+            expectedReward: chosenOption.expectedReward,
             for: ruleID,
             monthKey: Self.monthKey(for: Date()),
             existing: progress
@@ -201,6 +203,77 @@ final class AppModel {
         updatedPayments[index] = updatedPayment
         loggedPayments = updatedPayments
         persistSnapshot()
+    }
+
+    func reviewLoggedPayment(
+        for paymentID: UUID,
+        category: CashbackCategory,
+        actualPaymentMethodID: UUID?,
+        actualReward amount: Double
+    ) {
+        guard amount >= 0,
+              let index = loggedPayments.firstIndex(where: { $0.id == paymentID }) else {
+            return
+        }
+
+        let previousPayment = loggedPayments[index]
+        progress = progressRemovingContribution(of: previousPayment, from: progress)
+
+        var updatedPayment = previousPayment
+        updatedPayment.category = category
+        updatedPayment.actualPaymentMethodId = actualPaymentMethodID
+        updatedPayment.wasRecommendationUsed = updatedPayment.actualPaymentMethodId == updatedPayment.recommendedPaymentMethodId
+
+        let option = recommendationOption(
+            for: updatedPayment,
+            category: category,
+            actualPaymentMethodID: actualPaymentMethodID,
+            progress: progress
+        )
+
+        updatedPayment.expectedReward = option?.expectedReward ?? fallbackExpectedReward(
+            for: actualPaymentMethodID,
+            existingReward: previousPayment.expectedReward
+        )
+        updatedPayment.appliedRuleId = option?.ruleId
+        updatedPayment.actualReward = amount
+        updatedPayment.cashbackMatchedExpectation = updatedPayment.expectedReward.map { abs($0 - amount) < 0.01 }
+
+        var updatedPayments = loggedPayments
+        updatedPayments[index] = updatedPayment
+        loggedPayments = updatedPayments
+
+        if let appliedRuleId = updatedPayment.appliedRuleId,
+           let expectedReward = updatedPayment.expectedReward {
+            progress = progressService.updatedProgress(
+                after: updatedPayment.amount,
+                expectedReward: expectedReward,
+                for: appliedRuleId,
+                monthKey: Self.monthKey(for: updatedPayment.createdAt),
+                existing: progress
+            )
+        }
+
+        persistSnapshot()
+    }
+
+    func expectedRewardPreview(
+        for payment: LoggedPayment,
+        category: CashbackCategory,
+        actualPaymentMethodID: UUID?
+    ) -> Double? {
+        let adjustedProgress = progressRemovingContribution(of: payment, from: progress)
+        let option = recommendationOption(
+            for: payment,
+            category: category,
+            actualPaymentMethodID: actualPaymentMethodID,
+            progress: adjustedProgress
+        )
+
+        return option?.expectedReward ?? fallbackExpectedReward(
+            for: actualPaymentMethodID,
+            existingReward: payment.expectedReward
+        )
     }
 
     func replayOnboarding() {
@@ -257,14 +330,108 @@ final class AppModel {
         return banks.first { $0.id == method.bankId }
     }
 
-    private static func monthKey(for date: Date) -> String {
+}
+
+private extension AppModel {
+    func recommendationOption(in result: RecommendationResult, paymentMethodID: UUID?) -> RecommendationOption? {
+        guard let paymentMethodID else {
+            return nil
+        }
+
+        let options = [result.bestOption].compactMap { $0 } + result.alternatives
+        return options.first { $0.paymentMethodId == paymentMethodID }
+    }
+
+    func recommendationOption(
+        for payment: LoggedPayment,
+        category: CashbackCategory,
+        actualPaymentMethodID: UUID?,
+        progress: [SpendProgress]
+    ) -> RecommendationOption? {
+        guard let actualPaymentMethodID else {
+            return nil
+        }
+
+        let context = PurchaseContext(
+            id: payment.purchaseContextId,
+            source: payment.source,
+            amount: payment.amount,
+            merchantName: payment.merchantName,
+            category: category,
+            channel: payment.channel,
+            confidence: 1,
+            createdAt: payment.createdAt
+        )
+
+        let result = engine.recommend(
+            for: context,
+            paymentMethods: paymentMethods,
+            rules: rules,
+            progress: progress
+        )
+
+        let options = [result.bestOption].compactMap { $0 } + result.alternatives
+        if let option = options.first(where: { $0.paymentMethodId == actualPaymentMethodID }) {
+            return option
+        }
+
+        guard paymentMethods.contains(where: { $0.id == actualPaymentMethodID }) else {
+            return nil
+        }
+
+        return RecommendationOption(
+            paymentMethodId: actualPaymentMethodID,
+            ruleId: nil,
+            expectedReward: 0,
+            expectedPercent: 0,
+            confidence: 1,
+            reasons: [],
+            risks: []
+        )
+    }
+
+    func progressRemovingContribution(
+        of payment: LoggedPayment,
+        from existing: [SpendProgress]
+    ) -> [SpendProgress] {
+        guard let appliedRuleId = payment.appliedRuleId,
+              let expectedReward = payment.expectedReward else {
+            return existing
+        }
+
+        return progressService.removingProgress(
+            after: payment.amount,
+            expectedReward: expectedReward,
+            for: appliedRuleId,
+            monthKey: Self.monthKey(for: payment.createdAt),
+            existing: existing
+        )
+    }
+
+    func fallbackExpectedReward(for paymentMethodID: UUID?) -> Double? {
+        guard let paymentMethodID else {
+            return nil
+        }
+
+        guard paymentMethods.contains(where: { $0.id == paymentMethodID }) else {
+            return nil
+        }
+
+        return 0
+    }
+
+    func fallbackExpectedReward(for paymentMethodID: UUID?, existingReward: Double?) -> Double? {
+        fallbackExpectedReward(for: paymentMethodID) ?? existingReward
+    }
+
+    static func monthKey(for date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM"
         return formatter.string(from: date)
     }
 
-    private func persistSnapshot() {
+    func persistSnapshot() {
         repository?.saveSnapshot(
             AppSnapshot(
                 banks: banks,
