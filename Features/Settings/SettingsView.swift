@@ -98,6 +98,7 @@ struct SettingsView: View {
             }
         }
         .navigationTitle("Настройки")
+        .accessibilityIdentifier("settings.screen")
         .alert(item: $resetAction) { action in
             Alert(
                 title: Text(action.title),

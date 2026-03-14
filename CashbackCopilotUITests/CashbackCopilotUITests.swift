@@ -257,10 +257,11 @@ final class CashbackCopilotUITests: XCTestCase {
         let settingsTab = app.tabBars.buttons["Настройки"]
         XCTAssertTrue(settingsTab.waitForExistence(timeout: 5))
 
-        let settingsMarker = app.staticTexts["О продукте"]
+        let settingsScreen = app.otherElements["settings.screen"]
+        let settingsNavigationBar = app.navigationBars["Настройки"]
         for _ in 0..<3 {
             settingsTab.tap()
-            if settingsMarker.waitForExistence(timeout: 2) {
+            if settingsScreen.waitForExistence(timeout: 2) || settingsNavigationBar.waitForExistence(timeout: 2) {
                 return
             }
         }
