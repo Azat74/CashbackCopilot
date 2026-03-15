@@ -39,6 +39,26 @@ enum MockData {
         )
     ]
 
+    static let months: [CashbackMonth] = [
+        CashbackMonth(
+            bankId: tBank.id,
+            monthKey: "2026-03",
+            ruleStates: [
+                RuleState(ruleId: rules[0].id, isActive: true, order: 0),
+                RuleState(ruleId: rules[1].id, isActive: true, order: 1)
+            ],
+            source: .manual
+        ),
+        CashbackMonth(
+            bankId: alfa.id,
+            monthKey: "2026-03",
+            ruleStates: [
+                RuleState(ruleId: rules[2].id, isActive: true, order: 0)
+            ],
+            source: .manual
+        )
+    ]
+
     static let progress: [SpendProgress] = [
         SpendProgress(ruleId: rules[0].id, monthKey: "2026-03", spentAmount: 8_000, rewardAccumulated: 400),
         SpendProgress(ruleId: rules[2].id, monthKey: "2026-03", spentAmount: 5_000, rewardAccumulated: 350)

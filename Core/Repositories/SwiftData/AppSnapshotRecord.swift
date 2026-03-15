@@ -18,6 +18,7 @@ struct AppSnapshot: Codable {
     var banks: [Bank]
     var paymentMethods: [PaymentMethod]
     var rules: [CashbackRule]
+    var months: [CashbackMonth]
     var progress: [SpendProgress]
     var loggedPayments: [LoggedPayment]
 
@@ -25,6 +26,7 @@ struct AppSnapshot: Codable {
         banks: [MockData.tBank, MockData.alfa],
         paymentMethods: MockData.methods,
         rules: MockData.rules,
+        months: MockData.months,
         progress: MockData.progress,
         loggedPayments: []
     )
