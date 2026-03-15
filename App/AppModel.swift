@@ -140,11 +140,28 @@ final class AppModel {
     }
 
     func addRule(_ rule: CashbackRule) {
-        guard paymentMethods.contains(where: { $0.id == rule.paymentMethodId }) else {
+        guard let method = paymentMethods.first(where: { $0.id == rule.paymentMethodId }) else {
             return
         }
 
         rules.append(rule)
+
+        // Add rule to current month for the bank
+        let monthKey = currentMonthKey
+        if let monthIndex = months.firstIndex(where: { $0.monthKey == monthKey && $0.bankId == method.bankId }) {
+            let maxOrder = months[monthIndex].ruleStates.map(\.order).max() ?? -1
+            months[monthIndex].ruleStates.append(RuleState(ruleId: rule.id, isActive: true, order: maxOrder + 1))
+        } else {
+            // Create new month for this bank if it doesn't exist
+            let newMonth = CashbackMonth(
+                bankId: method.bankId,
+                monthKey: monthKey,
+                ruleStates: [RuleState(ruleId: rule.id, isActive: true, order: 0)],
+                source: .manual
+            )
+            months.append(newMonth)
+        }
+
         persistSnapshot()
     }
 
@@ -414,6 +431,53 @@ final class AppModel {
         persistSnapshot()
     }
 
+    // MARK: - Static Helpers (accessible to tests)
+
+    static func monthKey(for date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM"
+        return formatter.string(from: date)
+    }
+
+    static func migrateIfNeeded(snapshot: AppSnapshot) -> AppSnapshot {
+        guard snapshot.months.isEmpty else { return snapshot }
+
+        let currentMonthKey = monthKey(for: Date())
+
+        // Group rules by bank via payment methods
+        let bankPaymentMethods = Dictionary(grouping: snapshot.paymentMethods) { $0.bankId }
+        var newMonths: [CashbackMonth] = []
+
+        for (bankId, methods) in bankPaymentMethods {
+            let methodIds = Set(methods.map(\.id))
+            let bankRules = snapshot.rules.filter { methodIds.contains($0.paymentMethodId) }
+
+            guard !bankRules.isEmpty else { continue }
+
+            let ruleStates = bankRules.enumerated().map { index, rule in
+                RuleState(ruleId: rule.id, isActive: rule.isActive, order: index)
+            }
+
+            let month = CashbackMonth(
+                bankId: bankId,
+                monthKey: currentMonthKey,
+                ruleStates: ruleStates,
+                source: .manual
+            )
+            newMonths.append(month)
+        }
+
+        return AppSnapshot(
+            banks: snapshot.banks,
+            paymentMethods: snapshot.paymentMethods,
+            rules: snapshot.rules,
+            months: newMonths,
+            progress: snapshot.progress,
+            loggedPayments: snapshot.loggedPayments
+        )
+    }
+
 }
 
 private extension AppModel {
@@ -447,15 +511,16 @@ private extension AppModel {
             createdAt: payment.createdAt
         )
 
-        // Use rules active in the payment's month
+        // Use rules and progress from the payment's month
         let paymentMonthKey = Self.monthKey(for: payment.createdAt)
         let activeRulesForPayment = activeRules(for: paymentMonthKey)
+        let monthProgress = progress.filter { $0.monthKey == paymentMonthKey }
 
         let result = engine.recommend(
             for: context,
             paymentMethods: paymentMethods,
             rules: activeRulesForPayment,
-            progress: progress
+            progress: monthProgress
         )
 
         let options = [result.bestOption].compactMap { $0 } + result.alternatives
@@ -510,51 +575,6 @@ private extension AppModel {
 
     func fallbackExpectedReward(for paymentMethodID: UUID?, existingReward: Double?) -> Double? {
         fallbackExpectedReward(for: paymentMethodID) ?? existingReward
-    }
-
-    static func monthKey(for date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.locale = Locale(identifier: "en_US_POSIX")
-        formatter.dateFormat = "yyyy-MM"
-        return formatter.string(from: date)
-    }
-
-    static func migrateIfNeeded(snapshot: AppSnapshot) -> AppSnapshot {
-        guard snapshot.months.isEmpty else { return snapshot }
-
-        let currentMonthKey = monthKey(for: Date())
-
-        // Group rules by bank via payment methods
-        let bankPaymentMethods = Dictionary(grouping: snapshot.paymentMethods) { $0.bankId }
-        var newMonths: [CashbackMonth] = []
-
-        for (bankId, methods) in bankPaymentMethods {
-            let methodIds = Set(methods.map(\.id))
-            let bankRules = snapshot.rules.filter { methodIds.contains($0.paymentMethodId) }
-
-            guard !bankRules.isEmpty else { continue }
-
-            let ruleStates = bankRules.enumerated().map { index, rule in
-                RuleState(ruleId: rule.id, isActive: rule.isActive, order: index)
-            }
-
-            let month = CashbackMonth(
-                bankId: bankId,
-                monthKey: currentMonthKey,
-                ruleStates: ruleStates,
-                source: .manual
-            )
-            newMonths.append(month)
-        }
-
-        return AppSnapshot(
-            banks: snapshot.banks,
-            paymentMethods: snapshot.paymentMethods,
-            rules: snapshot.rules,
-            months: newMonths,
-            progress: snapshot.progress,
-            loggedPayments: snapshot.loggedPayments
-        )
     }
 
     func persistSnapshot() {

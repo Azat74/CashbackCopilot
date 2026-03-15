@@ -372,9 +372,11 @@ final class AppModelMonthTests: XCTestCase {
         let fuelRule = CashbackRule(paymentMethodId: method.id, title: "АЗС 5%", category: .fuel, percent: 5)
         let groceriesRule = CashbackRule(paymentMethodId: method.id, title: "Продукты 3%", category: .groceries, percent: 3)
 
+        // Use current month key to avoid date-dependent test failures
+        let currentMonthKey = AppModel.monthKey(for: Date())
         let currentMonth = CashbackMonth(
             bankId: bank.id,
-            monthKey: "2026-03",
+            monthKey: currentMonthKey,
             ruleStates: [
                 RuleState(ruleId: fuelRule.id, isActive: true, order: 0),
                 RuleState(ruleId: groceriesRule.id, isActive: false, order: 1)  // Inactive in current month
