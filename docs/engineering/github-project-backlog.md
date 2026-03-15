@@ -46,14 +46,17 @@
 - [x] scanner -> confirm -> recommendation flow
 - [x] richer confirm context warnings and heuristics
 - [x] confirm actual cashback flow
+- [x] monthly cashback snapshot model
+- [x] compact iPhone flow stabilization for QR and history review
 
 ## Next Stories
 
-- [ ] monthly cashback snapshot model
 - [ ] screenshot import shell and photo picker
 - [ ] local screenshot OCR pipeline
 - [ ] parsed cashback draft review and save flow
 - [ ] raw special conditions and confidence markers in import draft
+- [ ] quick recommendation snapshots on the home screen
+- [ ] recent purchase intents on the home screen
 
 ## Testing and Automation
 
@@ -63,10 +66,47 @@
 
 ## Later
 
+- [ ] screenshot import bank-specific heuristics
 - [ ] QR parsing improvements
 - [ ] bank templates/presets
 - [ ] import/export
 - [ ] app lock / privacy hardening
-- [ ] bank-specific screenshot import heuristics
 - [ ] widget / shortcut quick launch for recommendation
+- [ ] smart quick hints for common categories
+- [ ] shareable cashback card
+- [ ] favorite merchants
+- [ ] context suggestions from repeated scenarios
 - [ ] privacy-safe collective cashback knowledge
+
+## MVP Priority Map
+
+### P0 — продукт должен уметь это для v1
+
+- [x] recommendation engine
+- [x] purchase-first UI
+- [x] quick categories
+- [x] recommendation screen
+- [x] optional amount input
+- [x] cashback rule storage
+- [ ] screenshot cashback import
+
+### P1 — сильно повышает удобство
+
+- [ ] quick recommendation snapshots
+- [ ] recent purchase intents
+- [x] QR payment flow
+- [x] explanation UI
+
+### P2 — ускорение и быстрый доступ
+
+- [ ] widget / shortcut quick launch for recommendation
+- [ ] smart quick hints for common categories
+- [x] confidence scoring in recommendation flow
+- [ ] confidence markers in screenshot import draft
+
+### P3 — growth / secondary surfaces
+
+- [x] history
+- [ ] shareable cashback card
+- [ ] favorite merchants
+- [ ] context suggestions from repeated scenarios

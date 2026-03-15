@@ -9,11 +9,12 @@
 1. В начале месяца пользователь вручную настраивает правила или импортирует их по скриншотам банковского приложения.
 2. Screenshot import pipeline строит локальный `ParsedCashbackDraft`, который пользователь валидирует перед сохранением.
 3. Подтвержденный draft сохраняется как актуальный месячный набор правил.
-4. Перед оплатой пользователь вводит сумму вручную или сканирует QR.
+4. На домашнем экране пользователь выбирает quick category, recent intent или QR flow.
 5. Приложение строит `PurchaseContext`.
 6. Локальный `RecommendationEngine` фильтрует правила, применяет ограничения и ранжирует варианты.
-7. Пользователь получает объяснимую рекомендацию.
+7. Пользователь получает объяснимую рекомендацию за минимальное число действий.
 8. После оплаты `ProgressService` обновляет локальный прогресс лимитов и историю.
+9. Для ускорения базовых сценариев приложение может показывать `QuickRecommendationSnapshot` для типовых категорий.
 
 ## Layers
 
@@ -32,5 +33,12 @@
 - no bank integrations
 - no external analytics
 - only local persistence
+
+## MVP priorities
+
+- product entry should start from purchase intent, not wallet administration
+- recommendation must remain useful even without amount or merchant name
+- screenshot import is part of MVP onboarding, not a side tool
+- recent intents and quick snapshots are acceleration layers over the same core engine
 
 Screenshot import design details: `docs/architecture/screenshot-import-engine.md`

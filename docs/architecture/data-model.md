@@ -26,6 +26,8 @@
 
 Контекст покупки перед оплатой: сумма, категория, merchant hint, source, channel, confidence.
 
+Ключевой инвариант: `amount` и `merchant` могут отсутствовать, но объект все равно должен оставаться валидным входом для recommendation flow.
+
 ### RecommendationOption
 
 Один кандидат на оплату с расчетом expected reward, confidence, reasons и risks.
@@ -33,6 +35,14 @@
 ### RecommendationResult
 
 Итоговая рекомендация: лучший вариант и список альтернатив.
+
+### QuickRecommendationSnapshot
+
+Предвычисленная краткая подсказка для типовой категории домашнего экрана. Нужна для быстрого first paint и дешевого повторного входа в recommendation flow.
+
+### RecentPurchaseIntent
+
+Легковесное локальное представление часто повторяемого сценария покупки, которое пользователь может переиспользовать в один тап.
 
 ### LoggedPayment
 
@@ -55,3 +65,5 @@
 - OCR и parser не должны напрямую создавать `CashbackRule` без шага user review
 - raw text особых условий хранится отдельно от структурированных полей, если parser не уверен в их значении
 - monthly snapshot должен быть first-class сущностью, а не неявным фильтром по дате
+- quick snapshots не заменяют `RecommendationResult`, а только ускоряют вход в него
+- history остается поддерживающей сущностью и не должна диктовать primary UX приложения
