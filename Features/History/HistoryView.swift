@@ -67,6 +67,8 @@ struct HistoryView: View {
         .navigationTitle("История")
         .sheet(item: $reviewingPayment) { payment in
             ConfirmActualCashbackSheet(payment: payment)
+                .presentationDetents([.large])
+                .presentationDragIndicator(.visible)
         }
     }
 

@@ -108,8 +108,10 @@ struct ConfirmPurchaseContextView: View {
         }
         .navigationTitle("Подтвердить контекст")
         .scrollDismissesKeyboard(.interactively)
-        .navigationDestination(item: $recommendationContext) { context in
-            RecommendationView(context: context)
+        .sheet(item: $recommendationContext) { context in
+            NavigationStack {
+                RecommendationView(context: context)
+            }
         }
     }
 
