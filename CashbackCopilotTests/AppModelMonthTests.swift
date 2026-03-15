@@ -103,6 +103,28 @@ final class AppModelMonthTests: XCTestCase {
         XCTAssertEqual(activeRules.first?.id, activeRule.id)
     }
 
+    func testInitWithCustomRulesAndDefaultMonthsMigratesInsteadOfUsingDemoMonths() {
+        let bank = Bank(name: "Тест Банк")
+        let method = PaymentMethod(bankId: bank.id, displayName: "Card", type: .debitCard)
+        let rule = CashbackRule(paymentMethodId: method.id, title: "АЗС 5%", category: .fuel, percent: 5)
+
+        let appModel = AppModel(
+            repository: nil,
+            banks: [bank],
+            paymentMethods: [method],
+            rules: [rule],
+            progress: [],
+            loggedPayments: []
+        )
+
+        let activeRules = appModel.activeRules(for: appModel.currentMonthKey)
+
+        XCTAssertEqual(appModel.months.count, 1)
+        XCTAssertEqual(appModel.months.first?.bankId, bank.id)
+        XCTAssertEqual(appModel.months.first?.ruleStates.map(\.ruleId), [rule.id])
+        XCTAssertEqual(activeRules.map(\.id), [rule.id])
+    }
+
     // MARK: - Month Management Tests
 
     func testCreateMonth() {

@@ -23,7 +23,7 @@ final class AppModel {
         banks: [Bank] = AppSnapshot.demo.banks,
         paymentMethods: [PaymentMethod] = AppSnapshot.demo.paymentMethods,
         rules: [CashbackRule] = AppSnapshot.demo.rules,
-        months: [CashbackMonth] = AppSnapshot.demo.months,
+        months: [CashbackMonth] = [],
         progress: [SpendProgress] = AppSnapshot.demo.progress,
         loggedPayments: [LoggedPayment] = AppSnapshot.demo.loggedPayments
     ) {
