@@ -15,6 +15,7 @@
 		2E847B9CC9D70C1EB9D77B81 /* RecommendationRegressionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */; };
 		2F339ABCDA6B35649CA030DA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33F21B495DB4837A2F39470 /* SettingsView.swift */; };
 		3A0581B48A09914029DDBB50 /* ProgressService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 619124DA2F0725D39C910B81 /* ProgressService.swift */; };
+		45B146D2F980FD596FC648EC /* CashbackMonth.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6D042AF82128FF3AB8F21C0 /* CashbackMonth.swift */; };
 		4C916D005A1CBB0876F87CAC /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF9491B200856DCBBA2A48A /* RootTabView.swift */; };
 		4E13C5822DB6839D1B9B40AA /* RecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB21D02BE79C55947C8E337 /* RecommendationView.swift */; };
 		55E34FFC8C6E6D91FF9390EE /* ConfirmActualCashbackSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBD91979DC7AD4523F1AA1E /* ConfirmActualCashbackSheet.swift */; };
@@ -97,6 +98,7 @@
 		9CB8CF1020AD9FE6B09FE59F /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
 		A281F86C0A65081544D097B1 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		A33F21B495DB4837A2F39470 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A6D042AF82128FF3AB8F21C0 /* CashbackMonth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackMonth.swift; sourceTree = "<group>"; };
 		ABB21D02BE79C55947C8E337 /* RecommendationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationView.swift; sourceTree = "<group>"; };
 		AEED2306687DBE4DF97FEB00 /* RecommendationOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationOption.swift; sourceTree = "<group>"; };
 		B402767113D49676E44FFC2E /* CashbackCopilot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CashbackCopilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -205,6 +207,7 @@
 			isa = PBXGroup;
 			children = (
 				9514DF5A266AA53E07827621 /* Bank.swift */,
+				A6D042AF82128FF3AB8F21C0 /* CashbackMonth.swift */,
 				B9563F1696C7656AC16BA456 /* CashbackRule.swift */,
 				E4B91EB8E56127690ECEE1A9 /* LoggedPayment.swift */,
 				CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */,
@@ -468,6 +471,7 @@
 				DD39436BD4F0A949B1E0A540 /* AppSnapshotRecord.swift in Sources */,
 				D3CA443A5B0C04F184F51FD5 /* Bank.swift in Sources */,
 				A6606F57B7BC5EF4CA5A1FC8 /* CashbackCopilotApp.swift in Sources */,
+				45B146D2F980FD596FC648EC /* CashbackMonth.swift in Sources */,
 				E9E4C08FC6FE5B5DDB168807 /* CashbackRule.swift in Sources */,
 				55E34FFC8C6E6D91FF9390EE /* ConfirmActualCashbackSheet.swift in Sources */,
 				106F7F6B5B6232E3B4B2DFB9 /* ConfirmPurchaseContextView.swift in Sources */,
