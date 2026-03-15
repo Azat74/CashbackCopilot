@@ -368,26 +368,24 @@ final class AppModel {
         return banks.first { $0.id == method.bankId }
     }
 
-    // MARK: - Month-scoped methods
+}
 
+extension AppModel {
     var currentMonthKey: String {
         Self.monthKey(for: Date())
     }
 
     func activeRules(for monthKey: String, bankId: UUID? = nil) -> [CashbackRule] {
-        // Find months matching the criteria
         let matchingMonths = months.filter { month in
             month.monthKey == monthKey && (bankId == nil || month.bankId == bankId)
         }
 
-        // If no months exist, fall back to all active rules for backward compatibility
         guard !matchingMonths.isEmpty else {
             return rules.filter { $0.isActive }
         }
 
-        // Collect all active rule IDs from matching months
         let activeRuleIDs = Set(matchingMonths.flatMap { month in
-            month.ruleStates.filter { $0.isActive }.map { $0.ruleId }
+            month.ruleStates.filter { $0.isActive }.map(\.ruleId)
         })
 
         return rules.filter { activeRuleIDs.contains($0.id) }
@@ -430,9 +428,9 @@ final class AppModel {
         months[monthIndex].ruleStates[stateIndex].isActive = active
         persistSnapshot()
     }
+}
 
-    // MARK: - Static Helpers (accessible to tests)
-
+extension AppModel {
     static func monthKey(for date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")
@@ -444,8 +442,6 @@ final class AppModel {
         guard snapshot.months.isEmpty else { return snapshot }
 
         let currentMonthKey = monthKey(for: Date())
-
-        // Group rules by bank via payment methods
         let bankPaymentMethods = Dictionary(grouping: snapshot.paymentMethods) { $0.bankId }
         var newMonths: [CashbackMonth] = []
 
@@ -459,13 +455,14 @@ final class AppModel {
                 RuleState(ruleId: rule.id, isActive: rule.isActive, order: index)
             }
 
-            let month = CashbackMonth(
-                bankId: bankId,
-                monthKey: currentMonthKey,
-                ruleStates: ruleStates,
-                source: .manual
+            newMonths.append(
+                CashbackMonth(
+                    bankId: bankId,
+                    monthKey: currentMonthKey,
+                    ruleStates: ruleStates,
+                    source: .manual
+                )
             )
-            newMonths.append(month)
         }
 
         return AppSnapshot(
@@ -477,7 +474,6 @@ final class AppModel {
             loggedPayments: snapshot.loggedPayments
         )
     }
-
 }
 
 private extension AppModel {
