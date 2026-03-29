@@ -55,7 +55,7 @@ final class CashbackCopilotImportUITests: XCTestCase {
         }
         XCTAssertTrue(draftReadyState.waitForExistence(timeout: 5))
 
-        let unassignedConditions = app.otherElements["import.draftUnassignedConditions"]
+        let unassignedConditions = app.staticTexts["import.draftUnassignedConditionsTitle"]
         if !unassignedConditions.exists {
             importScreen.swipeUp()
         }

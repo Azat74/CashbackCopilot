@@ -161,7 +161,6 @@ struct ScreenshotImportView: View {
 
                     if !parsedDraft.unassignedConditionLines.isEmpty {
                         ImportDraftConditionsCard(lines: parsedDraft.unassignedConditionLines)
-                            .accessibilityIdentifier("import.draftUnassignedConditions")
                     }
 
                     ForEach(parsedDraft.rules.indices, id: \.self) { index in
@@ -648,6 +647,7 @@ private struct ImportDraftConditionsCard: View {
         VStack(alignment: .leading, spacing: 8) {
             Label("Неразобранные условия", systemImage: "text.quote")
                 .font(.subheadline.weight(.semibold))
+                .accessibilityIdentifier("import.draftUnassignedConditionsTitle")
 
             Text("Эти строки не удалось надежно привязать к категории. Проверьте их перед сохранением месяца.")
                 .font(.footnote)
@@ -660,6 +660,8 @@ private struct ImportDraftConditionsCard: View {
             }
         }
         .padding(.vertical, 4)
+        .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("import.draftUnassignedConditions")
     }
 }
 
