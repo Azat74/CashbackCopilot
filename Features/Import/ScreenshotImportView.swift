@@ -16,6 +16,9 @@ struct ScreenshotImportView: View {
     @State private var loadErrorMessage: String?
 
     var body: some View {
+        let hasSelectedScreenshots = !screenshots.isEmpty
+        let photoPickerTitle = hasSelectedScreenshots ? "Изменить набор скриншотов" : "Выбрать скриншоты"
+
         List {
             Section("Импорт в месяц") {
                 LabeledContent("Банк", value: bank.name)
@@ -30,7 +33,7 @@ struct ScreenshotImportView: View {
             }
 
             Section("Скриншоты") {
-                if screenshots.isEmpty, !isLoadingSelection {
+                if !hasSelectedScreenshots, !isLoadingSelection {
                     ContentUnavailableView(
                         "Скриншоты пока не выбраны",
                         systemImage: "photo.on.rectangle.angled",
@@ -51,7 +54,7 @@ struct ScreenshotImportView: View {
                     .accessibilityIdentifier("import.loadingState")
                 }
 
-                if !screenshots.isEmpty {
+                if hasSelectedScreenshots {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("\(screenshots.count) скриншотов готовы к локальному разбору")
                             .font(.subheadline.weight(.medium))
@@ -95,7 +98,7 @@ struct ScreenshotImportView: View {
                     matching: .images
                 ) {
                     Label(
-                        screenshots.isEmpty ? "Выбрать скриншоты" : "Изменить набор скриншотов",
+                        photoPickerTitle,
                         systemImage: "photo.badge.plus"
                     )
                 }
