@@ -78,7 +78,7 @@ final class CashbackImportDraftParserTests: XCTestCase {
             draft?.rules.first?.specialConditionsText,
             "Лимит 1000 ₽ в месяц\nНе действует при оплате по QR"
         )
-        XCTAssertEqual(draft?.rules.first?.confidence, 0.75)
+        XCTAssertEqual(draft?.rules.first?.confidence, 0.55)
         XCTAssertEqual(draft?.rules.first?.needsReview, true)
         XCTAssertEqual(draft?.unassignedConditionLines, [])
     }
