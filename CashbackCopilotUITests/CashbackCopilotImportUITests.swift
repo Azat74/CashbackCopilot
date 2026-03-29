@@ -42,7 +42,7 @@ final class CashbackCopilotImportUITests: XCTestCase {
         let ocrReadyState = app.staticTexts["import.ocrReadyState"]
         XCTAssertTrue(ocrReadyState.waitForExistence(timeout: 5))
 
-        let ocrPreviewText = app.staticTexts["import.ocrPreviewText"].firstMatch
-        XCTAssertTrue(ocrPreviewText.waitForExistence(timeout: 5))
+        let ocrPreviewCard = app.otherElements["import.ocrPreviewCard"].firstMatch
+        XCTAssertTrue(ocrPreviewCard.waitForExistence(timeout: 5))
     }
 }
