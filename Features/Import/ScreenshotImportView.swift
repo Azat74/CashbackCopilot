@@ -3,6 +3,13 @@ import SwiftUI
 import UIKit
 
 struct ScreenshotImportView: View {
+    private enum DraftMonthTarget: String, CaseIterable, Identifiable {
+        case current
+        case next
+
+        var id: String { rawValue }
+    }
+
     private enum FeatureFlags {
         static let isUITestSmoke = ProcessInfo.processInfo.arguments.contains("UITEST_SMOKE")
     }
@@ -17,15 +24,23 @@ struct ScreenshotImportView: View {
     @State private var isRecognizingText = false
     @State private var loadErrorMessage: String?
     @State private var failedOCRCount = 0
+    @State private var parsedDraft: ParsedCashbackDraft?
+    @State private var selectedPaymentMethodId: UUID?
+    @State private var draftMonthTarget: DraftMonthTarget = .current
+    @State private var isSavingDraft = false
+    @State private var saveSuccessMessage: String?
 
     private let ocrPipeline: ScreenshotImportOCRPipeline
+    private let draftParser: CashbackImportDraftParser
 
     init(
         bank: Bank,
-        ocrPipeline: ScreenshotImportOCRPipeline = ScreenshotImportOCRPipeline()
+        ocrPipeline: ScreenshotImportOCRPipeline = ScreenshotImportOCRPipeline(),
+        draftParser: CashbackImportDraftParser = CashbackImportDraftParser()
     ) {
         self.bank = bank
         self.ocrPipeline = ocrPipeline
+        self.draftParser = draftParser
     }
 
     var body: some View {
@@ -137,6 +152,81 @@ struct ScreenshotImportView: View {
                 }
             }
 
+            if let parsedDraft {
+                Section("Черновик правил") {
+                    Text("Проверьте категории и выгоду перед сохранением в месяц.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .accessibilityIdentifier("import.draftReadyState")
+
+                    ForEach(parsedDraft.rules.indices, id: \.self) { index in
+                        ImportDraftRuleEditor(
+                            rule: bindingForDraftRule(at: index)
+                        )
+                        .accessibilityIdentifier("import.draftRuleEditor")
+                    }
+                }
+            }
+
+            if !recognizedScreenshots.isEmpty {
+                Section("Сохранение в месяц") {
+                    if availablePaymentMethods.isEmpty {
+                        Label(
+                            "Добавьте способ оплаты в кошельке, чтобы сохранить импортированные правила.",
+                            systemImage: "creditcard"
+                        )
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
+                        .accessibilityIdentifier("import.missingPaymentMethods")
+                    } else {
+                        Picker("Способ оплаты", selection: $selectedPaymentMethodId) {
+                            ForEach(availablePaymentMethods) { method in
+                                Text(method.displayName)
+                                    .tag(Optional(method.id))
+                            }
+                        }
+                        .accessibilityIdentifier("import.paymentMethodPicker")
+
+                        Picker("Куда сохранить", selection: $draftMonthTarget) {
+                            Text("Текущий месяц")
+                                .tag(DraftMonthTarget.current)
+                            Text("Следующий месяц")
+                                .tag(DraftMonthTarget.next)
+                        }
+                        .pickerStyle(.segmented)
+                        .accessibilityIdentifier("import.targetMonthPicker")
+
+                        if let parsedDraft {
+                            Text(
+                                "Будет сохранено \(parsedDraft.rules.count) правил в \(targetMonthKey). "
+                                    + "Текущий snapshot банка за этот месяц будет заменен импортом."
+                            )
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                        }
+
+                        Button {
+                            saveDraft()
+                        } label: {
+                            if isSavingDraft {
+                                Label("Сохраняем…", systemImage: "arrow.down.doc")
+                            } else {
+                                Label("Сохранить черновик в месяц", systemImage: "arrow.down.doc")
+                            }
+                        }
+                        .disabled(isSavingDraft || selectedPaymentMethodId == nil || parsedDraft?.rules.isEmpty != false)
+                        .accessibilityIdentifier("import.saveDraftButton")
+                    }
+
+                    if let saveSuccessMessage {
+                        Label(saveSuccessMessage, systemImage: "checkmark.circle")
+                            .font(.footnote)
+                            .foregroundStyle(.green)
+                            .accessibilityIdentifier("import.saveSuccessMessage")
+                    }
+                }
+            }
+
             Section("Действия") {
                 PhotosPicker(
                     selection: $selectedItems,
@@ -168,12 +258,30 @@ struct ScreenshotImportView: View {
                 await loadSelectedItems(newItems)
             }
         }
+        .onAppear {
+            if selectedPaymentMethodId == nil {
+                selectedPaymentMethodId = availablePaymentMethods.first?.id
+            }
+        }
     }
 }
 
 private extension ScreenshotImportView {
     private var currentMonthLabel: String {
         appModel.currentMonthKey
+    }
+
+    private var targetMonthKey: String {
+        switch draftMonthTarget {
+        case .current:
+            appModel.currentMonthKey
+        case .next:
+            AppModel.nextMonthKey(from: Date())
+        }
+    }
+
+    private var availablePaymentMethods: [PaymentMethod] {
+        appModel.paymentMethods(for: bank.id)
     }
 
     private var selectionSummary: String {
@@ -200,6 +308,8 @@ private extension ScreenshotImportView {
         isLoadingSelection = false
         isRecognizingText = false
         failedOCRCount = 0
+        parsedDraft = nil
+        saveSuccessMessage = nil
     }
 
     private func loadDemoScreenshots() {
@@ -220,6 +330,8 @@ private extension ScreenshotImportView {
         recognizedScreenshots = []
         loadErrorMessage = nil
         isLoadingSelection = false
+        parsedDraft = nil
+        saveSuccessMessage = nil
 
         Task { @MainActor in
             await runOCR(for: demoScreenshots)
@@ -238,6 +350,8 @@ private extension ScreenshotImportView {
         loadErrorMessage = nil
         recognizedScreenshots = []
         failedOCRCount = 0
+        parsedDraft = nil
+        saveSuccessMessage = nil
 
         var loadedScreenshots: [ImportScreenshotAsset] = []
         for (index, item) in items.enumerated() {
@@ -290,12 +404,61 @@ private extension ScreenshotImportView {
         recognizedScreenshots = result.screenshots
         failedOCRCount = result.failedScreenshotCount
         isRecognizingText = false
+        rebuildDraft(from: result.screenshots)
 
         if result.failedScreenshotCount > 0 {
             loadErrorMessage = "Часть скриншотов не удалось обработать локально. Проверьте выбранные изображения."
         } else if result.screenshots.isEmpty {
             loadErrorMessage = "Не удалось извлечь текст из выбранных изображений."
         }
+    }
+
+    private func rebuildDraft(from screenshots: [RecognizedImportScreenshot]) {
+        parsedDraft = draftParser.makeDraft(from: screenshots, bank: bank)
+        if selectedPaymentMethodId == nil {
+            selectedPaymentMethodId = availablePaymentMethods.first?.id
+        }
+
+        if !screenshots.isEmpty, parsedDraft == nil, loadErrorMessage == nil {
+            loadErrorMessage = "OCR завершен, но черновик правил пока не удалось собрать автоматически."
+        }
+    }
+
+    private func bindingForDraftRule(at index: Int) -> Binding<ParsedRuleDraft> {
+        Binding(
+            get: {
+                parsedDraft?.rules[index]
+                    ?? ParsedRuleDraft(
+                        title: "",
+                        category: .other,
+                        sourceScreenshotTitle: "",
+                        sourceLine: ""
+                    )
+            },
+            set: { updatedRule in
+                guard parsedDraft?.rules.indices.contains(index) == true else {
+                    return
+                }
+
+                parsedDraft?.rules[index] = updatedRule
+            }
+        )
+    }
+
+    private func saveDraft() {
+        guard let parsedDraft,
+              let selectedPaymentMethodId else {
+            return
+        }
+
+        isSavingDraft = true
+        appModel.saveImportedDraft(
+            parsedDraft,
+            paymentMethodId: selectedPaymentMethodId,
+            monthKey: targetMonthKey
+        )
+        isSavingDraft = false
+        saveSuccessMessage = "Черновик сохранен в \(targetMonthKey)."
     }
 }
 
@@ -361,6 +524,76 @@ private struct ImportOCRPreviewCard: View {
             }
         }
         .padding(.vertical, 4)
+    }
+}
+
+private struct ImportDraftRuleEditor: View {
+    @Binding var rule: ParsedRuleDraft
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            TextField("Название категории", text: $rule.title)
+                .accessibilityIdentifier("import.draftRuleTitleField")
+
+            Picker("Категория", selection: $rule.category) {
+                ForEach(CashbackCategory.allCases, id: \.self) { category in
+                    Text(category.displayName)
+                        .tag(category)
+                }
+            }
+            .accessibilityIdentifier("import.draftRuleCategoryPicker")
+
+            HStack(spacing: 12) {
+                TextField(
+                    "Кешбек %",
+                    text: Binding(
+                        get: { decimalString(rule.percent) },
+                        set: { rule.percent = parseDecimal(from: $0) }
+                    )
+                )
+                .keyboardType(.decimalPad)
+                .accessibilityIdentifier("import.draftRulePercentField")
+
+                TextField(
+                    "Фикс. ₽",
+                    text: Binding(
+                        get: { decimalString(rule.fixedReward) },
+                        set: { rule.fixedReward = parseDecimal(from: $0) }
+                    )
+                )
+                .keyboardType(.decimalPad)
+                .accessibilityIdentifier("import.draftRuleFixedRewardField")
+            }
+
+            Text("Источник: \(rule.sourceScreenshotTitle)")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+
+            Text(rule.sourceLine)
+                .font(.caption.monospaced())
+                .foregroundStyle(.secondary)
+                .accessibilityIdentifier("import.draftRuleSourceLine")
+        }
+        .padding(.vertical, 4)
+    }
+
+    private func parseDecimal(from text: String) -> Double? {
+        let normalized = text
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: ",", with: ".")
+        return Double(normalized)
+    }
+
+    private func decimalString(_ value: Double?) -> String {
+        guard let value else {
+            return ""
+        }
+
+        if value.rounded() == value {
+            return String(Int(value))
+        }
+
+        return String(value)
     }
 }
 

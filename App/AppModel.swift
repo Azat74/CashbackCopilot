@@ -428,6 +428,66 @@ extension AppModel {
         months[monthIndex].ruleStates[stateIndex].isActive = active
         persistSnapshot()
     }
+
+    func saveImportedDraft(
+        _ draft: ParsedCashbackDraft,
+        paymentMethodId: UUID,
+        monthKey: String
+    ) {
+        guard let paymentMethod = paymentMethods.first(where: { $0.id == paymentMethodId }),
+              paymentMethod.bankId == draft.bankId else {
+            return
+        }
+
+        let sanitizedRules = draft.rules.compactMap { draftRule -> CashbackRule? in
+            let trimmedTitle = draftRule.title.trimmingCharacters(in: .whitespacesAndNewlines)
+            guard !trimmedTitle.isEmpty else {
+                return nil
+            }
+
+            guard draftRule.percent != nil || draftRule.fixedReward != nil else {
+                return nil
+            }
+
+            return CashbackRule(
+                paymentMethodId: paymentMethodId,
+                title: trimmedTitle,
+                category: draftRule.category,
+                percent: draftRule.percent,
+                fixedReward: draftRule.fixedReward,
+                priority: 0,
+                isActive: true
+            )
+        }
+
+        guard !sanitizedRules.isEmpty else {
+            return
+        }
+
+        rules.append(contentsOf: sanitizedRules)
+
+        let ruleStates = sanitizedRules.enumerated().map { index, rule in
+            RuleState(ruleId: rule.id, isActive: true, order: index)
+        }
+
+        let importedMonth = CashbackMonth(
+            id: month(for: monthKey, bankId: draft.bankId)?.id ?? UUID(),
+            bankId: draft.bankId,
+            monthKey: monthKey,
+            ruleStates: ruleStates,
+            source: .screenshotImport,
+            importedAt: .now,
+            notes: "Импортировано из \(draft.sourceScreenshotsCount) скриншотов"
+        )
+
+        if let monthIndex = months.firstIndex(where: { $0.monthKey == monthKey && $0.bankId == draft.bankId }) {
+            months[monthIndex] = importedMonth
+        } else {
+            months.append(importedMonth)
+        }
+
+        persistSnapshot()
+    }
 }
 
 extension AppModel {
@@ -436,6 +496,12 @@ extension AppModel {
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM"
         return formatter.string(from: date)
+    }
+
+    static func nextMonthKey(from date: Date) -> String {
+        let calendar = Calendar(identifier: .gregorian)
+        let nextDate = calendar.date(byAdding: .month, value: 1, to: date) ?? date
+        return monthKey(for: nextDate)
     }
 
     static func migrateIfNeeded(snapshot: AppSnapshot) -> AppSnapshot {

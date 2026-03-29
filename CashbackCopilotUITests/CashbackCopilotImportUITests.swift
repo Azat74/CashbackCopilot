@@ -42,5 +42,11 @@ final class CashbackCopilotImportUITests: XCTestCase {
         let ocrReadyState = app.staticTexts["import.ocrReadyState"]
         XCTAssertTrue(ocrReadyState.waitForExistence(timeout: 5))
         XCTAssertTrue(selectedCount.label.contains("обработаны"))
+
+        let draftReadyState = app.staticTexts["import.draftReadyState"]
+        XCTAssertTrue(draftReadyState.waitForExistence(timeout: 5))
+
+        let saveDraftButton = app.buttons["import.saveDraftButton"]
+        XCTAssertTrue(saveDraftButton.waitForExistence(timeout: 5))
     }
 }
