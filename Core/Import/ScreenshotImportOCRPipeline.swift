@@ -5,7 +5,7 @@ struct ScreenshotImportOCRBatchResult: Equatable {
     let failedScreenshotCount: Int
 }
 
-struct ScreenshotImportOCRPipeline {
+struct ScreenshotImportOCRPipeline: Sendable {
     private let ocrService: any OCRService
 
     init(ocrService: any OCRService = VisionOCRService()) {

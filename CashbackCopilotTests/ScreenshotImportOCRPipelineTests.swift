@@ -59,7 +59,7 @@ final class ScreenshotImportOCRPipelineTests: XCTestCase {
     }
 }
 
-private final class StubOCRService: OCRService {
+private final class StubOCRService: OCRService, @unchecked Sendable {
     let result: [OCRTextBlock]
     var callCount = 0
     var failOnCall: Int?

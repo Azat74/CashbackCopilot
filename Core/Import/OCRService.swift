@@ -2,7 +2,7 @@ import Foundation
 import UIKit
 import Vision
 
-protocol OCRService {
+protocol OCRService: Sendable {
     func recognizeText(in imageData: Data) async throws -> [OCRTextBlock]
 }
 
@@ -62,4 +62,3 @@ struct VisionOCRService: OCRService {
         return lhs.boundingBox.minX < rhs.boundingBox.minX
     }
 }
-
