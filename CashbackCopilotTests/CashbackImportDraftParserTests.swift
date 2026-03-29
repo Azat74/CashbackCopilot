@@ -8,10 +8,13 @@ final class CashbackImportDraftParserTests: XCTestCase {
 
         let screenshots = [
             RecognizedImportScreenshot(
-                screenshotId: UUID(),
+                id: UUID(),
                 title: "Категории месяца",
-                recognizedText: "АЗС 5%\nКафе и рестораны 7%\nМаркетплейсы 3%",
-                textBlocks: []
+                previewImageData: nil,
+                placeholderSystemImage: "photo",
+                textBlocks: OCRTextBlock.demoBlocks(
+                    from: "АЗС 5%\nКафе и рестораны 7%\nМаркетплейсы 3%"
+                )
             )
         ]
 
@@ -19,8 +22,8 @@ final class CashbackImportDraftParserTests: XCTestCase {
 
         XCTAssertNotNil(draft)
         XCTAssertEqual(draft?.rules.count, 3)
-        XCTAssertEqual(draft?.rules.map(\.category), [.fuel, .cafes, .marketplaces])
-        XCTAssertEqual(draft?.rules.map(\.percent), [5, 7, 3])
+        XCTAssertEqual(draft?.rules.map { $0.category }, [.fuel, .cafes, .marketplaces])
+        XCTAssertEqual(draft?.rules.map { $0.percent }, [5, 7, 3])
     }
 
     func testMakeDraftIgnoresConditionOnlyLines() {
@@ -29,10 +32,13 @@ final class CashbackImportDraftParserTests: XCTestCase {
 
         let screenshots = [
             RecognizedImportScreenshot(
-                screenshotId: UUID(),
+                id: UUID(),
                 title: "Условия категории",
-                recognizedText: "Лимит 1000 ₽ в месяц\nНе действует при оплате по QR",
-                textBlocks: []
+                previewImageData: nil,
+                placeholderSystemImage: "text.bubble",
+                textBlocks: OCRTextBlock.demoBlocks(
+                    from: "Лимит 1000 ₽ в месяц\nНе действует при оплате по QR"
+                )
             )
         ]
 
