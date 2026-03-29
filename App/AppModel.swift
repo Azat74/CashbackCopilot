@@ -455,7 +455,7 @@ extension AppModel {
                 category: draftRule.category,
                 percent: draftRule.percent,
                 fixedReward: draftRule.fixedReward,
-                specialConditionsText: sanitizedSpecialConditions(from: draftRule.specialConditionsText),
+                specialConditionsText: AppModel.sanitizedSpecialConditions(from: draftRule.specialConditionsText),
                 priority: 0,
                 isActive: true
             )
@@ -478,7 +478,7 @@ extension AppModel {
             ruleStates: ruleStates,
             source: .screenshotImport,
             importedAt: .now,
-            notes: importNotes(for: draft)
+            notes: AppModel.importNotes(for: draft)
         )
 
         if let monthIndex = months.firstIndex(where: { $0.monthKey == monthKey && $0.bankId == draft.bankId }) {
