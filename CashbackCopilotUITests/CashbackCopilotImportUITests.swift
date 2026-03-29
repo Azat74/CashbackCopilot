@@ -39,7 +39,10 @@ final class CashbackCopilotImportUITests: XCTestCase {
         XCTAssertTrue(selectedCount.waitForExistence(timeout: 5))
         XCTAssertTrue(selectedCount.label.contains("2"))
 
-        let readyState = app.staticTexts["import.readyState"]
-        XCTAssertTrue(readyState.exists)
+        let ocrReadyState = app.staticTexts["import.ocrReadyState"]
+        XCTAssertTrue(ocrReadyState.waitForExistence(timeout: 5))
+
+        let ocrPreviewText = app.staticTexts["import.ocrPreviewText"].firstMatch
+        XCTAssertTrue(ocrPreviewText.waitForExistence(timeout: 5))
     }
 }
