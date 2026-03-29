@@ -4,6 +4,7 @@ struct WalletView: View {
     @Environment(AppModel.self) private var appModel
     @State private var isAddBankPresented = false
     @State private var bankForNewMethod: Bank?
+    @State private var bankForScreenshotImport: Bank?
 
     var body: some View {
         List {
@@ -33,6 +34,14 @@ struct WalletView: View {
                         } label: {
                             Label("Добавить способ оплаты", systemImage: "plus.circle")
                         }
+                        .accessibilityIdentifier("wallet.addPaymentMethodButton")
+
+                        Button {
+                            bankForScreenshotImport = bank
+                        } label: {
+                            Label("Импортировать из скриншотов", systemImage: "photo.badge.plus")
+                        }
+                        .accessibilityIdentifier("wallet.openImportButton")
                     } header: {
                         HStack {
                             VStack(alignment: .leading, spacing: 2) {
@@ -59,6 +68,7 @@ struct WalletView: View {
         .animation(.default, value: appModel.paymentMethods)
         .animation(.default, value: appModel.rules)
         .navigationTitle("Кошелек")
+        .accessibilityIdentifier("wallet.screen")
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 NavigationLink("Правила") {
@@ -82,6 +92,11 @@ struct WalletView: View {
         .sheet(item: $bankForNewMethod) { bank in
             NavigationStack {
                 AddPaymentMethodView(bank: bank)
+            }
+        }
+        .sheet(item: $bankForScreenshotImport) { bank in
+            NavigationStack {
+                ScreenshotImportView(bank: bank)
             }
         }
     }

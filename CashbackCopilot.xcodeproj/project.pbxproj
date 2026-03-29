@@ -22,6 +22,7 @@
 		565A49459B2236E52F3ACDFF /* RecommendationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEED2306687DBE4DF97FEB00 /* RecommendationOption.swift */; };
 		57921D22C3C0775D1A4897D6 /* RuleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */; };
 		581716B8727394694C061F31 /* PurchaseContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */; };
+		583FCB60E545A4E5A36F7FF0 /* CashbackCopilotImportUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA5F9FAEA462DBEC29C52A9 /* CashbackCopilotImportUITests.swift */; };
 		585185CCA54DABC27CAF34C4 /* CashbackCopilotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */; };
 		58A56C4A3DB2FECC152D659D /* ProgressRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3D491D41965546DA783E3E /* ProgressRepository.swift */; };
 		5DF98F2BA3242A3548F23390 /* SpendProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844A63C3ACD853BEB1A6A016 /* SpendProgress.swift */; };
@@ -31,6 +32,7 @@
 		801A576E5ADE6D2034E7B8D3 /* PreviewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B95850B2BA8BBE2A3D7608 /* PreviewContainer.swift */; };
 		808A07CE5B8916410B95FFC9 /* HistoryRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C0D5E14B859CE5B1BED5EB5 /* HistoryRepository.swift */; };
 		83CC7F9F50DE44B30E79A8E5 /* LoggedPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4B91EB8E56127690ECEE1A9 /* LoggedPayment.swift */; };
+		8938AEA94D62A24EF0D0C59D /* ScreenshotImportView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6317E1F9AAAF753EBF561229 /* ScreenshotImportView.swift */; };
 		9DCB06692A5C31EAC52CB79B /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F64F327E7C93E159FB126613 /* HistoryView.swift */; };
 		A199996D6C8ABC8DE94BABA3 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CB8CF1020AD9FE6B09FE59F /* MockData.swift */; };
 		A6606F57B7BC5EF4CA5A1FC8 /* CashbackCopilotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D42610CB1CC2A6EE4435B6EE /* CashbackCopilotApp.swift */; };
@@ -88,6 +90,7 @@
 		5870990B36AF70C02F5BE74A /* QRParsingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRParsingServiceTests.swift; sourceTree = "<group>"; };
 		5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseContext.swift; sourceTree = "<group>"; };
 		619124DA2F0725D39C910B81 /* ProgressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressService.swift; sourceTree = "<group>"; };
+		6317E1F9AAAF753EBF561229 /* ScreenshotImportView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotImportView.swift; sourceTree = "<group>"; };
 		6B3D491D41965546DA783E3E /* ProgressRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressRepository.swift; sourceTree = "<group>"; };
 		6E676550568E4FDBDFA4BB5C /* ScannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		707893AD917397BBD66B2B4B /* WalletView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletView.swift; sourceTree = "<group>"; };
@@ -115,6 +118,7 @@
 		FA47D795B5C8216301CD5179 /* LocalSnapshotRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalSnapshotRepository.swift; sourceTree = "<group>"; };
 		FD12F0D3D789A6C52C19B644 /* CurrencyFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyFormatter.swift; sourceTree = "<group>"; };
 		FDDC80C70EB6D1F1DC12F349 /* BusinessGuardrailsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BusinessGuardrailsTests.swift; sourceTree = "<group>"; };
+		FFA5F9FAEA462DBEC29C52A9 /* CashbackCopilotImportUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotImportUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -185,6 +189,7 @@
 				F65C067069CF745F1772AFEA /* ConfirmPurchaseContext */,
 				A38345B64E4B5A734FC92E3C /* History */,
 				8F00A3F845A6BD42D00EEAFA /* Home */,
+				50E2620A87C569BAD5675D7F /* Import */,
 				3655C403BBB03D3466ECC492 /* Onboarding */,
 				98D5581A93A7B26CFA3B5993 /* Recommendation */,
 				537A5A3CDD2CEE3B69E26C04 /* RuleEditor */,
@@ -233,6 +238,14 @@
 				6E676550568E4FDBDFA4BB5C /* ScannerView.swift */,
 			);
 			path = Scanner;
+			sourceTree = "<group>";
+		};
+		50E2620A87C569BAD5675D7F /* Import */ = {
+			isa = PBXGroup;
+			children = (
+				6317E1F9AAAF753EBF561229 /* ScreenshotImportView.swift */,
+			);
+			path = Import;
 			sourceTree = "<group>";
 		};
 		537A5A3CDD2CEE3B69E26C04 /* RuleEditor */ = {
@@ -284,6 +297,7 @@
 		93B9768D3FEB82DDA8DD843E /* CashbackCopilotUITests */ = {
 			isa = PBXGroup;
 			children = (
+				FFA5F9FAEA462DBEC29C52A9 /* CashbackCopilotImportUITests.swift */,
 				546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */,
 			);
 			path = CashbackCopilotUITests;
@@ -499,6 +513,7 @@
 				57921D22C3C0775D1A4897D6 /* RuleEditorView.swift in Sources */,
 				D7035E33E8D569922D66B88D /* RulesRepository.swift in Sources */,
 				F38FEA894A571B80E2148500 /* ScannerView.swift in Sources */,
+				8938AEA94D62A24EF0D0C59D /* ScreenshotImportView.swift in Sources */,
 				2F339ABCDA6B35649CA030DA /* SettingsView.swift in Sources */,
 				5DF98F2BA3242A3548F23390 /* SpendProgress.swift in Sources */,
 				26B9DE57F4BE5992DC366A53 /* WalletRepository.swift in Sources */,
@@ -522,6 +537,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				583FCB60E545A4E5A36F7FF0 /* CashbackCopilotImportUITests.swift in Sources */,
 				585185CCA54DABC27CAF34C4 /* CashbackCopilotUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
