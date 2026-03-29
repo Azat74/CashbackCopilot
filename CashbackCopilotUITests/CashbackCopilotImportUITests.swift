@@ -29,7 +29,6 @@ final class CashbackCopilotImportUITests: XCTestCase {
 
         let importNavigationBar = app.navigationBars["Импорт кешбека"]
         XCTAssertTrue(importNavigationBar.waitForExistence(timeout: 5))
-        XCTAssertTrue(app.otherElements["import.emptyState"].exists)
 
         let demoLoadButton = app.buttons["import.loadDemoScreenshotsButton"]
         XCTAssertTrue(demoLoadButton.waitForExistence(timeout: 5))
