@@ -19,16 +19,16 @@ final class CashbackCopilotImportUITests: XCTestCase {
         XCTAssertTrue(walletTab.waitForExistence(timeout: 5))
         walletTab.tap()
 
-        let walletScreen = app.tables["wallet.screen"]
-        XCTAssertTrue(walletScreen.waitForExistence(timeout: 5))
+        let walletNavigationBar = app.navigationBars["Кошелек"]
+        XCTAssertTrue(walletNavigationBar.waitForExistence(timeout: 5))
 
         let openImportButton = app.buttons["wallet.openImportButton"].firstMatch
         XCTAssertTrue(openImportButton.waitForExistence(timeout: 5))
         XCTAssertTrue(openImportButton.isHittable)
         openImportButton.tap()
 
-        let importScreen = app.tables["import.screen"]
-        XCTAssertTrue(importScreen.waitForExistence(timeout: 5))
+        let importNavigationBar = app.navigationBars["Импорт кешбека"]
+        XCTAssertTrue(importNavigationBar.waitForExistence(timeout: 5))
         XCTAssertTrue(app.otherElements["import.emptyState"].exists)
 
         let demoLoadButton = app.buttons["import.loadDemoScreenshotsButton"]
