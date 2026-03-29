@@ -47,6 +47,7 @@ struct CashbackRule: Identifiable, Codable, Equatable, Hashable {
 
     var percent: Double?
     var fixedReward: Double?
+    var specialConditionsText: String?
 
     var minAmount: Double?
     var monthlyRewardCap: Double?
@@ -71,6 +72,7 @@ struct CashbackRule: Identifiable, Codable, Equatable, Hashable {
         category: CashbackCategory,
         percent: Double? = nil,
         fixedReward: Double? = nil,
+        specialConditionsText: String? = nil,
         minAmount: Double? = nil,
         monthlyRewardCap: Double? = nil,
         monthlySpendCap: Double? = nil,
@@ -90,6 +92,7 @@ struct CashbackRule: Identifiable, Codable, Equatable, Hashable {
         self.category = category
         self.percent = percent
         self.fixedReward = fixedReward
+        self.specialConditionsText = specialConditionsText
         self.minAmount = minAmount
         self.monthlyRewardCap = monthlyRewardCap
         self.monthlySpendCap = monthlySpendCap
@@ -104,4 +107,3 @@ struct CashbackRule: Identifiable, Codable, Equatable, Hashable {
         self.isActive = isActive
     }
 }
-

@@ -159,6 +159,11 @@ struct ScreenshotImportView: View {
                         .foregroundStyle(.secondary)
                         .accessibilityIdentifier("import.draftReadyState")
 
+                    if !parsedDraft.unassignedConditionLines.isEmpty {
+                        ImportDraftConditionsCard(lines: parsedDraft.unassignedConditionLines)
+                            .accessibilityIdentifier("import.draftUnassignedConditions")
+                    }
+
                     ForEach(parsedDraft.rules.indices, id: \.self) { index in
                         ImportDraftRuleEditor(
                             rule: bindingForDraftRule(at: index)
@@ -203,6 +208,17 @@ struct ScreenshotImportView: View {
                             )
                             .font(.footnote)
                             .foregroundStyle(.secondary)
+
+                            if parsedDraft.rules.isEmpty {
+                                Label(
+                                    "Пока не распознано ни одного полноценного правила. "
+                                        + "Проверьте raw conditions и при необходимости перенесите правила вручную.",
+                                    systemImage: "exclamationmark.triangle"
+                                )
+                                .font(.footnote)
+                                .foregroundStyle(.orange)
+                                .accessibilityIdentifier("import.noRulesWarning")
+                            }
                         }
 
                         Button {
@@ -532,6 +548,18 @@ private struct ImportDraftRuleEditor: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                ConfidenceBadge(confidence: rule.confidence)
+                    .accessibilityIdentifier("import.draftConfidenceBadge")
+
+                if rule.needsReview {
+                    Label("Нужно проверить", systemImage: "exclamationmark.circle")
+                        .font(.caption.weight(.semibold))
+                        .foregroundStyle(.orange)
+                        .accessibilityIdentifier("import.draftNeedsReviewBadge")
+                }
+            }
+
             TextField("Название категории", text: $rule.title)
                 .accessibilityIdentifier("import.draftRuleTitleField")
 
@@ -565,6 +593,17 @@ private struct ImportDraftRuleEditor: View {
                 .accessibilityIdentifier("import.draftRuleFixedRewardField")
             }
 
+            TextField(
+                "Особые условия",
+                text: Binding(
+                    get: { rule.specialConditionsText ?? "" },
+                    set: { rule.specialConditionsText = normalizedOptionalText($0) }
+                ),
+                axis: .vertical
+            )
+            .lineLimit(2...4)
+            .accessibilityIdentifier("import.draftSpecialConditions")
+
             Text("Источник: \(rule.sourceScreenshotTitle)")
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -575,6 +614,11 @@ private struct ImportDraftRuleEditor: View {
                 .accessibilityIdentifier("import.draftRuleSourceLine")
         }
         .padding(.vertical, 4)
+    }
+
+    private func normalizedOptionalText(_ text: String) -> String? {
+        let trimmed = text.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
     }
 
     private func parseDecimal(from text: String) -> Double? {
@@ -594,6 +638,64 @@ private struct ImportDraftRuleEditor: View {
         }
 
         return String(value)
+    }
+}
+
+private struct ImportDraftConditionsCard: View {
+    let lines: [String]
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Label("Неразобранные условия", systemImage: "text.quote")
+                .font(.subheadline.weight(.semibold))
+
+            Text("Эти строки не удалось надежно привязать к категории. Проверьте их перед сохранением месяца.")
+                .font(.footnote)
+                .foregroundStyle(.secondary)
+
+            ForEach(lines, id: \.self) { line in
+                Text(line)
+                    .font(.caption.monospaced())
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 4)
+    }
+}
+
+private struct ConfidenceBadge: View {
+    let confidence: Double
+
+    var body: some View {
+        Text(confidenceLabel)
+            .font(.caption.weight(.semibold))
+            .foregroundStyle(confidenceColor)
+            .padding(.horizontal, 8)
+            .padding(.vertical, 4)
+            .background(confidenceColor.opacity(0.14), in: Capsule())
+    }
+
+    private var confidenceLabel: String {
+        let percent = confidence.formatted(.percent.precision(.fractionLength(0)))
+        switch confidence {
+        case 0.8...:
+            return "Уверенность: высокая (\(percent))"
+        case 0.6..<0.8:
+            return "Уверенность: средняя (\(percent))"
+        default:
+            return "Уверенность: низкая (\(percent))"
+        }
+    }
+
+    private var confidenceColor: Color {
+        switch confidence {
+        case 0.8...:
+            return .green
+        case 0.6..<0.8:
+            return .orange
+        default:
+            return .red
+        }
     }
 }
 

@@ -30,6 +30,7 @@
 		583FCB60E545A4E5A36F7FF0 /* CashbackCopilotImportUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFA5F9FAEA462DBEC29C52A9 /* CashbackCopilotImportUITests.swift */; };
 		585185CCA54DABC27CAF34C4 /* CashbackCopilotUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */; };
 		58A56C4A3DB2FECC152D659D /* ProgressRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6B3D491D41965546DA783E3E /* ProgressRepository.swift */; };
+		5AC6557E8202318E08840BD3 /* AppModelImportDraftTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DBD03EDE66D96DE429E55FE /* AppModelImportDraftTests.swift */; };
 		5DF98F2BA3242A3548F23390 /* SpendProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844A63C3ACD853BEB1A6A016 /* SpendProgress.swift */; };
 		6A65CA6FFFC204BE539C3972 /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4045F537498706BE475A29FB /* OCRService.swift */; };
 		6ECDAE8E5FBD20024B24E66D /* RecommendationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2584806990AFACE5808C8A3C /* RecommendationResult.swift */; };
@@ -100,6 +101,7 @@
 		4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEditorView.swift; sourceTree = "<group>"; };
 		546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotUITests.swift; sourceTree = "<group>"; };
 		5870990B36AF70C02F5BE74A /* QRParsingServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRParsingServiceTests.swift; sourceTree = "<group>"; };
+		5DBD03EDE66D96DE429E55FE /* AppModelImportDraftTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModelImportDraftTests.swift; sourceTree = "<group>"; };
 		5EB4248F3E6501BFAFF23ACA /* PurchaseContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchaseContext.swift; sourceTree = "<group>"; };
 		60FD1959800BF011B0030A52 /* CashbackImportDraftParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackImportDraftParserTests.swift; sourceTree = "<group>"; };
 		619124DA2F0725D39C910B81 /* ProgressService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressService.swift; sourceTree = "<group>"; };
@@ -163,6 +165,7 @@
 		138FC1C2435538C5049D1DE7 /* CashbackCopilotTests */ = {
 			isa = PBXGroup;
 			children = (
+				5DBD03EDE66D96DE429E55FE /* AppModelImportDraftTests.swift */,
 				7FE5FEB879DA1081D409D9CC /* AppModelMonthTests.swift */,
 				2261FDC2063EA45925716F89 /* AppModelTests.swift */,
 				FDDC80C70EB6D1F1DC12F349 /* BusinessGuardrailsTests.swift */,
@@ -565,6 +568,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AC6557E8202318E08840BD3 /* AppModelImportDraftTests.swift in Sources */,
 				0FF592E833C47B854224BBE7 /* AppModelMonthTests.swift in Sources */,
 				CA43A544A2A571DC0DDDC163 /* AppModelTests.swift in Sources */,
 				2E77C548746097E2D7926B35 /* BusinessGuardrailsTests.swift in Sources */,
