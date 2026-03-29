@@ -115,7 +115,7 @@ struct ScreenshotImportView: View {
         .navigationBarTitleDisplayMode(.inline)
         .accessibilityIdentifier("import.screen")
         .onChange(of: selectedItems) { _, newItems in
-            Task {
+            Task { @MainActor in
                 await loadSelectedItems(newItems)
             }
         }
@@ -147,6 +147,7 @@ struct ScreenshotImportView: View {
         isLoadingSelection = false
     }
 
+    @MainActor
     private func loadSelectedItems(_ items: [PhotosPickerItem]) async {
         guard !items.isEmpty else {
             screenshots = []
