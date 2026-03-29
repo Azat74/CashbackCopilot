@@ -71,6 +71,10 @@ struct CashbackImportDraftParser: Sendable {
     }
 
     private func parseRule(from line: String, screenshotTitle: String) -> ParsedRuleDraft? {
+        guard !isConditionLine(line.lowercased()) else {
+            return nil
+        }
+
         let percent = extractDecimal(
             in: line,
             pattern: #"(\d+(?:[.,]\d+)?)\s*%"#
@@ -155,7 +159,7 @@ struct CashbackImportDraftParser: Sendable {
         percent: Double?,
         fixedReward: Double?
     ) -> Double {
-        var confidence = 0.55
+        var confidence = 0.6
 
         if percent != nil {
             confidence += 0.2
@@ -169,10 +173,6 @@ struct CashbackImportDraftParser: Sendable {
             confidence += 0.15
         } else {
             confidence -= 0.15
-        }
-
-        if !title.isEmpty, title != category.displayName {
-            confidence += 0.05
         }
 
         return min(max(confidence, 0.2), 0.95)
