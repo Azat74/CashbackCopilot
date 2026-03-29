@@ -51,7 +51,7 @@
 
 ## Next Stories
 
-- [ ] screenshot import shell and photo picker
+- [x] screenshot import shell and photo picker
 - [ ] local screenshot OCR pipeline
 - [ ] parsed cashback draft review and save flow
 - [ ] raw special conditions and confidence markers in import draft

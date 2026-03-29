@@ -1,0 +1,46 @@
+import XCTest
+
+@MainActor
+final class CashbackCopilotImportUITests: XCTestCase {
+    override func setUpWithError() throws {
+        continueAfterFailure = false
+    }
+
+    func testScreenshotImportShellCanLoadDemoScreenshots() throws {
+        let app = XCUIApplication()
+        app.launchArguments.append("UITEST_SMOKE")
+        app.launch()
+
+        let startButton = app.buttons["onboarding.startButton"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 5))
+        startButton.tap()
+
+        let walletTab = app.tabBars.buttons["Кошелек"]
+        XCTAssertTrue(walletTab.waitForExistence(timeout: 5))
+        walletTab.tap()
+
+        let walletScreen = app.tables["wallet.screen"]
+        XCTAssertTrue(walletScreen.waitForExistence(timeout: 5))
+
+        let openImportButton = app.buttons["wallet.openImportButton"].firstMatch
+        XCTAssertTrue(openImportButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(openImportButton.isHittable)
+        openImportButton.tap()
+
+        let importScreen = app.tables["import.screen"]
+        XCTAssertTrue(importScreen.waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["import.emptyState"].exists)
+
+        let demoLoadButton = app.buttons["import.loadDemoScreenshotsButton"]
+        XCTAssertTrue(demoLoadButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(demoLoadButton.isHittable)
+        demoLoadButton.tap()
+
+        let selectedCount = app.staticTexts["import.selectedCount"]
+        XCTAssertTrue(selectedCount.waitForExistence(timeout: 5))
+        XCTAssertTrue(selectedCount.label.contains("2"))
+
+        let readyState = app.staticTexts["import.readyState"]
+        XCTAssertTrue(readyState.exists)
+    }
+}
