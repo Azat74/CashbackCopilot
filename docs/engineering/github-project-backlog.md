@@ -53,7 +53,7 @@
 
 - [x] screenshot import shell and photo picker
 - [x] local screenshot OCR pipeline
-- [ ] parsed cashback draft review and save flow
+- [x] parsed cashback draft review and save flow
 - [ ] raw special conditions and confidence markers in import draft
 - [ ] quick recommendation snapshots on the home screen
 - [ ] recent purchase intents on the home screen
