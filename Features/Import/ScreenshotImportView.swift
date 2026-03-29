@@ -343,6 +343,7 @@ private struct ImportOCRPreviewCard: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(screenshot.title)
                 .font(.headline)
+                .accessibilityIdentifier("import.ocrPreviewTitle")
 
             if screenshot.hasRecognizedText {
                 Text(screenshot.recognizedText)
