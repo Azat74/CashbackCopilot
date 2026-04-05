@@ -305,6 +305,8 @@ final class AppModelTests: XCTestCase {
             appliedRuleId: recommendedRule.id
         )
 
+        let paymentMonthKey = AppModel.monthKey(for: payment.createdAt)
+
         let appModel = AppModel(
             repository: nil,
             banks: [bank],
@@ -313,7 +315,7 @@ final class AppModelTests: XCTestCase {
             progress: [
                 SpendProgress(
                     ruleId: recommendedRule.id,
-                    monthKey: "2026-03",
+                    monthKey: paymentMonthKey,
                     spentAmount: 1_500,
                     rewardAccumulated: 75
                 )
