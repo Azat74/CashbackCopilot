@@ -61,7 +61,7 @@ final class CashbackCopilotImportUITests: XCTestCase {
         }
         XCTAssertTrue(unassignedConditions.waitForExistence(timeout: 5))
 
-        let confidenceBadge = app.staticTexts["import.draftConfidenceBadge"].firstMatch
+        let confidenceBadge = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Уверенность:")).firstMatch
         if !confidenceBadge.exists {
             importScreen.swipeDown()
         }

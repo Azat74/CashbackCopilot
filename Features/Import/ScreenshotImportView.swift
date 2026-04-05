@@ -675,6 +675,9 @@ private struct ConfidenceBadge: View {
             .padding(.horizontal, 8)
             .padding(.vertical, 4)
             .background(confidenceColor.opacity(0.14), in: Capsule())
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(confidenceLabel)
+            .accessibilityIdentifier("import.draftConfidenceBadge")
     }
 
     private var confidenceLabel: String {
