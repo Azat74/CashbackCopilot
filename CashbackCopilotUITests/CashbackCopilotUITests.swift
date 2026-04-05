@@ -51,6 +51,24 @@ final class CashbackCopilotUITests: XCTestCase {
         assertRecommendationAndLogPayment(in: app)
     }
 
+    func testQuickRecommendationSnapshotOpensRecommendation() throws {
+        let app = XCUIApplication()
+        app.launchArguments.append("UITEST_SMOKE")
+        app.launch()
+
+        startOnboarding(in: app)
+
+        let snapshotCard = app.buttons["home.quickSnapshot.fuel"]
+        XCTAssertTrue(snapshotCard.waitForExistence(timeout: 5))
+        revealAndTap(snapshotCard, in: app)
+
+        let categoryLabel = app.staticTexts["АЗС"]
+        XCTAssertTrue(categoryLabel.waitForExistence(timeout: 5))
+
+        let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
+        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 10))
+    }
+
     func testConfirmActualCashbackFromHistory() throws {
         let app = XCUIApplication()
         app.launchArguments.append("UITEST_SMOKE")
