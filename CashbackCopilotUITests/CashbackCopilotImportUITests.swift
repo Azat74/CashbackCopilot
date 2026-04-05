@@ -68,9 +68,15 @@ final class CashbackCopilotImportUITests: XCTestCase {
         XCTAssertTrue(confidenceBadge.waitForExistence(timeout: 5))
 
         let saveDraftButton = app.buttons["import.saveDraftButton"]
-        if !saveDraftButton.exists {
+        var saveDraftButtonFound = saveDraftButton.waitForExistence(timeout: 1)
+        var remainingScrollAttempts = 4
+
+        while !saveDraftButtonFound && remainingScrollAttempts > 0 {
             importScreen.swipeUp()
+            saveDraftButtonFound = saveDraftButton.waitForExistence(timeout: 1)
+            remainingScrollAttempts -= 1
         }
-        XCTAssertTrue(saveDraftButton.waitForExistence(timeout: 5))
+
+        XCTAssertTrue(saveDraftButtonFound)
     }
 }
