@@ -122,7 +122,7 @@ Examples:
 
 Status:
 
-- planned
+- implemented in MVP baseline
 
 ### 9. Recent Purchase Intents
 

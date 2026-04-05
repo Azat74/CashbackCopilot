@@ -23,6 +23,12 @@ struct HomeView: View {
     @FocusState private var focusedField: Field?
 
     var body: some View {
+        let quickSnapshots = appModel.quickRecommendationSnapshots(
+            amount: normalizedAmount,
+            merchantName: merchantName,
+            channel: selectedChannel
+        )
+
         Form {
             Section("Перед оплатой") {
                 TextField("Сумма", text: $amountText)
@@ -67,6 +73,56 @@ struct HomeView: View {
                             .buttonStyle(.bordered)
                         }
                     }
+                }
+            }
+
+            if !quickSnapshots.isEmpty {
+                Section("Быстрые подсказки") {
+                    if usesFallbackSnapshotAmount {
+                        Text("Подсказки посчитаны для типовой суммы \(CurrencyFormatter.rubles(snapshotPreviewAmount)).")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .accessibilityIdentifier("home.quickSnapshotsFallbackAmountMessage")
+                    }
+
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(quickSnapshots) { snapshot in
+                                Button {
+                                    selectedCategory = snapshot.category
+                                    focusedField = nil
+                                    DispatchQueue.main.async {
+                                        recommendationContext = snapshot.context
+                                    }
+                                } label: {
+                                    VStack(alignment: .leading, spacing: 6) {
+                                        Text(snapshot.category.displayName)
+                                            .font(.headline)
+                                            .foregroundStyle(.primary)
+
+                                        Text(appModel.paymentMethodName(for: snapshot.paymentMethodId))
+                                            .font(.subheadline)
+                                            .foregroundStyle(.secondary)
+
+                                        Text("≈ \(CurrencyFormatter.rubles(snapshot.expectedReward))")
+                                            .font(.title3.bold())
+                                            .foregroundStyle(.primary)
+
+                                        Text("\(snapshot.expectedPercent.formatted(.number.precision(.fractionLength(0...1))))%")
+                                            .font(.caption.weight(.semibold))
+                                            .foregroundStyle(.secondary)
+                                    }
+                                    .frame(width: 190, alignment: .leading)
+                                    .padding(14)
+                                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityIdentifier("home.quickSnapshot.\(snapshot.category.rawValue)")
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    .accessibilityIdentifier("home.quickSnapshotsSection")
                 }
             }
 
@@ -128,6 +184,22 @@ struct HomeView: View {
 
     private var normalizedAmount: Double? {
         Double(amountText.replacingOccurrences(of: ",", with: "."))
+    }
+
+    private var snapshotPreviewAmount: Double {
+        guard let normalizedAmount, normalizedAmount > 0 else {
+            return 1_000
+        }
+
+        return normalizedAmount
+    }
+
+    private var usesFallbackSnapshotAmount: Bool {
+        guard let normalizedAmount else {
+            return true
+        }
+
+        return normalizedAmount <= 0
     }
 
     private var validationMessage: String? {

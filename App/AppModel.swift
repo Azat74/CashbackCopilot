@@ -371,8 +371,62 @@ final class AppModel {
 }
 
 extension AppModel {
+    private static let quickSnapshotFallbackAmount = 1_000.0
+    private static let quickSnapshotCategoryOrder: [CashbackCategory] = [
+        .fuel,
+        .groceries,
+        .cafes,
+        .taxi,
+        .marketplaces,
+        .restaurants,
+        .pharmacy,
+        .travel,
+        .transport,
+        .other
+    ]
+
     var currentMonthKey: String {
         Self.monthKey(for: Date())
+    }
+
+    func quickRecommendationSnapshots(
+        amount: Double?,
+        merchantName: String?,
+        channel: PaymentChannel,
+        limit: Int = 5
+    ) -> [QuickRecommendationSnapshot] {
+        let normalizedAmount = (amount ?? Self.quickSnapshotFallbackAmount) > 0
+            ? (amount ?? Self.quickSnapshotFallbackAmount)
+            : Self.quickSnapshotFallbackAmount
+        let trimmedMerchantName = merchantName?.trimmingCharacters(in: .whitespacesAndNewlines)
+        let normalizedMerchantName = trimmedMerchantName?.isEmpty == false ? trimmedMerchantName : nil
+
+        return Self.quickSnapshotCategoryOrder.compactMap { category in
+            let context = PurchaseContext(
+                source: .manual,
+                amount: normalizedAmount,
+                merchantName: normalizedMerchantName,
+                category: category,
+                channel: channel,
+                confidence: 1.0
+            )
+            let result = makeRecommendation(for: context)
+
+            guard let bestOption = result.bestOption else {
+                return nil
+            }
+
+            return QuickRecommendationSnapshot(
+                category: category,
+                context: context,
+                paymentMethodId: bestOption.paymentMethodId,
+                expectedReward: bestOption.expectedReward,
+                expectedPercent: bestOption.expectedPercent,
+                confidence: bestOption.confidence
+            )
+        }
+        .prefix(limit)
+        .map { $0 }
     }
 
     func activeRules(for monthKey: String, bankId: UUID? = nil) -> [CashbackRule] {

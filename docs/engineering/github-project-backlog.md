@@ -55,7 +55,7 @@
 - [x] local screenshot OCR pipeline
 - [x] parsed cashback draft review and save flow
 - [x] raw special conditions and confidence markers in import draft
-- [ ] quick recommendation snapshots on the home screen
+- [x] quick recommendation snapshots on the home screen
 - [ ] recent purchase intents on the home screen
 
 ## Testing and Automation
@@ -92,7 +92,7 @@
 
 ### P1 — сильно повышает удобство
 
-- [ ] quick recommendation snapshots
+- [x] quick recommendation snapshots
 - [ ] recent purchase intents
 - [x] QR payment flow
 - [x] explanation UI
