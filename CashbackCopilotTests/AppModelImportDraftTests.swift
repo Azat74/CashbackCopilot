@@ -25,6 +25,9 @@ final class AppModelImportDraftTests: XCTestCase {
                     title: "АЗС",
                     category: .fuel,
                     percent: 5,
+                    specialConditionsText: "Лимит 1000 ₽ в месяц",
+                    confidence: 0.75,
+                    needsReview: true,
                     sourceScreenshotTitle: "Категории месяца",
                     sourceLine: "АЗС 5%"
                 ),
@@ -32,6 +35,7 @@ final class AppModelImportDraftTests: XCTestCase {
                     title: "Маркетплейсы",
                     category: .marketplaces,
                     percent: 3,
+                    confidence: 0.95,
                     sourceScreenshotTitle: "Категории месяца",
                     sourceLine: "Маркетплейсы 3%"
                 )
@@ -46,6 +50,11 @@ final class AppModelImportDraftTests: XCTestCase {
         XCTAssertEqual(appModel.months.first?.monthKey, "2026-03")
         XCTAssertEqual(appModel.months.first?.ruleStates.count, 2)
         XCTAssertEqual(appModel.activeRules(for: "2026-03", bankId: bank.id).count, 2)
+        XCTAssertEqual(
+            appModel.activeRules(for: "2026-03", bankId: bank.id).first?.specialConditionsText,
+            "Лимит 1000 ₽ в месяц"
+        )
+        XCTAssertEqual(appModel.months.first?.notes, "Импортировано из 2 скриншотов")
     }
 
     func testSaveImportedDraftReplacesExistingMonthRuleStatesForBank() {
@@ -78,6 +87,7 @@ final class AppModelImportDraftTests: XCTestCase {
                     title: "АЗС",
                     category: .fuel,
                     percent: 5,
+                    confidence: 0.95,
                     sourceScreenshotTitle: "Категории месяца",
                     sourceLine: "АЗС 5%"
                 )
@@ -91,5 +101,79 @@ final class AppModelImportDraftTests: XCTestCase {
         XCTAssertEqual(updatedMonth?.ruleStates.count, 1)
         XCTAssertNotEqual(updatedMonth?.ruleStates.first?.ruleId, oldRule.id)
         XCTAssertEqual(appModel.activeRules(for: "2026-03", bankId: bank.id).count, 1)
+    }
+
+    func testSaveImportedDraftTrimsEmptySpecialConditions() {
+        let bank = Bank(name: "Т-Банк")
+        let method = PaymentMethod(bankId: bank.id, displayName: "Black", type: .debitCard)
+        let appModel = AppModel(
+            repository: nil,
+            banks: [bank],
+            paymentMethods: [method],
+            rules: [],
+            months: [],
+            progress: [],
+            loggedPayments: []
+        )
+
+        let draft = ParsedCashbackDraft(
+            bankId: bank.id,
+            bankName: bank.name,
+            sourceScreenshotsCount: 1,
+            rules: [
+                ParsedRuleDraft(
+                    title: "АЗС",
+                    category: .fuel,
+                    percent: 5,
+                    specialConditionsText: "  \n ",
+                    confidence: 0.95,
+                    sourceScreenshotTitle: "Категории месяца",
+                    sourceLine: "АЗС 5%"
+                )
+            ]
+        )
+
+        appModel.saveImportedDraft(draft, paymentMethodId: method.id, monthKey: "2026-03")
+
+        XCTAssertNil(appModel.rules.first?.specialConditionsText)
+    }
+
+    func testSaveImportedDraftPreservesUnassignedConditionsInMonthNotes() {
+        let bank = Bank(name: "Т-Банк")
+        let method = PaymentMethod(bankId: bank.id, displayName: "Black", type: .debitCard)
+        let appModel = AppModel(
+            repository: nil,
+            banks: [bank],
+            paymentMethods: [method],
+            rules: [],
+            months: [],
+            progress: [],
+            loggedPayments: []
+        )
+
+        let draft = ParsedCashbackDraft(
+            bankId: bank.id,
+            bankName: bank.name,
+            sourceScreenshotsCount: 2,
+            rules: [
+                ParsedRuleDraft(
+                    title: "АЗС",
+                    category: .fuel,
+                    percent: 5,
+                    confidence: 0.75,
+                    needsReview: true,
+                    sourceScreenshotTitle: "Категории месяца",
+                    sourceLine: "АЗС 5%"
+                )
+            ],
+            unassignedConditionLines: ["Не действует при оплате по QR"]
+        )
+
+        appModel.saveImportedDraft(draft, paymentMethodId: method.id, monthKey: "2026-03")
+
+        XCTAssertEqual(
+            appModel.months.first?.notes,
+            "Импортировано из 2 скриншотов\nНеразобранные условия:\nНе действует при оплате по QR"
+        )
     }
 }

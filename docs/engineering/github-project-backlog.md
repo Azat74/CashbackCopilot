@@ -54,7 +54,7 @@
 - [x] screenshot import shell and photo picker
 - [x] local screenshot OCR pipeline
 - [x] parsed cashback draft review and save flow
-- [ ] raw special conditions and confidence markers in import draft
+- [x] raw special conditions and confidence markers in import draft
 - [ ] quick recommendation snapshots on the home screen
 - [ ] recent purchase intents on the home screen
 
@@ -88,7 +88,7 @@
 - [x] recommendation screen
 - [x] optional amount input
 - [x] cashback rule storage
-- [ ] screenshot cashback import
+- [x] screenshot cashback import
 
 ### P1 — сильно повышает удобство
 
@@ -102,7 +102,7 @@
 - [ ] widget / shortcut quick launch for recommendation
 - [ ] smart quick hints for common categories
 - [x] confidence scoring in recommendation flow
-- [ ] confidence markers in screenshot import draft
+- [x] confidence markers in screenshot import draft
 
 ### P3 — growth / secondary surfaces
 

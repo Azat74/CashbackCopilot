@@ -7,6 +7,8 @@ struct ParsedRuleDraft: Identifiable, Codable, Equatable, Hashable {
     var category: CashbackCategory
     var percent: Double?
     var fixedReward: Double?
+    var specialConditionsText: String?
+    var confidence: Double
     var needsReview: Bool
     var sourceScreenshotTitle: String
     var sourceLine: String
@@ -17,6 +19,8 @@ struct ParsedRuleDraft: Identifiable, Codable, Equatable, Hashable {
         category: CashbackCategory,
         percent: Double? = nil,
         fixedReward: Double? = nil,
+        specialConditionsText: String? = nil,
+        confidence: Double = 0.5,
         needsReview: Bool = false,
         sourceScreenshotTitle: String,
         sourceLine: String
@@ -26,6 +30,8 @@ struct ParsedRuleDraft: Identifiable, Codable, Equatable, Hashable {
         self.category = category
         self.percent = percent
         self.fixedReward = fixedReward
+        self.specialConditionsText = specialConditionsText
+        self.confidence = confidence
         self.needsReview = needsReview
         self.sourceScreenshotTitle = sourceScreenshotTitle
         self.sourceLine = sourceLine
@@ -39,6 +45,7 @@ struct ParsedCashbackDraft: Identifiable, Codable, Equatable, Hashable {
     var bankName: String
     var sourceScreenshotsCount: Int
     var rules: [ParsedRuleDraft]
+    var unassignedConditionLines: [String]
     var createdAt: Date
 
     init(
@@ -47,6 +54,7 @@ struct ParsedCashbackDraft: Identifiable, Codable, Equatable, Hashable {
         bankName: String,
         sourceScreenshotsCount: Int,
         rules: [ParsedRuleDraft],
+        unassignedConditionLines: [String] = [],
         createdAt: Date = .now
     ) {
         self.id = id
@@ -54,6 +62,7 @@ struct ParsedCashbackDraft: Identifiable, Codable, Equatable, Hashable {
         self.bankName = bankName
         self.sourceScreenshotsCount = sourceScreenshotsCount
         self.rules = rules
+        self.unassignedConditionLines = unassignedConditionLines
         self.createdAt = createdAt
     }
 }

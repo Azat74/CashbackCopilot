@@ -455,6 +455,7 @@ extension AppModel {
                 category: draftRule.category,
                 percent: draftRule.percent,
                 fixedReward: draftRule.fixedReward,
+                specialConditionsText: AppModel.sanitizedSpecialConditions(from: draftRule.specialConditionsText),
                 priority: 0,
                 isActive: true
             )
@@ -477,7 +478,7 @@ extension AppModel {
             ruleStates: ruleStates,
             source: .screenshotImport,
             importedAt: .now,
-            notes: "Импортировано из \(draft.sourceScreenshotsCount) скриншотов"
+            notes: AppModel.importNotes(for: draft)
         )
 
         if let monthIndex = months.firstIndex(where: { $0.monthKey == monthKey && $0.bankId == draft.bankId }) {
@@ -491,6 +492,26 @@ extension AppModel {
 }
 
 extension AppModel {
+    static func importNotes(for draft: ParsedCashbackDraft) -> String {
+        var lines = ["Импортировано из \(draft.sourceScreenshotsCount) скриншотов"]
+
+        if !draft.unassignedConditionLines.isEmpty {
+            lines.append("Неразобранные условия:")
+            lines.append(contentsOf: draft.unassignedConditionLines)
+        }
+
+        return lines.joined(separator: "\n")
+    }
+
+    static func sanitizedSpecialConditions(from rawText: String?) -> String? {
+        guard let rawText else {
+            return nil
+        }
+
+        let trimmed = rawText.trimmingCharacters(in: .whitespacesAndNewlines)
+        return trimmed.isEmpty ? nil : trimmed
+    }
+
     static func monthKey(for date: Date) -> String {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "en_US_POSIX")

@@ -55,10 +55,28 @@ final class CashbackCopilotImportUITests: XCTestCase {
         }
         XCTAssertTrue(draftReadyState.waitForExistence(timeout: 5))
 
-        let saveDraftButton = app.buttons["import.saveDraftButton"]
-        if !saveDraftButton.exists {
+        let unassignedConditions = app.staticTexts["import.draftUnassignedConditionsTitle"]
+        if !unassignedConditions.exists {
             importScreen.swipeUp()
         }
-        XCTAssertTrue(saveDraftButton.waitForExistence(timeout: 5))
+        XCTAssertTrue(unassignedConditions.waitForExistence(timeout: 5))
+
+        let confidenceBadge = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "Уверенность:")).firstMatch
+        if !confidenceBadge.exists {
+            importScreen.swipeDown()
+        }
+        XCTAssertTrue(confidenceBadge.waitForExistence(timeout: 5))
+
+        let saveDraftButton = app.buttons["import.saveDraftButton"]
+        var saveDraftButtonFound = saveDraftButton.waitForExistence(timeout: 1)
+        var remainingScrollAttempts = 4
+
+        while !saveDraftButtonFound && remainingScrollAttempts > 0 {
+            importScreen.swipeUp()
+            saveDraftButtonFound = saveDraftButton.waitForExistence(timeout: 1)
+            remainingScrollAttempts -= 1
+        }
+
+        XCTAssertTrue(saveDraftButtonFound)
     }
 }
