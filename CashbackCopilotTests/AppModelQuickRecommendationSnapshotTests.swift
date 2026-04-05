@@ -43,7 +43,7 @@ final class AppModelQuickRecommendationSnapshotTests: XCTestCase {
         XCTAssertEqual(snapshots.last?.expectedReward, 105)
     }
 
-    func testQuickRecommendationSnapshotsUseFallbackAmountWhenManualAmountMissing() {
+    func testQuickRecommendationSnapshotsUseFallbackAmountWhenManualAmountMissing() throws {
         let bank = Bank(name: "Тест Банк")
         let method = PaymentMethod(bankId: bank.id, displayName: "Black", type: .debitCard)
         let rule = CashbackRule(paymentMethodId: method.id, title: "АЗС 5%", category: .fuel, percent: 5)
@@ -72,7 +72,7 @@ final class AppModelQuickRecommendationSnapshotTests: XCTestCase {
         XCTAssertEqual(snapshot.expectedReward, 50)
     }
 
-    func testQuickRecommendationSnapshotsRespectSelectedChannel() {
+    func testQuickRecommendationSnapshotsRespectSelectedChannel() throws {
         let bank = Bank(name: "Тест Банк")
         let cardMethod = PaymentMethod(bankId: bank.id, displayName: "Black", type: .debitCard)
         let sbpMethod = PaymentMethod(bankId: bank.id, displayName: "СБП", type: .sbp)
