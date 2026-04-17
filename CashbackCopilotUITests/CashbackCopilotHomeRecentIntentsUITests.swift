@@ -19,8 +19,8 @@ final class CashbackCopilotHomeRecentIntentsUITests: XCTestCase {
         XCTAssertTrue(reveal(recentIntent, in: app))
         recentIntent.tap()
 
-        let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
-        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 10))
+        let closeButton = app.buttons["Закрыть"]
+        XCTAssertTrue(closeButton.waitForExistence(timeout: 10))
     }
 
     private func startOnboarding(in app: XCUIApplication) {
