@@ -130,7 +130,7 @@ Status:
 
 Status:
 
-- planned
+- implemented in MVP baseline
 
 ### 10. QR Payment Flow
 

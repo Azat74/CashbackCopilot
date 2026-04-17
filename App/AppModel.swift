@@ -429,6 +429,49 @@ extension AppModel {
         .map { $0 }
     }
 
+    func recentPurchaseIntents(limit: Int = 5) -> [RecentPurchaseIntent] {
+        var intentBuckets: [String: RecentPurchaseIntent] = [:]
+
+        for payment in loggedPayments.sorted(by: { $0.createdAt > $1.createdAt }) {
+            let context = PurchaseContext(
+                source: payment.source,
+                amount: payment.amount,
+                merchantName: payment.merchantName,
+                category: payment.category,
+                channel: payment.channel,
+                confidence: 1.0,
+                createdAt: Date()
+            )
+            let intent = RecentPurchaseIntent(
+                context: context,
+                lastUsedAt: payment.createdAt,
+                useCount: 1
+            )
+
+            if var existingIntent = intentBuckets[intent.id] {
+                existingIntent.useCount += 1
+                if payment.createdAt > existingIntent.lastUsedAt {
+                    existingIntent.lastUsedAt = payment.createdAt
+                    existingIntent.context = context
+                }
+                intentBuckets[intent.id] = existingIntent
+            } else {
+                intentBuckets[intent.id] = intent
+            }
+        }
+
+        return intentBuckets.values
+            .sorted {
+                if $0.lastUsedAt != $1.lastUsedAt {
+                    return $0.lastUsedAt > $1.lastUsedAt
+                }
+
+                return $0.useCount > $1.useCount
+            }
+            .prefix(limit)
+            .map { $0 }
+    }
+
     func activeRules(for monthKey: String, bankId: UUID? = nil) -> [CashbackRule] {
         let matchingMonths = months.filter { month in
             month.monthKey == monthKey && (bankId == nil || month.bankId == bankId)

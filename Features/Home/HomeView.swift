@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    private struct RecommendationPresentation: Identifiable {
+        let id = UUID()
+        let context: PurchaseContext
+    }
+
     private enum UITestDefaults {
         static let isEnabled = ProcessInfo.processInfo.arguments.contains("UITEST_SMOKE")
         static let amount = "1500"
@@ -18,7 +23,7 @@ struct HomeView: View {
     @State private var merchantName = UITestDefaults.isEnabled ? UITestDefaults.merchant : ""
     @State private var selectedCategory: CashbackCategory = .fuel
     @State private var selectedChannel: PaymentChannel = .card
-    @State private var recommendationContext: PurchaseContext?
+    @State private var recommendationPresentation: RecommendationPresentation?
     @State private var isScannerPresented = false
     @FocusState private var focusedField: Field?
 
@@ -28,6 +33,7 @@ struct HomeView: View {
             merchantName: merchantName,
             channel: selectedChannel
         )
+        let recentIntents = appModel.recentPurchaseIntents()
 
         Form {
             Section("Перед оплатой") {
@@ -91,30 +97,12 @@ struct HomeView: View {
                                 Button {
                                     selectedCategory = snapshot.category
                                     focusedField = nil
-                                    DispatchQueue.main.async {
-                                        recommendationContext = snapshot.context
-                                    }
+                                    presentRecommendation(snapshot.context)
                                 } label: {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        Text(snapshot.category.displayName)
-                                            .font(.headline)
-                                            .foregroundStyle(.primary)
-
-                                        Text(appModel.paymentMethodName(for: snapshot.paymentMethodId))
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
-
-                                        Text("≈ \(CurrencyFormatter.rubles(snapshot.expectedReward))")
-                                            .font(.title3.bold())
-                                            .foregroundStyle(.primary)
-
-                                        Text("\(snapshot.expectedPercent.formatted(.number.precision(.fractionLength(0...1))))%")
-                                            .font(.caption.weight(.semibold))
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    .frame(width: 190, alignment: .leading)
-                                    .padding(14)
-                                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                    QuickRecommendationSnapshotCard(
+                                        snapshot: snapshot,
+                                        paymentMethodName: appModel.paymentMethodName(for: snapshot.paymentMethodId)
+                                    )
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityIdentifier("home.quickSnapshot.\(snapshot.category.rawValue)")
@@ -123,6 +111,24 @@ struct HomeView: View {
                         .padding(.vertical, 4)
                     }
                     .accessibilityIdentifier("home.quickSnapshotsSection")
+                }
+            }
+
+            if !recentIntents.isEmpty {
+                Section("Недавние сценарии") {
+                    ForEach(recentIntents) { intent in
+                        Button {
+                            selectedCategory = intent.context.category
+                            selectedChannel = intent.context.channel
+                            amountText = decimalString(intent.context.amount)
+                            merchantName = intent.context.merchantName ?? ""
+                            focusedField = nil
+                            presentRecommendation(intent.context)
+                        } label: {
+                            RecentPurchaseIntentRow(intent: intent)
+                        }
+                        .accessibilityIdentifier("home.recentIntent.\(intent.context.category.rawValue)")
+                    }
                 }
             }
 
@@ -142,9 +148,9 @@ struct HomeView: View {
         }
         .navigationTitle("Главная")
         .scrollDismissesKeyboard(.interactively)
-        .sheet(item: $recommendationContext) { context in
+        .sheet(item: $recommendationPresentation) { presentation in
             NavigationStack {
-                RecommendationView(context: context)
+                RecommendationView(context: presentation.context)
             }
         }
         .sheet(isPresented: $isScannerPresented) {
@@ -157,9 +163,7 @@ struct HomeView: View {
                 Button("Показать лучшую оплату") {
                     if let context = makeManualContext() {
                         focusedField = nil
-                        DispatchQueue.main.async {
-                            recommendationContext = context
-                        }
+                        presentRecommendation(context)
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -245,5 +249,80 @@ struct HomeView: View {
             channel: selectedChannel,
             confidence: 1.0
         )
+    }
+
+    private func presentRecommendation(_ context: PurchaseContext) {
+        recommendationPresentation = RecommendationPresentation(context: context)
+    }
+
+    private func decimalString(_ value: Double) -> String {
+        if value.rounded() == value {
+            return String(Int(value))
+        }
+
+        return String(value)
+    }
+}
+
+private struct QuickRecommendationSnapshotCard: View {
+    let snapshot: QuickRecommendationSnapshot
+    let paymentMethodName: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(snapshot.category.displayName)
+                .font(.headline)
+                .foregroundStyle(.primary)
+
+            Text(paymentMethodName)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Text("≈ \(CurrencyFormatter.rubles(snapshot.expectedReward))")
+                .font(.title3.bold())
+                .foregroundStyle(.primary)
+
+            Text("\(snapshot.expectedPercent.formatted(.number.precision(.fractionLength(0...1))))%")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+        }
+        .frame(width: 190, alignment: .leading)
+        .padding(14)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+}
+
+private struct RecentPurchaseIntentRow: View {
+    let intent: RecentPurchaseIntent
+
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(intent.context.category.displayName)
+                    .font(.headline)
+
+                if let merchantName = intent.context.merchantName {
+                    Text(merchantName)
+                        .font(.subheadline)
+                }
+
+                Text("\(CurrencyFormatter.rubles(intent.context.amount)) · \(intent.context.channel.displayName)")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+
+                if intent.useCount > 1 {
+                    Text("\(intent.useCount) раза")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
+            }
+
+            Spacer()
+
+            Image(systemName: "chevron.right")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
