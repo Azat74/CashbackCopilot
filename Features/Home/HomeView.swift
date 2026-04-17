@@ -1,6 +1,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    private struct RecommendationPresentation: Identifiable {
+        let id = UUID()
+        let context: PurchaseContext
+    }
+
     private enum UITestDefaults {
         static let isEnabled = ProcessInfo.processInfo.arguments.contains("UITEST_SMOKE")
         static let amount = "1500"
@@ -18,8 +23,7 @@ struct HomeView: View {
     @State private var merchantName = UITestDefaults.isEnabled ? UITestDefaults.merchant : ""
     @State private var selectedCategory: CashbackCategory = .fuel
     @State private var selectedChannel: PaymentChannel = .card
-    @State private var recommendationContext: PurchaseContext?
-    @State private var isRecommendationPresented = false
+    @State private var recommendationPresentation: RecommendationPresentation?
     @State private var isScannerPresented = false
     @FocusState private var focusedField: Field?
 
@@ -151,17 +155,11 @@ struct HomeView: View {
         }
         .navigationTitle("Главная")
         .scrollDismissesKeyboard(.interactively)
-        .sheet(
-            isPresented: $isRecommendationPresented,
-            onDismiss: { recommendationContext = nil },
-            content: {
-                if let recommendationContext {
-                    NavigationStack {
-                        RecommendationView(context: recommendationContext)
-                    }
-                }
+        .sheet(item: $recommendationPresentation) { presentation in
+            NavigationStack {
+                RecommendationView(context: presentation.context)
             }
-        )
+        }
         .sheet(isPresented: $isScannerPresented) {
             NavigationStack {
                 ScannerView()
@@ -261,8 +259,7 @@ struct HomeView: View {
     }
 
     private func presentRecommendation(_ context: PurchaseContext) {
-        recommendationContext = context
-        isRecommendationPresented = true
+        recommendationPresentation = RecommendationPresentation(context: context)
     }
 
     private func decimalString(_ value: Double) -> String {
