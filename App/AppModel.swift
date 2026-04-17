@@ -434,7 +434,6 @@ extension AppModel {
 
         for payment in loggedPayments.sorted(by: { $0.createdAt > $1.createdAt }) {
             let context = PurchaseContext(
-                id: payment.purchaseContextId,
                 source: payment.source,
                 amount: payment.amount,
                 merchantName: payment.merchantName,
