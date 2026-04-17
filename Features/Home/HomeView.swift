@@ -125,9 +125,8 @@ struct HomeView: View {
                             focusedField = nil
                             presentRecommendation(intent.context)
                         } label: {
-                            RecentPurchaseIntentCard(intent: intent)
+                            RecentPurchaseIntentRow(intent: intent)
                         }
-                        .buttonStyle(.plain)
                         .accessibilityIdentifier("home.recentIntent.\(intent.context.category.rawValue)")
                     }
                 }
@@ -293,37 +292,37 @@ private struct QuickRecommendationSnapshotCard: View {
     }
 }
 
-private struct RecentPurchaseIntentCard: View {
+private struct RecentPurchaseIntentRow: View {
     let intent: RecentPurchaseIntent
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(intent.context.category.displayName)
-                .font(.headline)
-                .foregroundStyle(.primary)
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(intent.context.category.displayName)
+                    .font(.headline)
 
-            if let merchantName = intent.context.merchantName {
-                Text(merchantName)
-                    .font(.subheadline)
+                if let merchantName = intent.context.merchantName {
+                    Text(merchantName)
+                        .font(.subheadline)
+                }
+
+                Text("\(CurrencyFormatter.rubles(intent.context.amount)) · \(intent.context.channel.displayName)")
+                    .font(.caption)
                     .foregroundStyle(.secondary)
+
+                if intent.useCount > 1 {
+                    Text("\(intent.useCount) раза")
+                        .font(.caption2)
+                        .foregroundStyle(.secondary)
+                }
             }
 
-            Text(CurrencyFormatter.rubles(intent.context.amount))
-                .font(.title3.bold())
-                .foregroundStyle(.primary)
+            Spacer()
 
-            Text(intent.context.channel.displayName)
+            Image(systemName: "chevron.right")
                 .font(.caption.weight(.semibold))
                 .foregroundStyle(.secondary)
-
-            if intent.useCount > 1 {
-                Text("\(intent.useCount) раза")
-                    .font(.caption2)
-                    .foregroundStyle(.secondary)
-            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(14)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
