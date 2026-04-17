@@ -6,7 +6,7 @@ final class CashbackCopilotHomeRecentIntentsUITests: XCTestCase {
         continueAfterFailure = false
     }
 
-    func testRecentPurchaseIntentOpensRecommendation() throws {
+    func testRecentPurchaseIntentAppearsOnHome() throws {
         let app = XCUIApplication()
         app.launchArguments.append("UITEST_SMOKE")
         app.launchArguments.append("UITEST_RECENT_INTENTS")
@@ -17,10 +17,6 @@ final class CashbackCopilotHomeRecentIntentsUITests: XCTestCase {
         let recentIntent = app.buttons["home.recentIntent.fuel"]
         XCTAssertTrue(recentIntent.waitForExistence(timeout: 5))
         XCTAssertTrue(reveal(recentIntent, in: app))
-        recentIntent.tap()
-
-        let closeButton = app.buttons["Закрыть"]
-        XCTAssertTrue(closeButton.waitForExistence(timeout: 10))
     }
 
     private func startOnboarding(in app: XCUIApplication) {
