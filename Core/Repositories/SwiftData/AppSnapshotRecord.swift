@@ -61,5 +61,26 @@ struct AppSnapshot: Codable {
         progress: MockData.progress,
         loggedPayments: []
     )
-}
 
+    static let demoWithRecentIntent = AppSnapshot(
+        banks: demo.banks,
+        paymentMethods: demo.paymentMethods,
+        rules: demo.rules,
+        months: demo.months,
+        progress: demo.progress,
+        loggedPayments: [
+            LoggedPayment(
+                purchaseContextId: UUID(),
+                amount: 1_500,
+                merchantName: "АЗС",
+                source: .manual,
+                category: .fuel,
+                channel: .card,
+                recommendedPaymentMethodId: MockData.methods[0].id,
+                actualPaymentMethodId: MockData.methods[0].id,
+                expectedReward: 75,
+                wasRecommendationUsed: true
+            )
+        ]
+    )
+}

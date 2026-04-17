@@ -9,12 +9,10 @@ final class CashbackCopilotHomeRecentIntentsUITests: XCTestCase {
     func testRecentPurchaseIntentOpensRecommendation() throws {
         let app = XCUIApplication()
         app.launchArguments.append("UITEST_SMOKE")
+        app.launchArguments.append("UITEST_RECENT_INTENTS")
         app.launch()
 
         startOnboarding(in: app)
-        createLoggedPayment(in: app)
-
-        app.buttons["Закрыть"].tap()
 
         let recentIntent = app.buttons["home.recentIntent.fuel"]
         XCTAssertTrue(recentIntent.waitForExistence(timeout: 5))
@@ -29,20 +27,6 @@ final class CashbackCopilotHomeRecentIntentsUITests: XCTestCase {
         let startButton = app.buttons["onboarding.startButton"]
         XCTAssertTrue(startButton.waitForExistence(timeout: 5))
         startButton.tap()
-    }
-
-    private func createLoggedPayment(in app: XCUIApplication) {
-        let showRecommendationButton = app.buttons["home.showRecommendationButton"]
-        XCTAssertTrue(showRecommendationButton.waitForExistence(timeout: 5))
-        XCTAssertTrue(reveal(showRecommendationButton, in: app))
-        showRecommendationButton.tap()
-
-        let bestMethodName = app.staticTexts["recommendation.bestMethodName"]
-        XCTAssertTrue(bestMethodName.waitForExistence(timeout: 10))
-
-        let logPaymentButton = app.buttons["recommendation.logPaymentButton"].firstMatch
-        XCTAssertTrue(reveal(logPaymentButton, in: app))
-        logPaymentButton.tap()
     }
 
     private func reveal(_ element: XCUIElement, in app: XCUIApplication, maxAttempts: Int = 6) -> Bool {

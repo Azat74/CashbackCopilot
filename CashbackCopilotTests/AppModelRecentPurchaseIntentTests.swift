@@ -69,14 +69,38 @@ final class AppModelRecentPurchaseIntentTests: XCTestCase {
         XCTAssertEqual(appModel.recentPurchaseIntents(limit: 3).count, 3)
     }
 
+    func testRecentPurchaseIntentsUseFreshRecommendationContextId() throws {
+        let purchaseContextId = UUID()
+        let payment = loggedPayment(
+            purchaseContextId: purchaseContextId,
+            category: .fuel,
+            merchantName: "АЗС",
+            amount: 1_500,
+            createdAt: Date()
+        )
+        let appModel = AppModel(
+            repository: nil,
+            banks: [],
+            paymentMethods: [],
+            rules: [],
+            progress: [],
+            loggedPayments: [payment]
+        )
+
+        let intent = try XCTUnwrap(appModel.recentPurchaseIntents().first)
+
+        XCTAssertNotEqual(intent.context.id, purchaseContextId)
+    }
+
     private func loggedPayment(
+        purchaseContextId: UUID = UUID(),
         category: CashbackCategory,
         merchantName: String?,
         amount: Double,
         createdAt: Date
     ) -> LoggedPayment {
         LoggedPayment(
-            purchaseContextId: UUID(),
+            purchaseContextId: purchaseContextId,
             amount: amount,
             merchantName: merchantName,
             source: .manual,

@@ -5,9 +5,14 @@ import SwiftData
 struct CashbackCopilotApp: App {
     private enum LaunchArguments {
         static let uiTestSmoke = "UITEST_SMOKE"
+        static let uiTestRecentIntents = "UITEST_RECENT_INTENTS"
 
         static var isUITestSmoke: Bool {
             ProcessInfo.processInfo.arguments.contains(uiTestSmoke)
+        }
+
+        static var usesRecentIntentSeed: Bool {
+            ProcessInfo.processInfo.arguments.contains(uiTestRecentIntents)
         }
     }
 
@@ -29,10 +34,13 @@ struct CashbackCopilotApp: App {
         }
 
         let repository = LocalSnapshotRepository(context: container.mainContext)
+        let initialSnapshot = LaunchArguments.isUITestSmoke && LaunchArguments.usesRecentIntentSeed
+            ? AppSnapshot.demoWithRecentIntent
+            : .demo
         if LaunchArguments.isUITestSmoke {
-            repository.saveSnapshot(.demo)
+            repository.saveSnapshot(initialSnapshot)
         } else {
-            repository.seedIfNeeded(with: .demo)
+            repository.seedIfNeeded(with: initialSnapshot)
         }
         self.sharedModelContainer = container
         _appModel = State(initialValue: AppModel(repository: repository))
