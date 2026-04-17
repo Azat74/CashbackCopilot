@@ -116,26 +116,20 @@ struct HomeView: View {
 
             if !recentIntents.isEmpty {
                 Section("Недавние сценарии") {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 12) {
-                            ForEach(recentIntents) { intent in
-                                Button {
-                                    selectedCategory = intent.context.category
-                                    selectedChannel = intent.context.channel
-                                    amountText = decimalString(intent.context.amount)
-                                    merchantName = intent.context.merchantName ?? ""
-                                    focusedField = nil
-                                    presentRecommendation(intent.context)
-                                } label: {
-                                    RecentPurchaseIntentCard(intent: intent)
-                                }
-                                .buttonStyle(.plain)
-                                .accessibilityIdentifier("home.recentIntent.\(intent.context.category.rawValue)")
-                            }
+                    ForEach(recentIntents) { intent in
+                        Button {
+                            selectedCategory = intent.context.category
+                            selectedChannel = intent.context.channel
+                            amountText = decimalString(intent.context.amount)
+                            merchantName = intent.context.merchantName ?? ""
+                            focusedField = nil
+                            presentRecommendation(intent.context)
+                        } label: {
+                            RecentPurchaseIntentCard(intent: intent)
                         }
-                        .padding(.vertical, 4)
+                        .buttonStyle(.plain)
+                        .accessibilityIdentifier("home.recentIntent.\(intent.context.category.rawValue)")
                     }
-                    .accessibilityIdentifier("home.recentIntentsSection")
                 }
             }
 
@@ -328,7 +322,7 @@ private struct RecentPurchaseIntentCard: View {
                     .foregroundStyle(.secondary)
             }
         }
-        .frame(width: 190, alignment: .leading)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(14)
         .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
