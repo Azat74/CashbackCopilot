@@ -19,6 +19,7 @@ struct HomeView: View {
     @State private var selectedCategory: CashbackCategory = .fuel
     @State private var selectedChannel: PaymentChannel = .card
     @State private var recommendationContext: PurchaseContext?
+    @State private var isRecommendationPresented = false
     @State private var isScannerPresented = false
     @FocusState private var focusedField: Field?
 
@@ -92,9 +93,7 @@ struct HomeView: View {
                                 Button {
                                     selectedCategory = snapshot.category
                                     focusedField = nil
-                                    DispatchQueue.main.async {
-                                        recommendationContext = snapshot.context
-                                    }
+                                    presentRecommendation(snapshot.context)
                                 } label: {
                                     QuickRecommendationSnapshotCard(
                                         snapshot: snapshot,
@@ -122,9 +121,7 @@ struct HomeView: View {
                                     amountText = decimalString(intent.context.amount)
                                     merchantName = intent.context.merchantName ?? ""
                                     focusedField = nil
-                                    DispatchQueue.main.async {
-                                        recommendationContext = intent.context
-                                    }
+                                    presentRecommendation(intent.context)
                                 } label: {
                                     RecentPurchaseIntentCard(intent: intent)
                                 }
@@ -154,11 +151,17 @@ struct HomeView: View {
         }
         .navigationTitle("Главная")
         .scrollDismissesKeyboard(.interactively)
-        .sheet(item: $recommendationContext) { context in
-            NavigationStack {
-                RecommendationView(context: context)
+        .sheet(
+            isPresented: $isRecommendationPresented,
+            onDismiss: { recommendationContext = nil },
+            content: {
+                if let recommendationContext {
+                    NavigationStack {
+                        RecommendationView(context: recommendationContext)
+                    }
+                }
             }
-        }
+        )
         .sheet(isPresented: $isScannerPresented) {
             NavigationStack {
                 ScannerView()
@@ -169,9 +172,7 @@ struct HomeView: View {
                 Button("Показать лучшую оплату") {
                     if let context = makeManualContext() {
                         focusedField = nil
-                        DispatchQueue.main.async {
-                            recommendationContext = context
-                        }
+                        presentRecommendation(context)
                     }
                 }
                 .buttonStyle(.borderedProminent)
@@ -257,6 +258,11 @@ struct HomeView: View {
             channel: selectedChannel,
             confidence: 1.0
         )
+    }
+
+    private func presentRecommendation(_ context: PurchaseContext) {
+        recommendationContext = context
+        isRecommendationPresented = true
     }
 
     private func decimalString(_ value: Double) -> String {
