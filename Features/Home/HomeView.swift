@@ -28,6 +28,7 @@ struct HomeView: View {
             merchantName: merchantName,
             channel: selectedChannel
         )
+        let recentIntents = appModel.recentPurchaseIntents()
 
         Form {
             Section("Перед оплатой") {
@@ -95,26 +96,10 @@ struct HomeView: View {
                                         recommendationContext = snapshot.context
                                     }
                                 } label: {
-                                    VStack(alignment: .leading, spacing: 6) {
-                                        Text(snapshot.category.displayName)
-                                            .font(.headline)
-                                            .foregroundStyle(.primary)
-
-                                        Text(appModel.paymentMethodName(for: snapshot.paymentMethodId))
-                                            .font(.subheadline)
-                                            .foregroundStyle(.secondary)
-
-                                        Text("≈ \(CurrencyFormatter.rubles(snapshot.expectedReward))")
-                                            .font(.title3.bold())
-                                            .foregroundStyle(.primary)
-
-                                        Text("\(snapshot.expectedPercent.formatted(.number.precision(.fractionLength(0...1))))%")
-                                            .font(.caption.weight(.semibold))
-                                            .foregroundStyle(.secondary)
-                                    }
-                                    .frame(width: 190, alignment: .leading)
-                                    .padding(14)
-                                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+                                    QuickRecommendationSnapshotCard(
+                                        snapshot: snapshot,
+                                        paymentMethodName: appModel.paymentMethodName(for: snapshot.paymentMethodId)
+                                    )
                                 }
                                 .buttonStyle(.plain)
                                 .accessibilityIdentifier("home.quickSnapshot.\(snapshot.category.rawValue)")
@@ -123,6 +108,33 @@ struct HomeView: View {
                         .padding(.vertical, 4)
                     }
                     .accessibilityIdentifier("home.quickSnapshotsSection")
+                }
+            }
+
+            if !recentIntents.isEmpty {
+                Section("Недавние сценарии") {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(spacing: 12) {
+                            ForEach(recentIntents) { intent in
+                                Button {
+                                    selectedCategory = intent.context.category
+                                    selectedChannel = intent.context.channel
+                                    amountText = decimalString(intent.context.amount)
+                                    merchantName = intent.context.merchantName ?? ""
+                                    focusedField = nil
+                                    DispatchQueue.main.async {
+                                        recommendationContext = intent.context
+                                    }
+                                } label: {
+                                    RecentPurchaseIntentCard(intent: intent)
+                                }
+                                .buttonStyle(.plain)
+                                .accessibilityIdentifier("home.recentIntent.\(intent.context.category.rawValue)")
+                            }
+                        }
+                        .padding(.vertical, 4)
+                    }
+                    .accessibilityIdentifier("home.recentIntentsSection")
                 }
             }
 
@@ -245,5 +257,76 @@ struct HomeView: View {
             channel: selectedChannel,
             confidence: 1.0
         )
+    }
+
+    private func decimalString(_ value: Double) -> String {
+        if value.rounded() == value {
+            return String(Int(value))
+        }
+
+        return String(value)
+    }
+}
+
+private struct QuickRecommendationSnapshotCard: View {
+    let snapshot: QuickRecommendationSnapshot
+    let paymentMethodName: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(snapshot.category.displayName)
+                .font(.headline)
+                .foregroundStyle(.primary)
+
+            Text(paymentMethodName)
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+
+            Text("≈ \(CurrencyFormatter.rubles(snapshot.expectedReward))")
+                .font(.title3.bold())
+                .foregroundStyle(.primary)
+
+            Text("\(snapshot.expectedPercent.formatted(.number.precision(.fractionLength(0...1))))%")
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+        }
+        .frame(width: 190, alignment: .leading)
+        .padding(14)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
+    }
+}
+
+private struct RecentPurchaseIntentCard: View {
+    let intent: RecentPurchaseIntent
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text(intent.context.category.displayName)
+                .font(.headline)
+                .foregroundStyle(.primary)
+
+            if let merchantName = intent.context.merchantName {
+                Text(merchantName)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Text(CurrencyFormatter.rubles(intent.context.amount))
+                .font(.title3.bold())
+                .foregroundStyle(.primary)
+
+            Text(intent.context.channel.displayName)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.secondary)
+
+            if intent.useCount > 1 {
+                Text("\(intent.useCount) раза")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .frame(width: 190, alignment: .leading)
+        .padding(14)
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 16, style: .continuous))
     }
 }
