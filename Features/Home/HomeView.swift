@@ -158,6 +158,16 @@ struct HomeView: View {
                 ScannerView()
             }
         }
+        .task {
+            presentPendingQuickLaunchIfNeeded()
+        }
+        .onChange(of: appModel.pendingQuickLaunchContext) { _, _ in
+            presentPendingQuickLaunchIfNeeded()
+        }
+        .onChange(of: appModel.isOnboardingPresented) { _, isPresented in
+            guard !isPresented else { return }
+            presentPendingQuickLaunchIfNeeded()
+        }
         .safeAreaInset(edge: .bottom) {
             VStack(spacing: 12) {
                 Button("Показать лучшую оплату") {
@@ -253,6 +263,21 @@ struct HomeView: View {
 
     private func presentRecommendation(_ context: PurchaseContext) {
         recommendationPresentation = RecommendationPresentation(context: context)
+    }
+
+    private func presentPendingQuickLaunchIfNeeded() {
+        guard !appModel.isOnboardingPresented,
+              let context = appModel.consumePendingQuickLaunchContext()
+        else {
+            return
+        }
+
+        selectedCategory = context.category
+        selectedChannel = context.channel
+        amountText = decimalString(context.amount)
+        merchantName = context.merchantName ?? ""
+        focusedField = nil
+        presentRecommendation(context)
     }
 
     private func decimalString(_ value: Double) -> String {

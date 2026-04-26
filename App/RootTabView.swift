@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct RootTabView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var selectedTab: Tab = .home
     @Environment(AppModel.self) private var appModel
 
@@ -48,6 +49,30 @@ struct RootTabView: View {
         .fullScreenCover(isPresented: $appModel.isOnboardingPresented) {
             OnboardingView()
         }
+        .task {
+            consumePendingQuickLaunchRouteIfNeeded()
+        }
+        .onOpenURL { url in
+            guard let route = QuickLaunchRoute(url: url) else {
+                return
+            }
+
+            selectedTab = .home
+            appModel.requestQuickRecommendation(from: route)
+        }
+        .onChange(of: scenePhase) { _, newPhase in
+            guard newPhase == .active else { return }
+            consumePendingQuickLaunchRouteIfNeeded()
+        }
+    }
+
+    private func consumePendingQuickLaunchRouteIfNeeded() {
+        guard let route = QuickLaunchStore.consumePendingRoute() else {
+            return
+        }
+
+        selectedTab = .home
+        appModel.requestQuickRecommendation(from: route)
     }
 }
 

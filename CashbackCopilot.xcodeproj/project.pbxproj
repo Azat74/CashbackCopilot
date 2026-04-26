@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0039522E684A8C540337BDD6 /* LocalSnapshotRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA47D795B5C8216301CD5179 /* LocalSnapshotRepository.swift */; };
+		0F97609DF90E450C28C3F107 /* QuickRecommendationShortcuts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8617FF99548652F1A6810C7 /* QuickRecommendationShortcuts.swift */; };
 		0FF592E833C47B854224BBE7 /* AppModelMonthTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7FE5FEB879DA1081D409D9CC /* AppModelMonthTests.swift */; };
 		106F7F6B5B6232E3B4B2DFB9 /* ConfirmPurchaseContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2633D128245E90BEE1D14D4D /* ConfirmPurchaseContextView.swift */; };
 		229F34C7B09ED904419BAAFC /* RecentPurchaseIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = D769DF2F75063C0E5000F9BF /* RecentPurchaseIntent.swift */; };
@@ -24,6 +25,7 @@
 		4C916D005A1CBB0876F87CAC /* RootTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CF9491B200856DCBBA2A48A /* RootTabView.swift */; };
 		4E13C5822DB6839D1B9B40AA /* RecommendationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB21D02BE79C55947C8E337 /* RecommendationView.swift */; };
 		549C85F3276153D3709F55AA /* ScreenshotImportOCRPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A142D6D39C5B051058B0A86 /* ScreenshotImportOCRPipeline.swift */; };
+		55B463D0E9DC8D93B2732678 /* QuickLaunchRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C2659022C62518484B087B69 /* QuickLaunchRoute.swift */; };
 		55E34FFC8C6E6D91FF9390EE /* ConfirmActualCashbackSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFBD91979DC7AD4523F1AA1E /* ConfirmActualCashbackSheet.swift */; };
 		565A49459B2236E52F3ACDFF /* RecommendationOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEED2306687DBE4DF97FEB00 /* RecommendationOption.swift */; };
 		57921D22C3C0775D1A4897D6 /* RuleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */; };
@@ -35,6 +37,7 @@
 		5DF98F2BA3242A3548F23390 /* SpendProgress.swift in Sources */ = {isa = PBXBuildFile; fileRef = 844A63C3ACD853BEB1A6A016 /* SpendProgress.swift */; };
 		6A65CA6FFFC204BE539C3972 /* OCRService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4045F537498706BE475A29FB /* OCRService.swift */; };
 		6ECDAE8E5FBD20024B24E66D /* RecommendationResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2584806990AFACE5808C8A3C /* RecommendationResult.swift */; };
+		7130B0C4276E67DAE7FB05A6 /* QuickLaunchRouteTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 476BBEF31EBD4A5ACD466FBE /* QuickLaunchRouteTests.swift */; };
 		7BE079BA7BF36743C28F7B09 /* QRParsingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02E981466FDF9DF765369835 /* QRParsingService.swift */; };
 		7C493AFA85ACCCBECDEF9C28 /* CurrencyFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD12F0D3D789A6C52C19B644 /* CurrencyFormatter.swift */; };
 		801A576E5ADE6D2034E7B8D3 /* PreviewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5B95850B2BA8BBE2A3D7608 /* PreviewContainer.swift */; };
@@ -63,7 +66,9 @@
 		DD39436BD4F0A949B1E0A540 /* AppSnapshotRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7ED78A2879701D47DE556182 /* AppSnapshotRecord.swift */; };
 		DE8B75A45527EF997BAF4B26 /* RecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C8ED3A7B93D8E3C33CFB3C13 /* RecommendationEngine.swift */; };
 		E0557EC5D841515E639AABA6 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A281F86C0A65081544D097B1 /* HomeView.swift */; };
+		E3D1D227B4827108EFAD43E5 /* CashbackCopilotQuickLaunchWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 1A03D3E08C5909FC1C7DBE5E /* CashbackCopilotQuickLaunchWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E9E4C08FC6FE5B5DDB168807 /* CashbackRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9563F1696C7656AC16BA456 /* CashbackRule.swift */; };
+		EDAE11D79996636291EC32B1 /* CashbackCopilotQuickLaunchWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0918A2FA6621F660CBEB28E /* CashbackCopilotQuickLaunchWidget.swift */; };
 		F0587EF3B1155017AE467062 /* CashbackCopilotHomeRecentIntentsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E028CE425EE7E515013C73F1 /* CashbackCopilotHomeRecentIntentsUITests.swift */; };
 		F2144119286A4984B29AE9CC /* DefaultRecommendationEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45ADD1E172C54159D4506D1E /* DefaultRecommendationEngine.swift */; };
 		F38FEA894A571B80E2148500 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E676550568E4FDBDFA4BB5C /* ScannerView.swift */; };
@@ -77,6 +82,13 @@
 			remoteGlobalIDString = 06228F81A7217E07FE6E4633;
 			remoteInfo = CashbackCopilot;
 		};
+		DC99F3124135A74FABBBB113 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 4A4606B06BFBFEE033B12881 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 59983B4699BCA6C2B37C9427;
+			remoteInfo = CashbackCopilotQuickLaunchWidget;
+		};
 		E7AA119AC2E8248B18B8C6FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 4A4606B06BFBFEE033B12881 /* Project object */;
@@ -86,10 +98,25 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		B2921943F5D0CCA37451652D /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				E3D1D227B4827108EFAD43E5 /* CashbackCopilotQuickLaunchWidget.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		02E981466FDF9DF765369835 /* QRParsingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRParsingService.swift; sourceTree = "<group>"; };
 		1219C453568CE618C0EAE03B /* AppModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppModel.swift; sourceTree = "<group>"; };
 		1323AFDE89C6DF6F5CEEB2A5 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Base.xcconfig; sourceTree = "<group>"; };
+		1A03D3E08C5909FC1C7DBE5E /* CashbackCopilotQuickLaunchWidget.appex */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = "wrapper.app-extension"; path = CashbackCopilotQuickLaunchWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A142D6D39C5B051058B0A86 /* ScreenshotImportOCRPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenshotImportOCRPipeline.swift; sourceTree = "<group>"; };
 		1AA21BA4DA7E4729C7412E66 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
 		1CF9491B200856DCBBA2A48A /* RootTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabView.swift; sourceTree = "<group>"; };
@@ -105,6 +132,7 @@
 		4045F537498706BE475A29FB /* OCRService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCRService.swift; sourceTree = "<group>"; };
 		45ADD1E172C54159D4506D1E /* DefaultRecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRecommendationEngine.swift; sourceTree = "<group>"; };
 		474CF42CCBF7EF6B3C851814 /* WalletRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletRepository.swift; sourceTree = "<group>"; };
+		476BBEF31EBD4A5ACD466FBE /* QuickLaunchRouteTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLaunchRouteTests.swift; sourceTree = "<group>"; };
 		4C0D5E14B859CE5B1BED5EB5 /* HistoryRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryRepository.swift; sourceTree = "<group>"; };
 		4DD60FF192F944FDE6CA563D /* RuleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEditorView.swift; sourceTree = "<group>"; };
 		546467BC6E9435C0CD1138C4 /* CashbackCopilotUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotUITests.swift; sourceTree = "<group>"; };
@@ -135,7 +163,11 @@
 		B402767113D49676E44FFC2E /* CashbackCopilot.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CashbackCopilot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9563F1696C7656AC16BA456 /* CashbackRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackRule.swift; sourceTree = "<group>"; };
 		BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationRegressionTests.swift; sourceTree = "<group>"; };
+		BE809ED1931E193BA3389711 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C0918A2FA6621F660CBEB28E /* CashbackCopilotQuickLaunchWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CashbackCopilotQuickLaunchWidget.swift; sourceTree = "<group>"; };
+		C2659022C62518484B087B69 /* QuickLaunchRoute.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickLaunchRoute.swift; sourceTree = "<group>"; };
 		C5B95850B2BA8BBE2A3D7608 /* PreviewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewContainer.swift; sourceTree = "<group>"; };
+		C8617FF99548652F1A6810C7 /* QuickRecommendationShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickRecommendationShortcuts.swift; sourceTree = "<group>"; };
 		C8ED3A7B93D8E3C33CFB3C13 /* RecommendationEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngine.swift; sourceTree = "<group>"; };
 		CBB6D5E947080311CC7F35E2 /* PaymentMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaymentMethod.swift; sourceTree = "<group>"; };
 		CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendationEngineTests.swift; sourceTree = "<group>"; };
@@ -186,6 +218,7 @@
 				60FD1959800BF011B0030A52 /* CashbackImportDraftParserTests.swift */,
 				38B7B0757D970F711E6E3CAF /* CashbackMonthTests.swift */,
 				5870990B36AF70C02F5BE74A /* QRParsingServiceTests.swift */,
+				476BBEF31EBD4A5ACD466FBE /* QuickLaunchRouteTests.swift */,
 				CD96941C2D068DD8C0CF9A25 /* RecommendationEngineTests.swift */,
 				BE7DE0861E0670C4858E4659 /* RecommendationRegressionTests.swift */,
 				7228B195751EB0C953F43A3A /* ScreenshotImportOCRPipelineTests.swift */,
@@ -203,6 +236,7 @@
 				0DD9C16E28A099EE7E74268C /* Core */,
 				2ADD13BA5C27492A315C7D9F /* Features */,
 				C3C35AD79D89DE1DB9C544AC /* Shared */,
+				B2C2D5422AEDBB27A8571999 /* Widgets */,
 				CC159D33B4EA0A93FEC5DD86 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -303,6 +337,7 @@
 			children = (
 				1219C453568CE618C0EAE03B /* AppModel.swift */,
 				D42610CB1CC2A6EE4435B6EE /* CashbackCopilotApp.swift */,
+				C8617FF99548652F1A6810C7 /* QuickRecommendationShortcuts.swift */,
 				1CF9491B200856DCBBA2A48A /* RootTabView.swift */,
 			);
 			path = App;
@@ -314,6 +349,7 @@
 				45ADD1E172C54159D4506D1E /* DefaultRecommendationEngine.swift */,
 				619124DA2F0725D39C910B81 /* ProgressService.swift */,
 				02E981466FDF9DF765369835 /* QRParsingService.swift */,
+				C2659022C62518484B087B69 /* QuickLaunchRoute.swift */,
 				C8ED3A7B93D8E3C33CFB3C13 /* RecommendationEngine.swift */,
 			);
 			path = Services;
@@ -372,6 +408,23 @@
 			path = History;
 			sourceTree = "<group>";
 		};
+		B14E585C30650A19B1EA15EC /* QuickLaunch */ = {
+			isa = PBXGroup;
+			children = (
+				C0918A2FA6621F660CBEB28E /* CashbackCopilotQuickLaunchWidget.swift */,
+				BE809ED1931E193BA3389711 /* Info.plist */,
+			);
+			path = QuickLaunch;
+			sourceTree = "<group>";
+		};
+		B2C2D5422AEDBB27A8571999 /* Widgets */ = {
+			isa = PBXGroup;
+			children = (
+				B14E585C30650A19B1EA15EC /* QuickLaunch */,
+			);
+			path = Widgets;
+			sourceTree = "<group>";
+		};
 		C268A3F3FF9F4ECED38CFE62 /* Preview */ = {
 			isa = PBXGroup;
 			children = (
@@ -394,6 +447,7 @@
 			isa = PBXGroup;
 			children = (
 				B402767113D49676E44FFC2E /* CashbackCopilot.app */,
+				1A03D3E08C5909FC1C7DBE5E /* CashbackCopilotQuickLaunchWidget.appex */,
 				3A3855C2D2CD5E3DD15F3280 /* CashbackCopilotTests.xctest */,
 				8CB9E528544C06DE528AA8EE /* CashbackCopilotUITests.xctest */,
 			);
@@ -448,10 +502,12 @@
 			buildConfigurationList = 4CF5DB2886AF542C55A13F51 /* Build configuration list for PBXNativeTarget "CashbackCopilot" */;
 			buildPhases = (
 				0EFCAE641EC18EBC2DF060FE /* Sources */,
+				B2921943F5D0CCA37451652D /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				6FF500A252FDD46B00B35D35 /* PBXTargetDependency */,
 			);
 			name = CashbackCopilot;
 			packageProductDependencies = (
@@ -477,6 +533,23 @@
 			productName = CashbackCopilotUITests;
 			productReference = 8CB9E528544C06DE528AA8EE /* CashbackCopilotUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+		59983B4699BCA6C2B37C9427 /* CashbackCopilotQuickLaunchWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 50936B97A6068A8C89E1E89D /* Build configuration list for PBXNativeTarget "CashbackCopilotQuickLaunchWidget" */;
+			buildPhases = (
+				E76F981C55274E34EA5E1462 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CashbackCopilotQuickLaunchWidget;
+			packageProductDependencies = (
+			);
+			productName = CashbackCopilotQuickLaunchWidget;
+			productReference = 1A03D3E08C5909FC1C7DBE5E /* CashbackCopilotQuickLaunchWidget.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 		F7F575F75545780A2A211372 /* CashbackCopilotTests */ = {
 			isa = PBXNativeTarget;
@@ -526,6 +599,7 @@
 			projectRoot = "";
 			targets = (
 				06228F81A7217E07FE6E4633 /* CashbackCopilot */,
+				59983B4699BCA6C2B37C9427 /* CashbackCopilotQuickLaunchWidget */,
 				F7F575F75545780A2A211372 /* CashbackCopilotTests */,
 				285D3665CD5D146AAF665A5D /* CashbackCopilotUITests */,
 			);
@@ -565,6 +639,8 @@
 				3A0581B48A09914029DDBB50 /* ProgressService.swift in Sources */,
 				581716B8727394694C061F31 /* PurchaseContext.swift in Sources */,
 				7BE079BA7BF36743C28F7B09 /* QRParsingService.swift in Sources */,
+				55B463D0E9DC8D93B2732678 /* QuickLaunchRoute.swift in Sources */,
+				0F97609DF90E450C28C3F107 /* QuickRecommendationShortcuts.swift in Sources */,
 				B3AE663806B51501E3863F72 /* QuickRecommendationSnapshot.swift in Sources */,
 				229F34C7B09ED904419BAAFC /* RecentPurchaseIntent.swift in Sources */,
 				DE8B75A45527EF997BAF4B26 /* RecommendationEngine.swift in Sources */,
@@ -597,6 +673,7 @@
 				C3C1D658A6354CF09909EF63 /* CashbackImportDraftParserTests.swift in Sources */,
 				8BE3821F82FC7B75EE8AD36F /* CashbackMonthTests.swift in Sources */,
 				D081BCCA747FBC99ACA99EB6 /* QRParsingServiceTests.swift in Sources */,
+				7130B0C4276E67DAE7FB05A6 /* QuickLaunchRouteTests.swift in Sources */,
 				C5B4A5FBC23BF7238F381F75 /* RecommendationEngineTests.swift in Sources */,
 				2E847B9CC9D70C1EB9D77B81 /* RecommendationRegressionTests.swift in Sources */,
 				472698B4B33091B785FD9F6E /* ScreenshotImportOCRPipelineTests.swift in Sources */,
@@ -614,6 +691,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		E76F981C55274E34EA5E1462 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EDAE11D79996636291EC32B1 /* CashbackCopilotQuickLaunchWidget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -621,6 +706,11 @@
 			isa = PBXTargetDependency;
 			target = 06228F81A7217E07FE6E4633 /* CashbackCopilot */;
 			targetProxy = E7AA119AC2E8248B18B8C6FB /* PBXContainerItemProxy */;
+		};
+		6FF500A252FDD46B00B35D35 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 59983B4699BCA6C2B37C9427 /* CashbackCopilotQuickLaunchWidget */;
+			targetProxy = DC99F3124135A74FABBBB113 /* PBXContainerItemProxy */;
 		};
 		E3F031AECB14AB3B8869C8D0 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -728,6 +818,25 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		3FC828A6A2741CBFB31AFF17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widgets/QuickLaunch/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot.quicklaunchwidget;
+				PRODUCT_MODULE_NAME = CashbackCopilotQuickLaunchWidget;
+				PRODUCT_NAME = CashbackQuickLaunchWidget;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 			};
 			name = Release;
 		};
@@ -849,6 +958,25 @@
 			};
 			name = Release;
 		};
+		D05E93DF085F0C10108407A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Widgets/QuickLaunch/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.azat.cashbackcopilot.quicklaunchwidget;
+				PRODUCT_MODULE_NAME = CashbackCopilotQuickLaunchWidget;
+				PRODUCT_NAME = CashbackQuickLaunchWidget;
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
 		FF41FAC16C345CDE8B583D12 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -893,6 +1021,15 @@
 			buildConfigurations = (
 				117CBE00F83966E414123705 /* Debug */,
 				1C85652E66BC4DA563CC786E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		50936B97A6068A8C89E1E89D /* Build configuration list for PBXNativeTarget "CashbackCopilotQuickLaunchWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D05E93DF085F0C10108407A7 /* Debug */,
+				3FC828A6A2741CBFB31AFF17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

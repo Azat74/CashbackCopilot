@@ -24,10 +24,18 @@ targets:
       - Shared
     resources:
       - Resources
+    dependencies:
+      - target: CashbackCopilotQuickLaunchWidget
+        embed: true
     info:
       path: Info.plist
       properties:
         CFBundleDisplayName: Cashback Copilot
+        CFBundleURLTypes:
+          - CFBundleTypeRole: Editor
+            CFBundleURLName: com.azat.cashbackcopilot
+            CFBundleURLSchemes:
+              - cashbackcopilot
         UILaunchScreen:
           UIColorName: ""
         UIApplicationSceneManifest:
@@ -41,6 +49,25 @@ targets:
         INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone:
           - UIInterfaceOrientationPortrait
         GENERATE_INFOPLIST_FILE: NO
+        SWIFT_EMIT_LOC_STRINGS: YES
+  CashbackCopilotQuickLaunchWidget:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Widgets/QuickLaunch
+    info:
+      path: Widgets/QuickLaunch/Info.plist
+      properties:
+        CFBundleDisplayName: Cashback Quick Launch
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_NAME: CashbackQuickLaunchWidget
+        PRODUCT_MODULE_NAME: CashbackCopilotQuickLaunchWidget
+        PRODUCT_BUNDLE_IDENTIFIER: com.azat.cashbackcopilot.quicklaunchwidget
+        GENERATE_INFOPLIST_FILE: NO
+        APPLICATION_EXTENSION_API_ONLY: YES
         SWIFT_EMIT_LOC_STRINGS: YES
   CashbackCopilotTests:
     type: bundle.unit-test

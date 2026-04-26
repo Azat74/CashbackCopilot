@@ -71,7 +71,7 @@
 - [ ] bank templates/presets
 - [ ] import/export
 - [ ] app lock / privacy hardening
-- [ ] widget / shortcut quick launch for recommendation
+- [x] widget / shortcut quick launch for recommendation
 - [ ] smart quick hints for common categories
 - [ ] shareable cashback card
 - [ ] favorite merchants
@@ -99,7 +99,7 @@
 
 ### P2 — ускорение и быстрый доступ
 
-- [ ] widget / shortcut quick launch for recommendation
+- [x] widget / shortcut quick launch for recommendation
 - [ ] smart quick hints for common categories
 - [x] confidence scoring in recommendation flow
 - [x] confidence markers in screenshot import draft

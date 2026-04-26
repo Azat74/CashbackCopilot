@@ -15,6 +15,7 @@ final class AppModel {
     var progress: [SpendProgress]
     var loggedPayments: [LoggedPayment]
     var isOnboardingPresented: Bool
+    var pendingQuickLaunchContext: PurchaseContext?
 
     init(
         repository: LocalSnapshotRepository? = nil,
@@ -45,6 +46,7 @@ final class AppModel {
         self.progress = snapshot.progress
         self.loggedPayments = snapshot.loggedPayments
         self.isOnboardingPresented = true
+        self.pendingQuickLaunchContext = nil
 
         // Migrate existing data if months are empty
         let migratedSnapshot = Self.migrateIfNeeded(snapshot: AppSnapshot(
@@ -70,6 +72,16 @@ final class AppModel {
             rules: activeRules,
             progress: currentProgress
         )
+    }
+
+    func requestQuickRecommendation(from route: QuickLaunchRoute) {
+        pendingQuickLaunchContext = route.context
+    }
+
+    func consumePendingQuickLaunchContext() -> PurchaseContext? {
+        let context = pendingQuickLaunchContext
+        pendingQuickLaunchContext = nil
+        return context
     }
 
     func paymentMethods(for bankID: UUID) -> [PaymentMethod] {
