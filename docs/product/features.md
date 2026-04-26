@@ -158,7 +158,7 @@ Status:
 
 Status:
 
-- later
+- implemented via quick-launch widget category links
 
 ### 13. Shortcut / Action Button
 
@@ -166,7 +166,7 @@ Status:
 
 Status:
 
-- later
+- implemented via App Shortcut for category recommendation
 
 ### 14. Smart Quick Hints
 
